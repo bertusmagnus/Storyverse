@@ -3,14 +3,14 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Change me!
-[assembly: AssemblyTitle("Story Planner")]
+[assembly: AssemblyTitle("StoryVerse")]
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 
 // Change me!
-[assembly: AssemblyProduct("Story Planner")]
+[assembly: AssemblyProduct("StoryVerse")]
 
 // Change me!
 [assembly: AssemblyCopyright("Copyright © Lunaverse Software 2007")]

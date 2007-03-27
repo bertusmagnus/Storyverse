@@ -7,8 +7,8 @@
     <ProjectGuid>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StoryPlanner.Core</RootNamespace>
-    <AssemblyName>StoryPlanner.Core</AssemblyName>
+    <RootNamespace>StoryVerse.Core</RootNamespace>
+    <AssemblyName>StoryVerse.Core</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

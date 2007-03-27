@@ -7,8 +7,8 @@
     <ProjectGuid>{D12D108B-250C-4A2D-A3CC-8B41430F433C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StoryPlanner.AcceptanceTests</RootNamespace>
-    <AssemblyName>StoryPlanner.AcceptanceTests</AssemblyName>
+    <RootNamespace>StoryVerse.AcceptanceTests</RootNamespace>
+    <AssemblyName>StoryVerse.AcceptanceTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,17 +79,13 @@
     <Compile Include="WatinExperiment_TestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StoryPlanner.Core\StoryVerse.Core.csproj">
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">
       <Project>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</Project>
       <Name>StoryVerse.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StoryPlanner.WebUI\StoryVerse.WebUI.csproj">
-      <Project>{235211B7-2B2D-49D7-9850-70189A7C8F2B}</Project>
-      <Name>StoryVerse.WebUI</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

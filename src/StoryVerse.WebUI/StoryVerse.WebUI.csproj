@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StoryPlanner.WebUI</RootNamespace>
-    <AssemblyName>StoryPlanner.WebUI</AssemblyName>
+    <RootNamespace>StoryVerse.WebUI</RootNamespace>
+    <AssemblyName>StoryVerse.WebUI</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -204,7 +204,7 @@
     <Content Include="Views\rescues\generalerror.vm" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StoryPlanner.Core\StoryVerse.Core.csproj">
+    <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">
       <Project>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</Project>
       <Name>StoryVerse.Core</Name>
     </ProjectReference>

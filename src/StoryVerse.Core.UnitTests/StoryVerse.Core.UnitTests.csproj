@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>StoryPlanner.Core.UnitTests</AssemblyName>
+    <AssemblyName>StoryVerse.Core.UnitTests</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -18,7 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>StoryPlanner.Core.UnitTests</RootNamespace>
+    <RootNamespace>StoryVerse.Core.UnitTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -104,7 +104,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,14 +114,13 @@
     <Compile Include="Model\ProjectTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StoryPlanner.Core\StoryVerse.Core.csproj">
+    <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">
       <Project>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</Project>
       <Name>StoryVerse.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StoryPlanner.WebUI\StoryVerse.WebUI.csproj">
-      <Project>{235211B7-2B2D-49D7-9850-70189A7C8F2B}</Project>
-      <Name>StoryVerse.WebUI</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
