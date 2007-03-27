@@ -22,7 +22,7 @@
 				value="NHibernate.Connection.DriverConnectionProvider" />
       <add
 				key="hibernate.connection.connection_string"
-				value="Data Source=.\MSSQL05;Initial Catalog=StoryPlanner;Integrated Security=SSPI" />
+				value="Data Source=MyServerName;Initial Catalog=StoryVerse;Integrated Security=SSPI" />
     </config>
 
   </activerecord>
