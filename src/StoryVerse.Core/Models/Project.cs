@@ -338,7 +338,8 @@ namespace StoryVerse.Core.Models
             DateTime endDate = DateTime.MinValue;
             foreach (Task task in Tasks)
             {
-                if (scopeIsProject || task.Iteration == entity)
+                if (scopeIsProject || task.Iteration != null && 
+                    task.Iteration.Id == entity.Id)
                 {
                     TaskEstimate firstEst = task.GetInitialEstimate();
                     TaskEstimate lastEst = task.GetLatestEstimate();
@@ -361,7 +362,8 @@ namespace StoryVerse.Core.Models
                     est.Date = date;
                     foreach (Task task in Tasks)
                     {
-                        if (scopeIsProject || task.Iteration == entity)
+                        if (scopeIsProject || task.Iteration != null &&
+                            task.Iteration.Id == entity.Id)
                         {
                             est.HoursRemaining += task.GetHoursRemainingAsOf(date);
                         }

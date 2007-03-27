@@ -229,7 +229,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60696</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/StoryPlanner</IISUrl>
+          <IISUrl>http://localhost/StoryVerse</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
         </WebProjectProperties>
       </FlavorProperties>

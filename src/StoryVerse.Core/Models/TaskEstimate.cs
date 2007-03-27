@@ -46,6 +46,7 @@ namespace StoryVerse.Core.Models
 
         public string GetBar(int ceiling, int maxHours)
         {
+            if (maxHours == 0) return string.Empty;
             decimal factor = (decimal)maxHours/(decimal)ceiling;
             return new string('|', (int)Math.Round(HoursRemaining/factor, 0));
         }

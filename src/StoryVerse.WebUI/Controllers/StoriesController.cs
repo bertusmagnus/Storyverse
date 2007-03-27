@@ -144,10 +144,10 @@ namespace StoryVerse.WebUI.Controllers
             if (Form["tasksToAdd"] != null)
             {
                 string[] taskIds = Form["tasksToAdd"].Split(',');
-                string resultNoun = taskIds.Length > 1 ? "task" : "tasks";
+                string resultNoun = taskIds.Length == 1 ? "task" : "tasks";
                 string resultMessage = taskIds.Length == 0
                                            ? "No tasks selected to add"
-                                           : taskIds.Length + resultNoun + " add";
+                                           : taskIds.Length + " " + resultNoun + " added";
                 string failureMessage = string.Format("{0} NOT added", resultNoun);
 
                 if (((Person)Context.CurrentUser).CanViewOnly)
@@ -176,7 +176,7 @@ namespace StoryVerse.WebUI.Controllers
             if (Form["tasksToRemove"] != null)
             {
                 string[] taskIds = Form["tasksToRemove"].Split(',');
-                string resultNoun = taskIds.Length > 1 ? "task" : "tasks";
+                string resultNoun = taskIds.Length == 1 ? "task" : "tasks";
                 string resultMessage = taskIds.Length == 0
                                            ? "No tasks selected to remove"
                                            : taskIds.Length + " " + resultNoun + " removed";
@@ -217,7 +217,7 @@ namespace StoryVerse.WebUI.Controllers
                 task.Iteration = story.Iteration;
                 task.Title = "[new task]";
                 task.AddStory(story);
-                ContextEntity = Project.Find(ContextEntity.Id);
+                ContextEntity.Refresh(); //= Project.Find(ContextEntity.Id);
                 ContextEntity.AddTask(task);
                 task.Number = ContextEntity.GetNextTaskNumber();
                 ContextEntity.Validate();

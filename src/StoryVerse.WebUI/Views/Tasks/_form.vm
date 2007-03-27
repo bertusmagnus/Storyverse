@@ -37,7 +37,7 @@
     <td style="white-space:nowrap;">
       #if($entity.LatestEstimateHours)$!entity.LatestEstimateHours hours&nbsp;&nbsp;#end
       $FormHelper.TextField("newRemainingHours", "%{style='width:30px'}")&nbsp;
-      <input type="submit"  style="width:100px"  name="actionButton" class="actionButton" value="Update Hours" onClick="return confirmAction('update the remaining hours for this task')"
+      <input type="submit"  style="width:100px"  name="actionButton" class="actionButton" value="Update Hours" onClick="return updateHours()"
          #if(!$userCanEdit || $entity.Status=='Done') disabled="true" #end
 	      />
     </td>
@@ -80,12 +80,12 @@
             <div class="tip">Double-click to go to the story</div>
           </td>
           <td style="text-align:center; width:50px">
-            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px"
+            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px" onClick="return addStoryOrTask()"
               #if(!$userCanEdit || $entityIsNew) disabled="true" #end      
             />
             <br />
             <br/>
-            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px"
+            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px" onClick="return removeStoryOrTask()"
               #if(!$userCanEdit || $entityIsNew) disabled="true" #end    
             />
           </td>

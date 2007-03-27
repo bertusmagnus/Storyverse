@@ -70,7 +70,7 @@ namespace StoryVerse.WebUI.Controllers
 
         private void PopulateSelects()
         {
-            ContextEntity = Project.Find(ContextEntity.Id);
+            ContextEntity.Refresh(); //= Project.Find(ContextEntity.Id);
             PropertyBag["iterations"] = ContextEntity.Iterations;
             PersonCriteria personCriteria = new PersonCriteria();
             personCriteria.ApplyPresetForProject(ContextEntity);
@@ -139,10 +139,10 @@ namespace StoryVerse.WebUI.Controllers
             if (Form["storiesToAdd"] != null)
             {
                 string[] storyIds = Form["storiesToAdd"].Split(',');
-                string resultNoun = storyIds.Length > 1 ? "story" : "stories";
+                string resultNoun = storyIds.Length == 1 ? "story" : "stories";
                 string resultMessage = storyIds.Length == 0
                                            ? "No stories selected to add"
-                                           : storyIds.Length + resultNoun + " added";
+                                           : storyIds.Length + " " + resultNoun + " added";
                 string failureMessage = string.Format("{0} NOT added", resultNoun);
 
                 if (((Person)Context.CurrentUser).CanViewOnly)
@@ -171,7 +171,7 @@ namespace StoryVerse.WebUI.Controllers
             if (Form["storiesToRemove"] != null)
             {
                 string[] storyIds = Form["storiesToRemove"].Split(',');
-                string resultNoun = storyIds.Length > 1 ? "story" : "stories";
+                string resultNoun = storyIds.Length == 1 ? "story" : "stories";
                 string resultMessage = storyIds.Length == 0
                                            ? "No stories selected to remove"
                                            : storyIds.Length + " " + resultNoun + " removed";

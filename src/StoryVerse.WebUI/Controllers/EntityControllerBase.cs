@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Web;
 using Castle.ActiveRecord;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
@@ -103,8 +104,8 @@ namespace StoryVerse.WebUI.Controllers
                 {
                     if (Context.Params[ContextEntityIdName] != null)
                     {
-                        Guid contextEntityId = new Guid(Context.Params[ContextEntityIdName]);
-                        ContextEntity = ActiveRecordBase<TContextEntity>.Find(contextEntityId);
+                        ContextEntity = GetContextEntity(new 
+                            Guid(Context.Params[ContextEntityIdName]));
                     }
                     else
                     {
@@ -297,9 +298,9 @@ namespace StoryVerse.WebUI.Controllers
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
                 PropertyBag["entityIsNew"] = false;
-                if (hasContext && ContextEntity != null)
+                if (hasContext)
                 {
-                    ContextEntity = ActiveRecordBase<TContextEntity>.Find(ContextEntity.Id);
+                    //ContextEntity = GetContextEntity(ContextEntity.Id);
                     PropertyBag[contextEntityName] = ContextEntity;
                 }
                 PopulateEditSelects();
@@ -483,9 +484,30 @@ namespace StoryVerse.WebUI.Controllers
             return message;
         }
 
+
+        private TContextEntity GetContextEntity(Guid id)
+        {
+            TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
+            HttpCookie cookie = new HttpCookie("contextId", id.ToString());
+            cookie.Expires = DateTime.MaxValue;
+            HttpContext.Response.SetCookie(cookie);
+            return result;
+        }
+
         protected TContextEntity ContextEntity
         {
-            get { return WebObjectCache.GetInstance().Retrieve<TContextEntity>(contextEntityName); }
+            get
+            {
+                const string contextCookieName = "contextId";
+                TContextEntity result = WebObjectCache.GetInstance().Retrieve<TContextEntity>(contextEntityName);
+                if (result == null)
+                {
+                    string cookieValue = Request.ReadCookie(contextCookieName);
+                    result = GetContextEntity(new Guid(cookieValue));
+                    ContextEntity = result;
+                }
+                return result;
+            }
             set { WebObjectCache.GetInstance().Add(contextEntityName, value); }
         }
 

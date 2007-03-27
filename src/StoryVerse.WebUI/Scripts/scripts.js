@@ -57,6 +57,30 @@ function save()
     document.edit.submit();
 }
 
+function updateHours()
+{
+    if (!confirmAction('update the remaining hours for this task')) return false;
+    
+    saving = true;
+    document.edit.actionButton.value = "Update Hours";
+    document.edit.submit();
+    return true;
+}
+
+function addStoryOrTask()
+{   
+    saving = true;
+    document.edit.actionButton.value = ">>";
+    document.edit.submit();
+}
+
+function removeStoryOrTask()
+{
+    saving = true;
+    document.edit.actionButton.value = ">>";
+    document.edit.submit();
+}
+
 function setEditActionButtons()
 {
     var canSave = document.getElementById('isDirty').value == 'true' &&
