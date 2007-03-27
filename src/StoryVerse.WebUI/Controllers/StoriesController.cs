@@ -217,7 +217,7 @@ namespace StoryVerse.WebUI.Controllers
                 task.Iteration = story.Iteration;
                 task.Title = "[new task]";
                 task.AddStory(story);
-                ContextEntity.Refresh(); //= Project.Find(ContextEntity.Id);
+                ContextEntity.Refresh();
                 ContextEntity.AddTask(task);
                 task.Number = ContextEntity.GetNextTaskNumber();
                 ContextEntity.Validate();

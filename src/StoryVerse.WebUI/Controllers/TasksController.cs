@@ -70,7 +70,7 @@ namespace StoryVerse.WebUI.Controllers
 
         private void PopulateSelects()
         {
-            ContextEntity.Refresh(); //= Project.Find(ContextEntity.Id);
+            ContextEntity.Refresh();
             PropertyBag["iterations"] = ContextEntity.Iterations;
             PersonCriteria personCriteria = new PersonCriteria();
             personCriteria.ApplyPresetForProject(ContextEntity);

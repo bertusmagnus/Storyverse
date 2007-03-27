@@ -36,7 +36,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetupEntity(Iteration iteration)
         {
-            ContextEntity.Refresh(); //= Project.Find(ContextEntity.Id);
+            ContextEntity.Refresh();
             PropertyBag["project"] = ContextEntity;
             int maxHours;
             PropertyBag["burndown"] = ContextEntity.Burndown(iteration, out maxHours);
