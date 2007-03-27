@@ -1,0 +1,103 @@
+<script>
+  function GoToStory(form, control)
+  {
+    document.edit.storyToGoToId.value = control.options[control.selectedIndex].value;
+    document.edit.submit();
+  }
+</script>
+
+<tr>
+  <td colspan="4" style="height:4px"></td>
+</tr>
+#if($entity.Number)
+<tr>
+  <td class="label">Number:</td>
+  <td colspan="3">$entity.Number</td>
+</tr>
+#end
+<tr>
+  <td class="label">Title:</td>
+  <td  colspan="3">$FormHelper.TextField("entity.Title", "%{style='width:99%', onchange='markDirty()'}")</td>
+</tr>
+<tr>
+  <td class="label">Iteration:</td>
+  <td>$FormHelper.Select("entity.Iteration.Id", $entity.Iteration.Id, $iterations, "%{value='Id', text='Name', firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  <td class="label">Owner:</td>
+  <td>$FormHelper.Select("entity.Owner.Id", $entity.Owner.Id, $owners, "%{value='Id', text='FullName', firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+</tr>
+<tr>
+  <td class="label">Status:</td>
+  <td>$FormHelper.Select("entity.Status", $entity.Status, $statuses, "%{style='width:150px', onchange='markDirty()'}")</td>
+  <td class="label">Technical Risk:</td>
+  <td>$FormHelper.Select("entity.TechnicalRisk", $entity.TechnicalRisk, $techrisks, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+</tr>
+#if(!$entityIsNew)
+  <tr>
+    <td class="label">Estimate:</td>
+    <td style="white-space:nowrap;">
+      #if($entity.LatestEstimateHours)$!entity.LatestEstimateHours hours&nbsp;&nbsp;#end
+      $FormHelper.TextField("newRemainingHours", "%{style='width:30px'}")&nbsp;
+      <input type="submit"  style="width:100px"  name="actionButton" class="actionButton" value="Update Hours" onClick="return confirmAction('update the remaining hours for this task')"
+         #if(!$userCanEdit || $entity.Status=='Done') disabled="true" #end
+	      />
+    </td>
+    <td class="label">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+#end
+<tr>
+  <td class="label" colspan="4">Description:</td>
+</tr>
+<tr>
+  <td colspan="4">
+    $FormHelper.TextArea("entity.Description", "%{rows='7', style='width:99%;', onchange='markDirty()'}")
+  </td>
+</tr>
+<tr>
+  <td class="label" colspan="4">Notes:</td>
+</tr>
+<tr>
+  <td colspan="4">
+    $FormHelper.TextArea("entity.Notes", "%{rows='4', style='width:99%;', onchange='markDirty()'}")
+  </td>
+</tr>
+#if(!$entityIsNew)
+  #parse("tasks/_estimates.vm")
+  <tr>
+    <td colspan="4" style="padding:0px">
+      <table style="width:100%;">
+        <tr>
+          <td class="label">
+            Stories In Project:
+          </td>
+          <td class="label">&nbsp;</td>
+          <td class="label">Stories For This Task:</td>
+        </tr>
+        <tr>
+          <td style="width:50%">
+            $FormHelper.HiddenField("storyToGoToId")
+            $FormHelper.Select("storiesToAdd", $entity.Project.GetStoriesNotAssignedToTask($entity), "%{value='Id', text='DisplayName', multiple='true',  size='6', style='width:100%', ondblclick='javascript:GoToStory(edit, document.edit.storiesToAdd);'}")
+            <div class="tip">Double-click to go to the story</div>
+          </td>
+          <td style="text-align:center; width:50px">
+            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px"
+              #if(!$userCanEdit || $entityIsNew) disabled="true" #end      
+            />
+            <br />
+            <br/>
+            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px"
+              #if(!$userCanEdit || $entityIsNew) disabled="true" #end    
+            />
+          </td>
+          <td style="width:50%">
+            $FormHelper.Select("storiesToRemove", $entity.Stories, "%{value='Id', text='DisplayName', multiple='true', size='6', style='width:100%', ondblclick='javascript:GoToStory(edit, document.edit.storiesToRemove);'}")
+            <div class="tip">Double-click to go to the story</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+#end
+<tr>
+  <td colspan="4" style="height:4px"></td>
+</tr>

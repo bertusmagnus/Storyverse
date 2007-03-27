@@ -1,0 +1,114 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StoryPlanner.Core</RootNamespace>
+    <AssemblyName>StoryPlanner.Core</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.ActiveRecord, Version=0.0.1.3, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.ActiveRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Components.Common.EmailSender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Components.Common.EmailSender.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.AutomaticTransactionManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.AutomaticTransactionManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.NHibernateIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.NHibernateIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.Log4netIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Services.Logging.Log4netIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Transaction, Version=0.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Services.Transaction.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=1.2.0.3001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Criteria\CompanyCriteria.cs" />
+    <Compile Include="Criteria\CriteriaUtility.cs" />
+    <Compile Include="Criteria\IFindCriteria.cs" />
+    <Compile Include="Criteria\IterationCriteria.cs" />
+    <Compile Include="Criteria\PersonCriteria.cs" />
+    <Compile Include="Criteria\ProjectCriteria.cs" />
+    <Compile Include="Criteria\StoryCriteria.cs" />
+    <Compile Include="Criteria\TaskCriteria.cs" />
+    <Compile Include="Lookups\CompanyType.cs" />
+    <Compile Include="Lookups\TaskStatus.cs" />
+    <Compile Include="Lookups\SortDirection.cs" />
+    <Compile Include="Lookups\UserProjectScope.cs" />
+    <Compile Include="Lookups\StoryPriority.cs" />
+    <Compile Include="Lookups\StoryStatus.cs" />
+    <Compile Include="Lookups\TechnicalRisk.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Component.cs" />
+    <Compile Include="Models\IParentEntity.cs" />
+    <Compile Include="Models\EntityUtility.cs" />
+    <Compile Include="Models\TaskEstimate.cs" />
+    <Compile Include="Models\IEntity.cs" />
+    <Compile Include="Models\Iteration.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\ProductionRelease.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\Story.cs" />
+    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\Test.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\NumberIsPositiveValidator.cs" />
+    <Compile Include="Validators\NumberRangeValidator.cs" />
+    <Compile Include="Validators\ValidateNumberIsPositiveAttribute.cs" />
+    <Compile Include="Validators\ValidateNumberRangeAttribute.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

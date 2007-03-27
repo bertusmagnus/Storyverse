@@ -1,0 +1,44 @@
+$FormHelper.HiddenField("criteria.OrderBy")
+
+<table class="list">
+
+#foreach($entity in $companies)
+  #beforeall
+      <tr class="header">
+        <td align="left">
+          <a href="javascript:SortLink('Name');">Name</a>
+        </td>
+        <td align="left">
+          <a href="javascript:SortLink('Type');">Type</a>
+        </td>
+        <td>Persons</td>
+        <td>&nbsp;</td>
+      </tr>
+    #before
+      <tr
+    #odd
+      class="oddrow">
+    #even
+      class="evenrow">
+    #each
+      <td align="left">
+        <a href="edit.rails?id=$entity.Id">$entity.Name</a>
+      </td>
+      <td align="left">
+        $!entity.Type
+      </td>
+      <td align="left">
+        $!entity.Employees.Count
+      </td>
+      <td align="left">
+        <a href="../persons/list.rails?companyId=$entity.Id">Persons</a>
+      </td>
+    #after
+      </tr>
+	#nodata
+		<tr><td class="nodata_message" colspan="4">- no $entityNamePlural -</td></tr>
+    #afterall
+  #end
+  
+</table>
+

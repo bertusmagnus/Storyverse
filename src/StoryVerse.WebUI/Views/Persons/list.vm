@@ -1,0 +1,26 @@
+<table class="list">
+
+#foreach($entity in $persons)
+  #beforeall
+      <tr class="header">
+        <td>Name</td>
+      </tr>
+  #before
+    <tr
+  #odd
+    class="oddrow">
+  #even
+    class="evenrow">
+  #each
+    <td align="left">
+      <a href="edit.rails?id=$entity.Id">$entity.FullName</a>
+    </td>
+  #after
+    </tr>
+  #nodata
+    <tr><td class="nodata_message" colspan="1">- no $entityNamePlural -</td></tr>
+  #afterall
+#end
+
+</table>
+

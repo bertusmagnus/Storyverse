@@ -1,0 +1,3 @@
+#parse("layouts/fragments/head.vm")
+$childContent	
+#parse("layouts/fragments/foot.vm")

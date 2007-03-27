@@ -1,0 +1,15 @@
+<td colspan="3">
+  <input type="hidden" id="userCanEdit" value="$userCanEdit" />
+  <input id="saveButton$position" type="submit" name="actionButton" class="actionButton" value="Save" onClick="save();"/>
+  <input id="listButton$position" type="submit" name="actionButton" class="actionButton" value="List"/>
+  <input id="deleteButton$position" type="submit"  name="actionButton" class="actionButton" value="Delete" onClick="return confirmDelete('$entityName')"
+    #if(!$userCanEdit) disabled="True" #end      
+  />
+  #if ($actionResult)<span class="actionResult">$actionResult</span>#end
+</td>
+<td align="right">
+  <input id="previousButton$position" type="submit" name="previousButton" value="&lt;&lt;" class="navButton" onClick="return goToUrl('edit.rails?id=$previousId')"
+    #if(!$previousId) disabled="true" #end  />
+  <input id="nextButton$position" type="submit" name="nextButton" value="&gt;&gt;" class="navButton" onClick="return goToUrl('edit.rails?id=$nextId')"
+    #if(!$nextId) disabled="true" #end  />
+</td>

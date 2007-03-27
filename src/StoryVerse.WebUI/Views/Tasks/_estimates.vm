@@ -1,0 +1,51 @@
+$AjaxHelper.GetJavascriptFunctions()
+
+<script type="text/javascript">
+function deleteEstimate(theCell, estimateId) 
+{
+    if (confirmAction('delete this estimate'))
+    {
+	    var r=new Ajax.Request('deleteEstimate.rails',{parameters: 'estimateId=' + estimateId});
+	    if( document.createElement && document.childNodes ) 
+	    {
+		    var thisRow = theCell.parentNode.parentNode;
+		    thisRow.parentNode.removeChild(thisRow);
+	    }
+	}
+}
+</script> 
+<tr>
+  <td class="labelabove">
+    Estimates:
+  </td>
+</tr>
+<tr>
+  <td colspan="4" class="controlbelow" style="width:150px; padding:0px 0px 0px 0px">
+    <table id="tests" class="list" style="width:175px;">
+      #foreach($estimate in $entity.Estimates)
+      #beforeall
+        <tr class="header">
+          <td style="width:125px;">Date</td>
+          <td>Estimate</td>
+          #if ($userIsAdmin)<td>&nbsp;</td>#end
+        </tr>
+      #each
+        <tr>
+          <td style="width:125px; white-space:nowrap;">
+            $!estimate.Date.ToString('ddd MM/dd/yy').Replace(" ", "&nbsp;")
+          </td>
+          <td style="width:50px">
+		        $!estimate.HoursRemaining.ToString("n0") hours
+          </td>
+          #if ($userIsAdmin)
+            <td>
+              $AjaxHelper.LinkToFunction("Delete", "deleteEstimate(this, '$estimate.Id')")
+            </td>
+          #end
+        </tr>
+      #nodata
+        <tr><td class="nodata_message" colspan="2">- no estimates for this task -</td></tr>
+      #end
+    </table>
+  </td>
+</tr>

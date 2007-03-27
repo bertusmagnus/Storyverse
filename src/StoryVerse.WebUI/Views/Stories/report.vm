@@ -1,0 +1,14 @@
+<div class="report_title">
+	Stories Report
+</div>
+<div class="report_subtitle">
+	$project.Company.Name - $project.Name
+</div>
+<div class="report_date">
+	$currentDate
+</div>
+
+#foreach($entity in $stories)
+#parse("stories/printable.vm")
+<br/>
+#end

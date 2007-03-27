@@ -1,0 +1,37 @@
+$FormHelper.HiddenField("criteria.OrderBy")
+
+<table class="list">
+
+#foreach($entity in $iterations)
+  #beforeall
+      <tr class="header">
+        <td align="left">
+          <a href="javascript:SortLink('Name');">Name</a>
+        </td>
+        <td>Stories</td>
+        <td>Tasks</td>
+      </tr>
+    #before
+      <tr
+    #odd
+      class="oddrow">
+    #even
+      class="evenrow">
+    #each
+      <td align="left">
+        <a href="edit.rails?id=$entity.id">$entity.Name</a>
+      </td>
+      <td align="center">
+        $entity.GetStoriesCount()
+      </td>
+      <td align="center">
+        $entity.GetTasksCount()
+      </td>
+	  #after
+	   </tr>
+	#nodata
+		<tr><td class="nodata_message" colspan="3">- no $entityNamePlural -</td></tr>
+    #afterall
+  #end
+
+</table>

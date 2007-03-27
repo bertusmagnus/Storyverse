@@ -1,0 +1,27 @@
+<form name="edit" action="edit.rails" method="post">
+
+  $FormHelper.HiddenField("entity.Id")
+
+  <div class="section_title">
+     $entityName Detail
+  </div>
+  <input type="hidden" id="isDirty" value="false" />
+  <table class="detail" onLoad='setEditActionButtons()'>
+    #if ($isEditFormLong)
+      <tr class="top_buttons">
+          #set($position="Top")
+          #parse("layouts/fragments/edit_buttons.vm")
+      </tr>
+      <tr style="height:8px;"><td colspan="4"></td></tr>
+      #end
+
+      $childContent
+
+      <tr style="height:8px;"><td  colspan="4"></td></tr>
+      <tr class="bottom_buttons">
+        #set($position="Bottom")
+        #parse("layouts/fragments/edit_buttons.vm")
+      </tr>
+    </table>
+
+  </form>

@@ -1,0 +1,317 @@
+/* 
+ * Copyright © Lunaverse Software 2007  
+ * Distributed without waranty under the terms of the GPL
+ * See the included file "Licence.txt" for terms of the license
+*/
+
+body
+{
+	background-color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+    margin: 20px 20px 20px 20px;
+}
+
+textarea, select, input
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+}
+
+a
+{
+	font-size: small;
+	font-weight: normal;
+}
+
+a:hover
+{
+	 text-decoration: none;
+}
+
+.context_header
+{
+	font-size:18px;
+	font-weight:bold;
+	padding: 4px 0px 0px 0px; 
+	white-space:nowrap;
+}
+
+.section_title
+{
+	font-size:14px;
+	font-weight:bold;
+	background-color: #d9e4f8;
+    border-color:#6f96df;
+	border-top-style: solid;
+    border-bottom-style: solid;
+    border-width:2px;
+	padding: 4px 4px 4px 4px; 
+	margin: 8px 0px 6px 0px;
+	width:100%;
+	white-space:nowrap;
+}
+
+.tip
+{
+	font-size:smaller; 
+	font-style:italic; 
+	color:blue;
+}
+
+input.actionButton
+{
+	width: 75px;
+}
+
+input.navButton
+{
+	width: 35px;
+}
+
+.actionResult
+{
+	color: Blue;
+	font-weight:bold;
+	padding: 0px 5px 0px 5px;
+}
+
+.report_title
+{
+	font-size:18px;
+	font-weight:bold;
+	padding: 0px 0px 3px 0px; 
+}
+
+.report_item_title
+{
+	font-weight:bold; 
+	border-color:gray; 
+	background-color:silver; 
+	border-style:solid; 
+	border-width:1px;
+}
+
+.report_item_title a
+{	
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.report_item_title a:hover
+{
+	font-weight:bold;
+	text-decoration: underline;
+}
+
+.report_subtitle
+{
+	font-size:14px;
+	font-weight:bold;
+	padding: 0px 0px 3px 0px; 
+}
+
+.report_date
+{
+	padding: 0px 0px 20px 0px; 
+}
+
+table.main_menu
+{
+	font-size: small;
+	font-weight: normal;
+	padding: 0px 0px 8px 0px; 
+	width:100%;
+	white-space:nowrap;
+}
+
+table.detail
+{
+	border-collapse: collapse;
+	border-color: gray;
+	border-width: 1px;
+	width: 700px;
+}
+
+table.detail td
+{
+	padding:2px 4px 2px 4px; 
+	vertical-align: middle;
+}
+
+table.detail td.label
+{
+	font-weight: bold;
+	height: 25px;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+table.detail td.labelabove
+{
+	font-weight: bold;
+	vertical-align: bottom;
+	white-space:nowrap;
+}
+
+table.detail td.controlbelow
+{
+	width:0%;
+	vertical-align: top;
+}
+
+table.detail tr.top_buttons td
+{
+	border-bottom-color:#6f96df;
+	border-bottom-style:solid;
+    border-bottom-width:2px;
+	padding: 0px 5px 5px 5px;
+	vertical-align: middle;
+	white-space:nowrap;
+}
+
+table.detail tr.bottom_buttons td
+{
+    border-color:#6f96df;
+	border-top-style: solid;
+	border-bottom-style: solid;
+    border-width:2px;
+	padding: 5px 5px 5px 5px;
+	vertical-align: middle;
+	white-space:nowrap;
+}
+
+table.list
+{
+	border-collapse:collapse;
+	margin: 0px 0px 0px 4px;
+}
+
+table.list td
+{
+	border-color:gray;
+	border-style:solid;
+	border-width:1px;
+	padding:2px 4px 2px 4px;
+	vertical-align: top;
+}
+
+table.list td a
+{
+	text-decoration:none;
+}
+
+table.list td a:hover
+{
+	text-decoration:underline;
+}
+
+table.list tr.filter
+{
+	background-color: #f5f5f5;
+}
+
+table.list td.presets a
+{
+	color: #3a4fa6;
+	text-decoration: underline;
+}
+
+table.list td.presets a:hover
+{
+	color: #3a4fa6;
+	text-decoration: none;
+}
+
+table.list tr.header
+{
+	background-color: #6f96df;
+	color: white;
+	font-weight:bold;
+	white-space:nowrap;
+}
+
+table.list tr.header a
+{
+	color:white;
+	font-weight:bold;
+}
+
+table.list tr.header a:hover
+{
+	text-decoration:underline;
+}
+
+table.list tr.oddrow
+{
+	background-color:white;
+}
+
+table.list tr.evenrow
+{
+	background-color:#f5f5f5;
+}
+
+table.list tr.summary
+{
+}
+
+table.list tr.summary td
+{
+}
+
+table.list tr.filter
+{
+	vertical-align:bottom;
+}
+
+table.list td.presets
+{
+	color: #3a4fa6;
+	border-style: none;
+	padding: 0px 0px 2px 0px;
+	white-space: nowrap;
+}
+
+table.list td.nodata_message
+{
+	border-style:none;
+	font-size:large;
+	color: #6f96df;
+	padding: 10px 10px 10px 10px;
+	text-transform:lowercase;
+	white-space:nowrap;
+}
+
+table.login td
+{
+	padding: 2px 2px 2px 2px;
+}
+
+table.report
+{
+	border-collapse:collapse;
+	border-style:solid;
+	border-color:gray;
+	border-width:1px;
+	padding:0px 0px 0px 0px;
+	margin:0px 0px 0px 0px;
+	width:600px;
+}
+
+table.report td
+{
+	border-color:gray;
+	border-bottom-style:solid;
+	border-width:1px;
+	padding:4px 4px 4px 4px;
+	vertical-align: top;
+}
+
+table.report td.label
+{
+	font-weight: bold;
+	white-space:nowrap;
+}
+
+

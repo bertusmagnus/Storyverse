@@ -1,0 +1,52 @@
+<table class="report">
+	<tr>
+		<td class="report_item_title" colspan="10">
+			$entity.Number:&nbsp;<a href="edit.rails?id=$entity.Id">$entity.Title</a>
+    </td>
+	</tr>
+	<tr style="border-color:gray; border-style:solid; border-width:1px">
+		<td class="label">Priority:</td>
+		<td align="left">$!entity.Priority</td>
+		<td class="label">Status:</td>
+		<td align="left">$!entity.Status</td>
+		<td class="label">Iteration:</td>
+		<td align="left">$!entity.Iteration.Name</td>
+		<td class="label">Tech&nbsp;Risk:</td>
+		<td align="left">$!entity.TechnicalRisk</td>
+		<td class="label">Estimate:</td>
+		<td align="left">$entity.Estimate</td>
+	</tr>
+	#if($entity.Body.Length>0)
+	<tr style="border-color:gray; border-style:solid; border-width:1px">
+		<td class="label" style="vertical-align:top">Story:</td>
+		<td colspan="9" style="vertical-align:top">
+			$TextFormatHelper.AddLineBreaks($entity.Body)
+		</td>
+	</tr>
+	#end
+	#if($entity.Notes.Length>0)
+	<tr>
+		<td class="label" style="vertical-align:top">Notes:</td>
+		<td colspan="9" style="vertical-align:top">
+			$TextFormatHelper.AddLineBreaks($entity.Notes)
+		</td>
+	</tr>
+	#end
+	#if($entity.Tests.Count>0)
+	<tr>
+		<td class="label" style="vertical-align:top">Tests:</td>
+		<td colspan="9">
+			<table class="report" style="width:100%">
+				#set($counter = 0)
+				#foreach($test in $entity.Tests)
+				<tr>
+					<td style="border-right-style:solid">$test.Number</td>
+					<td align="left" style="width:100%">$TextFormatHelper.AddLineBreaks($test.Body)</td>
+				</tr>
+				#set($counter = $counter + 1)
+				#end
+			</table>
+		</td>
+	</tr>
+	#end
+</table>

@@ -1,0 +1,5 @@
+#parse("layouts/fragments/head.vm")
+#parse("layouts/fragments/main_menu.vm")
+#parse("layouts/fragments/error.vm")
+#parse("layouts/fragments/edit_container.vm")
+#parse("layouts/fragments/foot.vm")

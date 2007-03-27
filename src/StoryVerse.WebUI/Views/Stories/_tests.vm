@@ -1,0 +1,43 @@
+<tr id="testsLabel">
+    <td class="labelabove" colspan="4">
+      Tests: <span style="color:purple;">$!testUpdateResult</span>
+      $FormHelper.HiddenField("testCount")
+    </td>
+</tr>
+#if($userCanEdit && !$entityIsNew)
+ <tr>
+   <td colspan="4">
+      $FormHelper.TextArea("newTestContent", "%{rows='4', style='width:92%; font-family:Arial; font-size: 12px'}")
+      $AjaxHelper.ButtonToFunction("Add", "addTestRow()", "%{style='vertical-align:top; width:40px'}")
+      <div class="tip">Type a new test above, then click 'Add'</div>
+   </td>
+  </tr>
+#end
+<tr>
+    <td colspan="4" class="controlbelow" style="width:100%;">
+      <table id="testList" class="list" style="width:100%; margin: 0px 0px 0px 0px;">
+        <tr class="header">
+            <td style="width:20px">#</td>
+            <td>Test</td>
+            <td style="width:50px">&nbsp;</td>
+        </tr>
+        #set($i = 0)
+        #foreach($test in $entity.TestsArray)
+          #each
+            <tr>
+              <td style="width:20px">$test.Number</td>
+              <td>
+                $FormHelper.HiddenField("entity.TestsArray[$i].Id")
+                $FormHelper.TextArea("entity.TestsArray[$i].Body", "%{rows='4', style='width:99%; font-family:Arial; font-size: 12px'}")
+              </td>
+              <td style="width:50px;">
+                #if($userCanEdit && !$entityIsNew)
+                  $AjaxHelper.LinkToFunction("Remove", "removeTestRow(this)")
+                #end
+              </td>
+            </tr>
+            #set($i = $i + 1)
+        #end
+      </table>
+    </td>
+<tr>

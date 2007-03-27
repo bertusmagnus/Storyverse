@@ -1,0 +1,22 @@
+<form action="new.rails" method="post">
+
+  <div class="section_title">
+    Create $entityName
+  </div>
+
+  <table class="detail">
+    #if ($isEditFormLong)
+      <tr  class="top_buttons">
+        #parse("layouts/fragments/new_buttons.vm")
+      </tr>
+      <tr style="height:8px;"><td colspan="4"></td></tr>
+    #end
+
+      $childContent
+
+    <tr style="height:8px;"><td  colspan="4"></td></tr>
+    <tr class="bottom_buttons">
+      #parse("layouts/fragments/new_buttons.vm")
+    </tr>
+  </table>
+</form>

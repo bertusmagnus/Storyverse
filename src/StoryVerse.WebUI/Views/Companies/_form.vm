@@ -1,0 +1,13 @@
+<tr>
+  <td class="label">Name:</td>
+  <td >$FormHelper.TextField("entity.Name", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Type:</td>
+  <td>$FormHelper.Select("entity.Type", $entity.Type, $companyTypes, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+

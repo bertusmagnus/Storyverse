@@ -1,0 +1,16 @@
+<tr>
+  <td class="labelabove" colspan="4">Burndown:</td>
+</tr>
+<tr>
+  <td colspan="4">
+    <table style="background-color:#dde8f8; white-space:nowrap; padding:10px 10px 10px 10px; margin:0px 0px 15px 3px;">
+      #foreach ($item in $burndown)
+        <tr>
+          <td>$!item.Date.ToString("MM/dd/yy (ddd)")</td>
+          <td colspan="2">$!item.GetBar(150, $maxHours)&nbsp;$!item.HoursRemaining hours</td>
+        </tr>
+      #end
+    </table>
+  </td>
+</tr>
+

@@ -1,0 +1,6 @@
+<td colspan="4">
+  <input type="submit" name="actionButton" class="actionButton" value="Create"
+    #if(!$userCanEdit) disabled="true" #end
+  />
+  <input type="submit" name="actionButton" class="actionButton" value="Cancel" />
+</td>

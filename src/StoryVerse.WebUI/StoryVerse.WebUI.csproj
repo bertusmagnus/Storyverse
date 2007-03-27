@@ -1,0 +1,238 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{235211B7-2B2D-49D7-9850-70189A7C8F2B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StoryPlanner.WebUI</RootNamespace>
+    <AssemblyName>StoryPlanner.WebUI</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.ActiveRecord, Version=0.0.1.3, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.ActiveRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Components.Common.TemplateEngine, Version=0.0.2.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Components.Common.TemplateEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine, Version=0.0.2.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Components.Validator, Version=0.0.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Components.Validator.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.ActiveRecordIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.ActiveRecordIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.AutomaticTransactionManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.AutomaticTransactionManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Cache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.Cache.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.DynamicLoader, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.DynamicLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.NHibernateIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Facilities.NHibernateIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.0.2, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MonoRail.ActiveRecordSupport, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.ActiveRecordSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MonoRail.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MonoRail.Framework.Views.NVelocity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.Framework.Views.NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MonoRail.TestSupport, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.TestSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MonoRail.WindsorExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.WindsorExtension.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.Log4netIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Services.Logging.Log4netIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Transaction, Version=0.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Services.Transaction.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=1.0.0.5, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=1.2.0.3001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NVelocity, Version=0.5.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="global.asax" />
+    <Content Include="Views\Stories\report.vm" />
+    <Content Include="Views\layouts\report.vm" />
+    <Content Include="Views\layouts\fragments\error.vm" />
+    <Content Include="Views\layouts\fragments\main_menu.vm" />
+    <Content Include="Views\layouts\fragments\head.vm" />
+    <Content Include="Views\layouts\edit.vm" />
+    <Content Include="Views\layouts\fragments\edit_container.vm" />
+    <Content Include="Views\layouts\fragments\new_container.vm" />
+    <Content Include="Views\Iterations\_form.vm" />
+    <Content Include="Views\Companies\_form.vm" />
+    <Content Include="Views\layouts\list.vm" />
+    <Content Include="Views\layouts\fragments\list_container.vm" />
+    <Content Include="Views\layouts\fragments\foot.vm" />
+    <Content Include="Views\layouts\new.vm" />
+    <Content Include="Views\Projects\_form.vm" />
+    <Content Include="Views\Persons\_form.vm" />
+    <Content Include="Views\layouts\fragments\edit_buttons.vm" />
+    <Content Include="Views\layouts\fragments\new_buttons.vm" />
+    <Content Include="Views\layouts\blank.vm" />
+    <Content Include="Views\Stories\_tests.vm" />
+    <Content Include="Views\Tasks\_estimates.vm" />
+    <Content Include="Views\Stories\printable.vm" />
+    <Content Include="Views\Projects\_components.vm" />
+    <Content Include="Views\layouts\fragments\burndown.vm" />
+    <Content Include="Views\Stories\DELETE_ME_tests.vm" />
+    <None Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\CompaniesController.cs" />
+    <Compile Include="Controllers\EntityControllerBase.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PersonsController.cs" />
+    <Compile Include="Controllers\TasksController.cs" />
+    <Compile Include="Controllers\IterationsController.cs" />
+    <Compile Include="Controllers\StoriesController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Filters\AuthenticationFilter.cs" />
+    <Compile Include="GlobalApplication.cs" />
+    <Compile Include="Helpers\TextFormatHelper.cs" />
+    <Compile Include="Helpers\GridHelper.cs" />
+    <Compile Include="Utility\IWebObjectCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\WebObjectCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="controllers.config" />
+    <Content Include="InitDatabase.aspx" />
+    <Content Include="facilities.config" />
+    <Content Include="properties.config" />
+    <Content Include="components.config" />
+    <Content Include="logging.config" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Style\style.css" />
+    <Content Include="Views\Companies\edit.vm" />
+    <Content Include="Views\Companies\list.vm" />
+    <Content Include="Views\Companies\new.vm" />
+    <Content Include="Views\layouts\default.vm" />
+    <Content Include="Views\Login\index.vm" />
+    <Content Include="Views\Persons\edit.vm" />
+    <Content Include="Views\Persons\list.vm" />
+    <Content Include="Views\Persons\new.vm" />
+    <Content Include="Views\Stories\_form.vm" />
+    <Content Include="Views\Tasks\_form.vm" />
+    <Content Include="Views\Tasks\edit.vm" />
+    <Content Include="Views\Tasks\list.vm" />
+    <Content Include="Views\Tasks\new.vm" />
+    <Content Include="Views\Stories\edit.vm" />
+    <Content Include="Views\Stories\list.vm" />
+    <Content Include="Views\Stories\new.vm" />
+    <Content Include="Views\Iterations\edit.vm" />
+    <Content Include="Views\Iterations\list.vm" />
+    <Content Include="Views\Iterations\new.vm" />
+    <Content Include="Views\Projects\edit.vm" />
+    <Content Include="Views\Projects\list.vm" />
+    <Content Include="Views\Projects\new.vm" />
+    <Content Include="Views\rescues\generalerror.vm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StoryPlanner.Core\StoryVerse.Core.csproj">
+      <Project>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</Project>
+      <Name>StoryVerse.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60696</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/StoryPlanner</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

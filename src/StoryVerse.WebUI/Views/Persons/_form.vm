@@ -1,0 +1,36 @@
+<tr>
+  <td class="label">First Name:</td>
+  <td>$FormHelper.TextField("entity.FirstName", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Last Name:</td>
+  <td>$FormHelper.TextField("entity.LastName", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Username:</td>
+  <td>$FormHelper.TextField("entity.Username", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Password:</td>
+  <td>$FormHelper.PasswordField("entity.Password", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Admin:</td>
+  <td>$FormHelper.CheckboxField("entity.IsAdmin", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">View Only:</td>
+  <td>$FormHelper.CheckboxField("entity.CanViewOnly", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>

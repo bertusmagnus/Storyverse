@@ -1,0 +1,19 @@
+$AjaxHelper.GetJavascriptFunctions()
+<tr>
+  <td class="label">Name:</td>
+  <td >$FormHelper.TextField("entity.Name", "%{onchange='markDirty()'}")</td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<tr>
+  <td class="label">Company:</td>
+  <td>
+    $FormHelper.Select("entity.Company.Id", $entity.Company, $companies, "%{value='Id', text='Name', firstoption='-Choose-', firstoptionvalue='', onchange='markDirty()'}")
+  </td>
+  <td class="label"></td>
+  <td></td>
+</tr>
+<div id="components">#parse("projects/_components.vm")</div>
+#parse("layouts/fragments/burndown.vm")
+
+

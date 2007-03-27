@@ -1,0 +1,5 @@
+#if($Flash.error)
+<p style="color: red; font-weight: bold;">
+	$Flash.error
+</p>
+#end

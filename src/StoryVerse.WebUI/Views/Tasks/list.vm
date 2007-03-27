@@ -1,0 +1,107 @@
+<table class="list">
+  <tr>
+    <td colspan="9" class="presets">
+      <a href="list.rails?preset=all">All Tasks</a>&nbsp;&nbsp;|&nbsp;
+      <a href="list.rails?preset=my">My Tasks</a>&nbsp;&nbsp;|&nbsp;
+      <a href="list.rails?preset=mystarted">My Started Tasks</a>&nbsp;&nbsp;|&nbsp;
+      <a href="list.rails?preset=mynotstarted">My Not Started Tasks</a>
+    </td>
+    <td class="presets" style="text-align:right">
+      <input name="actionButton" class="actionButton" type="submit" value="Update"/>
+    </td>
+  </tr>
+  <tr class="filter">
+    <td align="left">$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
+    <td align="left">$FormHelper.TextField("criteria.Term", "%{style='width:98%'}")</td>
+    <td align="left">
+      $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{value='Id', text='AlphaNameShort', multiple='true'}")
+    </td>
+    <td align="left">
+      #set($cblStatuses = $FormHelper.CreateCheckboxList("criteria.Statuses", $statuses) )
+      #foreach($it in $cblStatuses)
+        $cblStatuses.Item() $it <br/>
+      #end
+    </td>
+    <td align="left">
+      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{value='Id', text='Name', multiple='true'}")
+    </td>
+    <td align="left">
+      #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )
+      #foreach($it in $cblTechRisks)
+        $cblTechRisks.Item() $it <br/>
+      #end
+    </td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+      
+#foreach($entity in $tasks)
+  #beforeall
+      <tr class="header">
+        <td align="left">
+          <a href="javascript:SortLink('Number');">#</a>
+        </td>
+        <td align="left">
+          <a href="javascript:SortLink('Title');">Title</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('Owner');">Owner</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('Status');">Status</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('Iteration');">Iteration</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('TechnicalRisk');">Tech Risk</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('StoriesCount');">Stories</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('InitialEstimateHours');">Intitial Est</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('LatestEstimateHours');">Remaining</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('LatestEstimateDate');">Est Updated</a>
+        </td>
+      </tr>  
+  #before
+    <tr     
+  #odd
+    class="oddrow">
+  #even
+    class="evenrow">
+  #each
+    <td align="left">$entity.Number</td>
+    <td align="left">
+      <a href="edit.rails?id=$entity.Id">$entity.Title</a>
+    </td>
+    <td align="center">$!entity.Owner.FullName</td>
+    <td align="center">$!entity.Status</td>
+    <td align="center">$!entity.Iteration.Name</td>
+    <td align="center">$!entity.TechnicalRisk</td>
+    <td align="center">$!entity.StoriesCount</td>
+    <td align="center">$!entity.InitialEstimateHours.ToString("n0")</td>
+    <td align="center">$!entity.LatestEstimateHours.ToString("n0")</td>
+    <td align="center">$!entity.LatestEstimateDate.ToString("MM/dd/yy")</td>
+  #after
+    </tr>
+  #nodata
+    <tr><td class="nodata_message" colspan="5">- no matching $entityNamePlural -</td></tr>
+  #afterall
+    <tr class="summary">
+      <td colspan="7" style="font-weight:bold">Totals</td>
+      <td align="center">$!totalInitialEstimate.ToString("n0")</td>
+      <td align="center">$!totalLatestEstimate.ToString("n0")</td>
+      <td align="center">&nbsp;</td>
+    </tr>
+#end
+</table>
+
+    

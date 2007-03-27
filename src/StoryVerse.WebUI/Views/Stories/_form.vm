@@ -1,0 +1,114 @@
+<script>
+  function SubmitLink(testId)
+  {
+      document.edit.deleteTest.value = testId;
+      document.edit.submit();
+  }
+  function GoToTask(control)
+  {
+      document.edit.taskToGoToId.value = control.options[control.selectedIndex].value;
+      document.edit.submit();
+  }
+</script>
+
+$AjaxHelper.GetJavascriptFunctions()
+
+
+#if($entity.Number)
+  <tr>
+    <td class="label">Number:</td>
+    <td>$entity.Number</td>
+    <td colspan="2" style="text-align:right">
+      <a href="printable.rails?id=$entity.Id" target="_blank">Printable</a>
+    </td>
+  </tr>
+#end
+<tr>
+    <td class="label">Title:</td>
+    <td colspan="3">$FormHelper.TextField("entity.Title", "%{style='width:99%', onchange='markDirty()'}")</td>
+  </tr>
+  <tr>
+    <td class="label">Iteration:</td>
+    <td>$FormHelper.Select("entity.Iteration.Id", $entity.Iteration.Id, $iterations, "%{value='Id', text='Name', firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+    <td class="label">Status:</td>
+    <td>$FormHelper.Select("entity.Status", $entity.Status, $statuses, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  </tr>
+  <tr>
+    <td class="label">Priority:</td>
+    <td>$FormHelper.Select("entity.Priority", $entity.Priority, $priorities, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+    <td class="label">Technical Risk:</td>
+    <td>$FormHelper.Select("entity.TechnicalRisk", $entity.TechnicalRisk, $techrisks, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  <tr>
+    <td class="label">Estimate:</td>
+    <td>$FormHelper.TextField("entity.Estimate", "%{style='width:145px', onchange='markDirty()'}")</td>
+    <td class="label">Component:</td>
+    <td>$FormHelper.Select("entity.Component.Id", $entity.Component.Id, $components, "%{value='Id', text='Name', firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  </tr>
+  <tr>
+   <td class="labelabove" colspan="4">
+     Story:
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4" class="controlbelow">
+     $FormHelper.TextArea("entity.Body", "%{rows='7', style='width:99%;', onchange='markDirty()'}")
+   </td>
+ </tr>
+ <tr>
+   <td class="labelabove" colspan="4">
+     Notes:
+   </td>
+ </tr>
+ <tr>
+    <td colspan="4" class="controlbelow">
+      $FormHelper.TextArea("entity.Notes", "%{rows='4', style='width:99%;', onchange='markDirty()'}")
+    </td>    
+  </tr>
+#if(!$entityIsNew)
+    <tr>
+    <td colspan="4" style="padding:0px">
+      <table style="width:100%;">
+        <tr>
+          <td class="label">
+            Tasks In Project:
+          </td>
+          <td class="label">&nbsp;</td>
+          <td style="padding:0px 0px 0px 0px;">
+            <table style="width:100%;">
+              <tr>
+                <td class="labelabove">Tasks For This Story:</td>
+                <td style="text-align:right; padding:0px 0px 0px 0px;">
+                  <input type="submit" name="actionButton" class="actionButton" value="New Task"
+                    #if(!$userCanEdit || $entityIsNew) disabled="true" #end  
+                  />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:50%">
+            $FormHelper.HiddenField("taskToGoToId")
+            $FormHelper.Select("tasksToAdd", $entity.Project.GetTasksNotAssignedToStory($entity), "%{value='Id', text='DisplayName', multiple='true',  size='6', style='width:100%', ondblclick='javascript:GoToTask(document.edit.tasksToAdd);'}")
+            <div class="tip">Double-click to go to the task</div>
+          </td>
+          <td style="text-align:center; width:50px">
+            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px"
+              #if(!$userCanEdit || $entityIsNew) disabled="true" #end  
+            />
+            <br />
+            <br/>
+            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px"
+              #if(!$userCanEdit || $entityIsNew) disabled="true" #end  
+            />
+          </td>
+          <td style="width:50%">
+            $FormHelper.Select("tasksToRemove", $entity.Tasks, "%{value='Id', text='DisplayName', multiple='true', size='6', style='width:100%', ondblclick='javascript:GoToTask(document.edit.tasksToRemove);'}")
+            <div class="tip">Double-click to go to the task</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <div id="tests">#parse("stories/_tests.vm")</div>
+#end

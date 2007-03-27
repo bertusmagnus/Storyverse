@@ -1,0 +1,28 @@
+<table class="main_menu">
+  <tr>
+    <td>
+      #if($userIsAdmin)
+      <a href="../companies/list.rails">Companies</a>&nbsp;
+      #end
+      <a href="../projects/list.rails?$projectId=$project.Company.Id"/>Projects</a>&nbsp;
+      #if ($contextEntityName == "project")
+      <a href="../stories/list.rails?projectId=$project.Id">Stories</a>&nbsp;
+      <a href="../tasks/list.rails?projectId=$project.Id">Tasks</a>&nbsp;
+      <a href="../iterations/list.rails?projectId=$project.Id">Iterations</a>&nbsp;
+      #end
+    </td>
+    <td align="right">
+      <a href="../login/logout.rails">Logout</a>
+    </td>
+  </tr>
+</table>
+
+#if ($contextEntityName == "project")
+  <div class="context_header">
+	  $project.Company.Name - $project.Name
+  </div>
+#elseif ($contextEntityName == "company")
+  <div class="context_header">
+    $company.Name
+  </div>
+#end

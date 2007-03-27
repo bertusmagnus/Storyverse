@@ -1,0 +1,38 @@
+<tr id="componentsLabel">
+    <td class="labelabove" colspan="4">
+      Components:
+      $FormHelper.HiddenField("componentCount")
+    </td>
+</tr>
+<tr>
+   <td colspan="4">
+      #if($userCanEdit && !$entityIsNew)
+          $FormHelper.TextField("newComponentContent")&nbsp;&nbsp;&nbsp;
+          $AjaxHelper.ButtonToFunction("Add", "addComponentRow()")
+      #end
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="controlbelow" style="width:0;">
+      <table id="componentList" class="list" style="margin: 0px 0px 0px 0px;">
+        #set($i = 0)
+        #foreach($component in $entity.ComponentsArray)
+          <tr>
+            <td>
+              $FormHelper.HiddenField("entity.ComponentsArray[$i].Id")
+              $FormHelper.TextField("entity.ComponentsArray[$i].Name")
+            </td>
+            <td style="vertical-align:middle;">
+              #if($userCanEdit && !$entityIsNew)
+                $AjaxHelper.LinkToFunction("Remove", "removeComponentRow(this)")
+              #end
+            </td>
+          </tr>
+          #set($i = $i + 1)
+        #end
+      </table>
+    </td>
+    <td style="vertical-align:top; width:100%;">
+        <span style="color:purple;">$!componentUpdateResult</span>
+    </td>
+</tr>

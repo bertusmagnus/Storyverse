@@ -1,0 +1,50 @@
+#parse("layouts/fragments/head.vm")
+
+<h1>Welcome To StoryVerse</h1>
+
+<form action="login.rails?returnUrl=$!returnUrl" method="post">
+    <table class="login">
+    <tr>
+        <td colspan="2">
+            Please Log In...
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold">
+            Username:
+        </td>
+        <td>
+            $FormHelper.TextField("username")
+        </td>
+    </tr>
+    <tr>    
+        <td style="font-weight:bold">
+            Password:
+        </td>
+        <td>
+            $FormHelper.PasswordField("password")
+        </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <label for="remember">Remember Me</label> $FormHelper.CheckboxField("rememberMe")
+      </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="submit" name="loginButton" value="Log In"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="color: red; font-weight: bold;">
+            #if($Flash.error)
+	            $Flash.error
+            #end
+        </td>
+    </tr>
+    </table>
+</form>
+
+#parse("layouts/fragments/foot.vm")
+
+
