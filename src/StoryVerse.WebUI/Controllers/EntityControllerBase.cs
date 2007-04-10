@@ -300,7 +300,10 @@ namespace StoryVerse.WebUI.Controllers
                 PropertyBag["entityIsNew"] = false;
                 if (hasContext)
                 {
-                    //ContextEntity = GetContextEntity(ContextEntity.Id);
+                    //ToDo: this is a HACK.  It should not be needed, not should Refresh.  It 
+                    //prevents a lazy load exception in the case of a redirect after a create.
+                    ContextEntity = GetContextEntity(ContextEntity.Id);
+                    
                     PropertyBag[contextEntityName] = ContextEntity;
                 }
                 PopulateEditSelects();
@@ -484,11 +487,12 @@ namespace StoryVerse.WebUI.Controllers
             return message;
         }
 
+        private const string contextCookieName = "contextId";
 
         private TContextEntity GetContextEntity(Guid id)
         {
             TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
-            HttpCookie cookie = new HttpCookie("contextId", id.ToString());
+            HttpCookie cookie = new HttpCookie(contextCookieName, id.ToString());
             cookie.Expires = DateTime.MaxValue;
             HttpContext.Response.SetCookie(cookie);
             return result;
@@ -498,7 +502,6 @@ namespace StoryVerse.WebUI.Controllers
         {
             get
             {
-                const string contextCookieName = "contextId";
                 TContextEntity result = WebObjectCache.GetInstance().Retrieve<TContextEntity>(contextEntityName);
                 if (result == null)
                 {
@@ -548,8 +551,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void RedirectToEdit(Guid entityId, string actionResult)
         {
-            RedirectToAction("edit", new string[] 
-                { "id=" + entityId, "actionResult=" + actionResult });
+            RedirectToAction("edit", new string[] {"id=" + entityId, "actionResult=" + actionResult});
         }
 
         protected void SetViewContext()
