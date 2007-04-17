@@ -235,4 +235,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>IF NOT EXIST $(ProjectDir)web.config copy $(ProjectDir)Example.Web.config $(ProjectDir)Web.config</PreBuildEvent>
+  </PropertyGroup>
 </Project>

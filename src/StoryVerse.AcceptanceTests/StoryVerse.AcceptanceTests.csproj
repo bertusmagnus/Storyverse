@@ -95,4 +95,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>IF NOT EXIST $(ProjectDir)app.config copy $(ProjectDir)Example.app.config $(ProjectDir)app.config</PreBuildEvent>
+  </PropertyGroup>
 </Project>
