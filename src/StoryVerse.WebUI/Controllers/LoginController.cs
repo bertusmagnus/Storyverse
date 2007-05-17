@@ -36,7 +36,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 else
                 {
-                    RedirectToAction("../projects/list");
+                    RedirectToAction("../projects/list", "preset=my");
                 }
             }
             else

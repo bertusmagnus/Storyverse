@@ -22,6 +22,18 @@ function deleteEntity(itemTypeName)
     return true;
 }
 
+function createEntity()
+{
+    doAction("create");
+    return true;
+}
+
+function search()
+{
+    doAction("search");
+    return true;
+}
+
 function doAction(actionName)
 {
     document.forms[0].action = actionName + '.rails';
@@ -108,6 +120,15 @@ function setEditActionButtons()
     var saveBottom = document.getElementById('saveButtonBottom');
     if (saveTop!= null) saveTop.disabled = !canSave;
     if (saveBottom!= null) saveBottom.disabled = !canSave;
+}
+
+function clearMultiSelect(name)
+{
+    control = document.getElementById(name);
+    for (var i = 0; i < control.options.length; i++)
+    {
+        control.options[i].selected = false;
+    }
 }
 
 function SortLink(orderBy)

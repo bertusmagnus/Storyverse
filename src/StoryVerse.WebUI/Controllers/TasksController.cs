@@ -88,7 +88,11 @@ namespace StoryVerse.WebUI.Controllers
         public void UpdateEstimate([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Task task)
         {
             int hours;
-            if (int.TryParse(Form["newRemainingHours"], out hours))
+            if (!int.TryParse(Form["newRemainingHours"], out hours))
+            {
+                RedirectToEdit(task.Id, "Estimate NOT updated (new hours not specified)");
+            }
+            else
             {
                 TaskEstimate estimate = new TaskEstimate();
                 estimate.HoursRemaining = hours;
@@ -99,17 +103,13 @@ namespace StoryVerse.WebUI.Controllers
                     task.AddEstimate(estimate);
                     task.Validate();
                     task.UpdateAndFlush();
-                    DoEdit(task, "Estimate updated");
+                    RedirectToEdit(task.Id, "Estimate updated");
                 }
                 catch (Exception ex)                
                 {
                     task.RemoveEstimate(estimate);
                     HandleEditError(ex, task, "Estimate NOT updated");
                 }
-            }
-            else
-            {
-                DoEdit(task, "Estimate NOT updated (new hours not specified)");
             }
         }
 

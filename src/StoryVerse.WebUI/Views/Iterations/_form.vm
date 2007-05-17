@@ -4,4 +4,6 @@
   <td class="label">&nbsp;</td>
   <td>&nbsp;</td>
 </tr>
-#parse("layouts/fragments/burndown.vm")
+#if(!$entityIsNew)
+    #parse("layouts/fragments/burndown.vm")
+#end

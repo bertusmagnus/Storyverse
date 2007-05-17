@@ -1,6 +1,7 @@
 <td colspan="4">
-  <input type="submit" name="actionButton" class="actionButton" value="Create"
+  <input id="createButton" type="button" class="actionButton" value="Create" onClick="return createEntity();"
     #if(!$userCanEdit) disabled="true" #end
   />
-  <input type="submit" name="actionButton" class="actionButton" value="Cancel" />
+  <input id="cancelCreateButton" type="button" class="actionButton" value="Cancel" onClick="return doAction('list');"/>
+  <span id="actionResult" class="actionResult">$!actionResult</span>
 </td>

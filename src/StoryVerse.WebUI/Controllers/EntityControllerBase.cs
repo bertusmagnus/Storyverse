@@ -32,7 +32,8 @@ namespace StoryVerse.WebUI.Controllers
         protected string _entityName;
         protected string _contextEntityName;
         protected string _criteriaName;
-        protected bool _isEditFormLong; 
+        protected bool _isEditFormLong;
+        private const string contextCookieName = "contextId";
         
         #endregion
 
@@ -69,39 +70,31 @@ namespace StoryVerse.WebUI.Controllers
         [Layout("list")]
         public virtual void List()
         {
-            Flash["error"] = null;
-
-            switch (Context.Params["preset"])
+            string preset = Context.Params["preset"];
+            switch (preset)
             {
-                case ("all"):
+                case null:
+                case "":
+                    break;
+                case "all":
                     Criteria.ApplyPresetAll();
                     break;
                 default:
-                    SetCustomFilterPreset(Context.Params["preset"]);
+                    SetCustomFilterPreset(preset);
                     break;
             }
-            DoList(null);
+            DoList();
         }
 
         [Layout("list")]
-        public void List([DataBind("criteria")] TCriteria criteria)
+        public void Search([DataBind("criteria")] TCriteria criteria)
         {
-            Flash["error"] = null;
-
-            switch (Form["actionButton"])
-            {
-                case ("Update"):
-                    criteria.OrderAscending = Criteria.OrderAscending;
-                    Criteria = criteria;
-                    DoList(null);
-                    break;
-                default:
-                    DoList(Form["sortExpression"]);
-                    break;
-            }
+            criteria.OrderAscending = Criteria.OrderAscending;
+            Criteria = criteria;
+            RedirectToList();
         }
 
-        protected void DoList(string sortExpression)
+        protected void DoList()
         {
             SetViewContext();
             try
@@ -122,14 +115,14 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 PropertyBag["criteria"] = Criteria;
                 PopulateFilterSelects();
-                if (sortExpression == null)
+                if (string.IsNullOrEmpty(Form["sortExpression"]))
                 {
                     EntitiesList.Clear();
                     EntitiesList.InsertRange(0, ActiveRecordBase<TEntity>.FindAll(Criteria.ToDetachedCriteria()));
                 }
                 else
                 {
-                    SortList(sortExpression);
+                    SortList(Form["sortExpression"]);
                 }
                 PropertyBag[EntityListName] = EntitiesList;
                 AddListSummary();
@@ -200,8 +193,13 @@ namespace StoryVerse.WebUI.Controllers
             ShowError(ex);
             using (new SessionScope(FlushAction.Never))
             {
-                DoList(null);
+                DoList();
             }
+        }
+
+        protected void RedirectToList()
+        {
+            RedirectToAction("list");
         }
 
         public abstract string SortExpression { get; set;}
@@ -228,33 +226,7 @@ namespace StoryVerse.WebUI.Controllers
         #region new action
 
 		[Layout("new")]
-        public virtual void New()
-        {
-            Flash["error"] = null;
-            DoNew();
-        }
-
-        [Layout("new")]
-        public void New([DataBind("entity")] TEntity entity)
-        {
-            Flash["error"] = null;
-            switch (Form["actionButton"])
-            {
-                case ("Create"):
-                    Create(entity);
-                    break;
-                case ("Cancel"): 
-                    RedirectToList();
-                    break;
-            }
-        }
-
-        protected void DoNew()
-        {
-            DoNew(default(TEntity), null);
-        }
-
-        protected void DoNew(TEntity entity, string actionResult)
+        public virtual void New(string actionResult)
         {
             SetViewContext();
             if (_hasContext)
@@ -262,20 +234,20 @@ namespace StoryVerse.WebUI.Controllers
                 ContextEntity.Refresh();
                 PropertyBag[_contextEntityName] = ContextEntity;
             }
-            PropertyBag["entity"] = entity;
+            PropertyBag["entity"] = default(TEntity);
             PropertyBag["actionResult"] = actionResult;
             PropertyBag["entityIsNew"] = true;
             PopulateEditSelects();
         }
 
-        protected void Create(TEntity entity)
+        public void Create([DataBind("entity")] TEntity entity)
         {
-            string successMessage = string.Format("{0} saved", _entityProperName);
+            string successMessage = string.Format("{0} created", _entityProperName);
             string failureMessage = string.Format("{0} NOT saved", _entityProperName);
 
             if (((Person)Context.CurrentUser).CanViewOnly)
             {
-                HandleEditError(new Exception("You do not have create permission"), entity, failureMessage);
+                HandleNewError(new Exception("You do not have create permission"), entity, failureMessage);
                 return;
             }
 
@@ -310,10 +282,12 @@ namespace StoryVerse.WebUI.Controllers
         protected void HandleNewError(Exception ex, TEntity entity, string actionResult)
         {
             ShowError(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoNew(entity, actionResult);
-            }
+            RedirectToNew(actionResult);
+        }
+
+        protected void RedirectToNew(string actionResult)
+        {
+            RedirectToAction("new", new string[] { "actionResult=" + actionResult });
         }
 
         #endregion new action
@@ -326,26 +300,10 @@ namespace StoryVerse.WebUI.Controllers
             Flash["error"] = null;
             try
             {
-                DoEdit(ActiveRecordBase<TEntity>.Find(id), null);
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex);
-            }
-        }
-
-        public virtual void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] TEntity entity)
-        {
-            Update(entity);
-        }
-
-        protected void DoEdit(TEntity entity, string actionResult)
-        {
-            try
-            {
+                TEntity entity = ActiveRecordBase<TEntity>.Find(id);
                 SetupEntity(entity);
                 SetViewContext();
-                PropertyBag["actionResult"] = actionResult;
+                PropertyBag["actionResult"] = Form["actionResult"];
                 PropertyBag["entity"] = entity;
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
@@ -355,7 +313,7 @@ namespace StoryVerse.WebUI.Controllers
                     //ToDo: this is a HACK.  It should not be needed, not should Refresh.  It 
                     //prevents a lazy load exception in the case of a redirect after a create.
                     ContextEntity = GetContextEntity(ContextEntity.Id);
-                    
+
                     PropertyBag[_contextEntityName] = ContextEntity;
                 }
                 PopulateEditSelects();
@@ -366,20 +324,9 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        protected virtual void SetupEntity(TEntity entity)
+        public virtual void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] TEntity entity)
         {
-        }
-
-        protected virtual void PopulateEditSelects()
-        {
-        }
-
-        protected virtual void DoCustomEditAction(TEntity entity)
-        {
-        }
-
-        protected virtual void SetupUpdateEntity(TEntity entity)
-        {
+            Update(entity);
         }
 
         protected void Update(TEntity entity)
@@ -412,6 +359,22 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
+        protected virtual void SetupEntity(TEntity entity)
+        {
+        }
+
+        protected virtual void PopulateEditSelects()
+        {
+        }
+
+        protected virtual void DoCustomEditAction(TEntity entity)
+        {
+        }
+
+        protected virtual void SetupUpdateEntity(TEntity entity)
+        {
+        }
+
         protected static T SetEntityValue<T>(string id)
         {
             Guid idGuid;
@@ -429,10 +392,12 @@ namespace StoryVerse.WebUI.Controllers
         protected void HandleEditError(Exception ex, TEntity entity, string actionResult)
         {
             ShowError(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoEdit(entity, actionResult);
-            }
+            RedirectToEdit(entity.Id, actionResult);
+        }
+
+        protected void RedirectToEdit(Guid entityId, string actionResult)
+        {
+            RedirectToAction("edit", new string[] { "id=" + entityId, "actionResult=" + actionResult });
         }
 
         #endregion edit action
@@ -519,17 +484,6 @@ namespace StoryVerse.WebUI.Controllers
             return message;
         }
 
-        private const string contextCookieName = "contextId";
-
-        private TContextEntity GetContextEntity(Guid id)
-        {
-            TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
-            HttpCookie cookie = new HttpCookie(contextCookieName, id.ToString());
-            cookie.Expires = DateTime.MaxValue;
-            HttpContext.Response.SetCookie(cookie);
-            return result;
-        }
-
         protected TContextEntity ContextEntity
         {
             get
@@ -561,16 +515,6 @@ namespace StoryVerse.WebUI.Controllers
             set { WebObjectCache.GetInstance().Add(EntityListName, value); }
         }
 
-        protected void RedirectToList()
-        {
-            RedirectToAction("list");
-        }
-
-        protected void RedirectToEdit(Guid entityId, string actionResult)
-        {
-            RedirectToAction("edit", new string[] {"id=" + entityId, "actionResult=" + actionResult});
-        }
-
         protected void SetViewContext()
         {
             PropertyBag["userIsAdmin"] = ((Person)Context.CurrentUser).IsAdmin;
@@ -599,10 +543,10 @@ namespace StoryVerse.WebUI.Controllers
             ContextEntity = GetContextEntity(ContextEntity.Id);
         }
 
-        protected TContextEntity GetContextEntity(Guid id)
+        private TContextEntity GetContextEntity(Guid id)
         {
             TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
-            HttpCookie cookie = new HttpCookie("contextId", id.ToString());
+            HttpCookie cookie = new HttpCookie(contextCookieName, id.ToString());
             cookie.Expires = DateTime.MaxValue;
             HttpContext.Response.SetCookie(cookie);
             return result;

@@ -5,7 +5,8 @@
     </td>
     <td colspan="2" class="presets" style="text-align:right; whitespace:nowrap">
       $FormHelper.HiddenField("criteria.OrderBy")
-      <a href="report.rails">Report</a>&nbsp;&nbsp;<input name="actionButton" class="actionButton" type="submit" value="Update"/>
+      <a href="report.rails">Report</a>&nbsp;&nbsp;
+      <input class="actionButton" type="button" value="Update" onClick="return search();" />
   </td>
   </tr>
   <tr class="filter">
@@ -24,10 +25,12 @@
       #end
     </td>
     <td align="left">
-      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{value='Id', text='Name', multiple='true'}")
+      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{id='iterationsFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('iterationsFilter')")
     </td>
     <td align="left">
-      $FormHelper.Select("criteria.ComponentIds", $criteria.ComponentIds, $components, "%{value='Id', text='Name', multiple='true'}")
+      $FormHelper.Select("criteria.ComponentIds", $criteria.ComponentIds, $components, "%{id='componentsFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('componentsFilter')")
     </td>
     <td align="left">
       #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )

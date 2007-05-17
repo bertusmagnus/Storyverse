@@ -7,14 +7,15 @@
       <a href="list.rails?preset=mynotstarted">My Not Started Tasks</a>
     </td>
     <td class="presets" style="text-align:right">
-      <input name="actionButton" class="actionButton" type="submit" value="Update"/>
+      <input class="actionButton" type="button" value="Update" onClick="return search();" />
     </td>
   </tr>
   <tr class="filter">
     <td align="left">$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
     <td align="left">$FormHelper.TextField("criteria.Term", "%{style='width:98%'}")</td>
     <td align="left">
-      $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{value='Id', text='AlphaNameShort', multiple='true'}")
+      $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{id='ownersFilter', value='Id', text='AlphaNameShort', multiple='true', size='5'}")<br/>
+      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('ownersFilter')")
     </td>
     <td align="left">
       #set($cblStatuses = $FormHelper.CreateCheckboxList("criteria.Statuses", $statuses) )
@@ -23,7 +24,8 @@
       #end
     </td>
     <td align="left">
-      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{value='Id', text='Name', multiple='true'}")
+      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{id='iterationsFilter', value='Id', text='Name', multiple='true', size='5'}")<br/>
+      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('iterationsFilter')")
     </td>
     <td align="left">
       #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )

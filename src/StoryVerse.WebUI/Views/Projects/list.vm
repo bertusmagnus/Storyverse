@@ -5,7 +5,7 @@
     </td>
     <td class="presets" style="text-align:right">
       $FormHelper.HiddenField("criteria.OrderBy")
-      <input name="actionButton" class="actionButton" type="submit" value="Update"/>
+      <input class="actionButton" type="button" value="Update" onClick="return search();" />
     </td>
   </tr>
   <tr class="filter">

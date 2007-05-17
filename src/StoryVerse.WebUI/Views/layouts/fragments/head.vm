@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../Style/style.css" />
   </head>
   <body onLoad="handleFormLoad();" onBeforeUnload="return confirmUnloadIfDirty();">
+  <div class="app_title">StoryVerse</div> 
   
   <script language="javascript" src="../Scripts/scripts.js"></script>
   $AjaxHelper.GetJavascriptFunctions()

@@ -39,12 +39,9 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetCustomFilterPreset(string presetName)
         {
-            //Important: the default is "my".  This prevents users seeing by default
-            //projects for companies that they are not supposed to
             switch (presetName)
             {
                 case ("my"):
-                default:
                     Criteria.ApplyPresetMy((Person)Context.CurrentUser);
                     break;
             }

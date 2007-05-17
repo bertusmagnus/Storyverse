@@ -223,7 +223,7 @@ namespace StoryVerse.WebUI.Controllers
                 story.AddTest(test);
                 story.Validate();
                 story.UpdateAndFlush();
-                DoEdit(story, "Test added");
+                RedirectToEdit(story.Id, "Test added");
             }
             catch (Exception ex)
             {

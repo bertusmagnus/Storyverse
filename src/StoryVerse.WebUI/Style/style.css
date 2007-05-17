@@ -29,6 +29,17 @@ a:hover
 	 text-decoration: none;
 }
 
+.app_title
+{
+	background-color: #6f96df;
+	color: White;
+	padding: 5px 5px 8px 10px;
+	margin-bottom: 5px;
+	font-weight: bold;
+	font-size: 18pt;
+	font-family: Verdana, Calibri, Arial, Sans-Serif;
+}
+
 .context_header
 {
 	font-size:18px;

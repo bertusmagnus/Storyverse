@@ -13,7 +13,9 @@ $AjaxHelper.GetJavascriptFunctions()
   <td class="label"></td>
   <td></td>
 </tr>
-<div id="components">#parse("projects/_components.vm")</div>
-#parse("layouts/fragments/burndown.vm")
+#if(!$entityIsNew)
+    <div id="components">#parse("projects/_components.vm")</div>
+    #parse("layouts/fragments/burndown.vm")
+#end
 
 
