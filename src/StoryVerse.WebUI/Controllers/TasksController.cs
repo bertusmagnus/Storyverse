@@ -6,6 +6,7 @@
 
 using System;
 using Castle.ActiveRecord;
+using Castle.MonoRail.ActiveRecordSupport;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.Framework;
 using StoryVerse.Core.Lookups;
@@ -36,7 +37,7 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["newRemainingHours"] = string.Empty;
         }
 
-        protected override void SetCustomPreset(string presetName)
+        protected override void SetCustomFilterPreset(string presetName)
         {
             switch (presetName)
             {
@@ -52,7 +53,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        protected override void AddSummary()
+        protected override void AddListSummary()
         {
             PropertyBag["totalInitialEstimate"] = GetListSum("InitialEstimateHours");
             PropertyBag["totalLatestEstimate"] = GetListSum("LatestEstimateHours");
@@ -63,7 +64,7 @@ namespace StoryVerse.WebUI.Controllers
             PopulateSelects();
         }
 
-        protected override void PopulateListSelects()
+        protected override void PopulateFilterSelects()
         {
             PopulateSelects();
         }
@@ -79,34 +80,12 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["statuses"] = Enum.GetValues(typeof(TaskStatus));
         }
 
-        protected override void DoCustomEditAction(Task task)
+        public void GoToStory()
         {
-            switch (Form["actionButton"])
-            {
-                case ("<<"):
-                    RemoveStory(task);
-                    break;
-                case (">>"):
-                    AddStory(task);
-                    break;
-                case ("Update Hours"):
-                    UpdateEstimate(task);
-                    break;
-                default:
-                    string targetStoryId = Form["storyToGoToId"];
-                    if (!string.IsNullOrEmpty(targetStoryId))
-                    {
-                        RedirectToAction("../stories/edit", "id=" + targetStoryId);
-                    }
-                    else
-                    {
-                        HandleEditError(new Exception("Action not recognized"), task, null);
-                    }
-                    break;
-            }
+            RedirectToAction("../stories/edit", "id=" +  Form["storyToGoToId"]);
         }
 
-        private void UpdateEstimate(Task task)
+        public void UpdateEstimate([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Task task)
         {
             int hours;
             if (int.TryParse(Form["newRemainingHours"], out hours))
@@ -134,7 +113,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        public void AddStory(Task task)
+        public void AddStory([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Task task)
         {
             if (Form["storiesToAdd"] != null)
             {
@@ -156,7 +135,7 @@ namespace StoryVerse.WebUI.Controllers
                     task.AddStories(storyIds);
                     task.Validate();
                     task.UpdateAndFlush();
-                    DoEdit(task, resultMessage);
+                    RedirectToEdit(task.Id, resultMessage);
                 }
                 catch (Exception ex)
                 {
@@ -166,7 +145,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        public void RemoveStory(Task task)
+        public void RemoveStory([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Task task)
         {
             if (Form["storiesToRemove"] != null)
             {
@@ -188,7 +167,7 @@ namespace StoryVerse.WebUI.Controllers
                     task.RemoveStories(storyIds);
                     task.Validate();
                     task.UpdateAndFlush();
-                    DoEdit(task, resultMessage);
+                    RedirectToEdit(task.Id, resultMessage);
                 }
                 catch (Exception ex)
                 {

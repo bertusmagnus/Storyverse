@@ -36,7 +36,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 else
                 {
-                    RedirectToAction("../projects/list", "companyId=" + user.Company.Id);
+                    RedirectToAction("../projects/list");
                 }
             }
             else

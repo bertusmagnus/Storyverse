@@ -31,18 +31,20 @@ namespace StoryVerse.WebUI.Controllers
             set { Project.SortDirection = value; }
         }
 
-        [Layout("edit")]
-        public override void Edit([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Project project)
+        public override void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Project project)
         {
             project.Company = NullifyIfTransient(project.Company);
-            DoEditAction(project);
+            Update(project);
         }
 
-        protected override void SetCustomPreset(string presetName)
+        protected override void SetCustomFilterPreset(string presetName)
         {
+            //Important: the default is "my".  This prevents users seeing by default
+            //projects for companies that they are not supposed to
             switch (presetName)
             {
                 case ("my"):
+                default:
                     Criteria.ApplyPresetMy((Person)Context.CurrentUser);
                     break;
             }
@@ -74,7 +76,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        protected override void PopulateListSelects()
+        protected override void PopulateFilterSelects()
         {
             PopulateSelects(true);
         }
@@ -103,7 +105,7 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["companies"] = companies;
         }
 
-        protected override void Delete(Project project)
+        public override void Delete(Project project)
         {
             if (!((Person)Context.CurrentUser).IsAdmin)
             {

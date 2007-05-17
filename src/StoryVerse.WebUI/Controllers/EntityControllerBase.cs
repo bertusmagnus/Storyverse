@@ -6,9 +6,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Web;
 using Castle.ActiveRecord;
+using StoryVerse.Common.Utilities;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.ActiveRecordSupport;
@@ -25,40 +25,46 @@ namespace StoryVerse.WebUI.Controllers
         where TContextEntity : IEntity
         where TCriteria : IFindCriteria
     {
-        private bool hasContext;
-        protected string entityProperName;
-        protected string entityName;
-        protected string contextEntityName;
-        protected string criteriaName;
-        protected bool isEditFormLong;
+        #region private/protected fields
+
+        private bool _hasContext;
+        protected string _entityProperName;
+        protected string _entityName;
+        protected string _contextEntityName;
+        protected string _criteriaName;
+        protected bool _isEditFormLong; 
+        
+        #endregion
+
+        #region constructors
 
         public EntityControllerBase(bool isEditFormLong)
         {
-            entityProperName = typeof(TEntity).Name;
-            entityName = entityProperName.ToLower();
-            contextEntityName = typeof(TContextEntity).Name.ToLower();
-            criteriaName = typeof(TCriteria).Name.ToLower();
-            this.isEditFormLong = isEditFormLong;
-            hasContext = typeof(TContextEntity).IsClass;
-        }
+            _entityProperName = typeof(TEntity).Name;
+            _entityName = _entityProperName.ToLower();
+            _contextEntityName = typeof(TContextEntity).Name.ToLower();
+            _criteriaName = typeof(TCriteria).Name.ToLower();
+            this._isEditFormLong = isEditFormLong;
+            _hasContext = typeof(TContextEntity).IsClass;
+        } 
+
+        #endregion
+
+        #region public properties
 
         public string EntityListName
         {
-            get { return MakePlural(entityName); }
+            get { return TextUtil.MakePlural(_entityName); }
         }
 
         public string ContextEntityIdName
         {
-            get { return contextEntityName + "Id"; }
-        }
+            get { return _contextEntityName + "Id"; }
+        } 
 
-        public abstract string SortExpression { get; set;}
-        public abstract SortDirection SortDirection { get; set; }
+        #endregion
 
-        public void Index()
-        {
-            SetViewContext();
-        }
+        #region list action
 
         [Layout("list")]
         public virtual void List()
@@ -71,7 +77,7 @@ namespace StoryVerse.WebUI.Controllers
                     Criteria.ApplyPresetAll();
                     break;
                 default:
-                    SetCustomPreset(Context.Params["preset"]);
+                    SetCustomFilterPreset(Context.Params["preset"]);
                     break;
             }
             DoList(null);
@@ -100,11 +106,11 @@ namespace StoryVerse.WebUI.Controllers
             SetViewContext();
             try
             {
-                if (hasContext)
+                if (_hasContext)
                 {
                     if (Context.Params[ContextEntityIdName] != null)
                     {
-                        ContextEntity = GetContextEntity(new 
+                        ContextEntity = GetContextEntity(new
                             Guid(Context.Params[ContextEntityIdName]));
                     }
                     else
@@ -112,10 +118,10 @@ namespace StoryVerse.WebUI.Controllers
                         ContextEntity.Refresh();
                     }
                     Criteria.ContextEntity = ContextEntity;
-                    PropertyBag[contextEntityName] = ContextEntity;
+                    PropertyBag[_contextEntityName] = ContextEntity;
                 }
                 PropertyBag["criteria"] = Criteria;
-                PopulateListSelects();
+                PopulateFilterSelects();
                 if (sortExpression == null)
                 {
                     EntitiesList.Clear();
@@ -126,7 +132,7 @@ namespace StoryVerse.WebUI.Controllers
                     SortList(sortExpression);
                 }
                 PropertyBag[EntityListName] = EntitiesList;
-                AddSummary();
+                AddListSummary();
             }
             catch (Exception ex)
             {
@@ -134,10 +140,25 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
+        protected TCriteria Criteria
+        {
+            get
+            {
+                TCriteria result = WebObjectCache.GetInstance().Retrieve<TCriteria>(_criteriaName);
+                if (result == null)
+                {
+                    result = (TCriteria)Activator.CreateInstance(typeof(TCriteria));
+                    Criteria = result;
+                }
+                return result;
+            }
+            set { WebObjectCache.GetInstance().Add(_criteriaName, value); }
+        }
+
         private void SortList(string expression)
         {
             //if the expression has changed set to ascending, otherwise flip direction
-            if (SortExpression != expression || 
+            if (SortExpression != expression ||
                 SortDirection != SortDirection.Ascending)
             {
                 SortDirection = SortDirection.Ascending;
@@ -150,19 +171,63 @@ namespace StoryVerse.WebUI.Controllers
             EntitiesList.Sort();
         }
 
+        protected void AddListSum(string propertyName)
+        {
+            PropertyBag["total" + propertyName] = GetListSum(propertyName);
+        }
+
+        protected void AddListAverage(string propertyName)
+        {
+
+            PropertyBag["average" + propertyName] =
+                (GetListSum(propertyName) / EntitiesList.Count);
+        }
+
+        protected double GetListSum(string propertyName)
+        {
+            double sum = 0;
+            foreach (TEntity item in EntitiesList)
+            {
+                sum += Convert.ToDouble(
+                    typeof(TEntity).GetProperty(propertyName)
+                        .GetValue(item, null));
+            }
+            return sum;
+        }
+
+        protected void HandleListError(Exception ex)
+        {
+            ShowError(ex);
+            using (new SessionScope(FlushAction.Never))
+            {
+                DoList(null);
+            }
+        }
+
+        public abstract string SortExpression { get; set;}
+        public abstract SortDirection SortDirection { get; set; }
+
+        protected virtual void PopulateFilterSelects()
+        {
+        }
+
         protected virtual void SetupSortList(string expression)
         {
         }
 
-        protected virtual void SetCustomPreset(string presetName)
+        protected virtual void SetCustomFilterPreset(string presetName)
         {
         }
 
-        protected virtual void AddSummary()
+        protected virtual void AddListSummary()
         {
         }
+        
+        #endregion list action
 
-        [Layout("new")]
+        #region new action
+
+		[Layout("new")]
         public virtual void New()
         {
             Flash["error"] = null;
@@ -192,10 +257,10 @@ namespace StoryVerse.WebUI.Controllers
         protected void DoNew(TEntity entity, string actionResult)
         {
             SetViewContext();
-            if (hasContext)
+            if (_hasContext)
             {
                 ContextEntity.Refresh();
-                PropertyBag[contextEntityName] = ContextEntity;
+                PropertyBag[_contextEntityName] = ContextEntity;
             }
             PropertyBag["entity"] = entity;
             PropertyBag["actionResult"] = actionResult;
@@ -205,8 +270,8 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void Create(TEntity entity)
         {
-            string successMessage = entityProperName + " created";
-            string failureMessage = entityProperName + " NOT created";
+            string successMessage = string.Format("{0} saved", _entityProperName);
+            string failureMessage = string.Format("{0} NOT saved", _entityProperName);
 
             if (((Person)Context.CurrentUser).CanViewOnly)
             {
@@ -216,13 +281,13 @@ namespace StoryVerse.WebUI.Controllers
 
             try
             {
-                if (hasContext)
+                if (_hasContext)
                 {
                     ContextEntity.Refresh();
                 }
                 SetupNewEntity(entity);
                 entity.Validate();
-                if (hasContext)
+                if (_hasContext)
                 {
                     ContextEntity.UpdateAndFlush();
                 }
@@ -242,6 +307,19 @@ namespace StoryVerse.WebUI.Controllers
         {
         }
 
+        protected void HandleNewError(Exception ex, TEntity entity, string actionResult)
+        {
+            ShowError(ex);
+            using (new SessionScope(FlushAction.Never))
+            {
+                DoNew(entity, actionResult);
+            }
+        }
+
+        #endregion new action
+
+        #region edit action
+
         [Layout("edit")]
         public virtual void Edit(Guid id)
         {
@@ -256,35 +334,9 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        [Layout("edit")]
-        public virtual void Edit([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] TEntity entity)
+        public virtual void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] TEntity entity)
         {
-            DoEditAction(entity);
-        }
-
-        protected void DoEditAction(TEntity entity)
-        {
-            Flash["error"] = null;
-            switch (Form["actionButton"])
-            {
-                case ("Save"):
-                    Update(entity);
-                    break;
-                case ("Delete"):
-                    Delete(entity);
-                    break;
-                case ("List"):
-                    RedirectToList();
-                    break;
-                default:
-                    DoCustomEditAction(entity);
-                    break;
-            }
-        }
-
-        protected void DoEdit(TEntity entity)
-        {
-            DoEdit(entity, null);
+            Update(entity);
         }
 
         protected void DoEdit(TEntity entity, string actionResult)
@@ -298,13 +350,13 @@ namespace StoryVerse.WebUI.Controllers
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
                 PropertyBag["entityIsNew"] = false;
-                if (hasContext)
+                if (_hasContext)
                 {
                     //ToDo: this is a HACK.  It should not be needed, not should Refresh.  It 
                     //prevents a lazy load exception in the case of a redirect after a create.
                     ContextEntity = GetContextEntity(ContextEntity.Id);
                     
-                    PropertyBag[contextEntityName] = ContextEntity;
+                    PropertyBag[_contextEntityName] = ContextEntity;
                 }
                 PopulateEditSelects();
             }
@@ -318,10 +370,6 @@ namespace StoryVerse.WebUI.Controllers
         {
         }
 
-        protected virtual void PopulateListSelects()
-        {
-        }
-
         protected virtual void PopulateEditSelects()
         {
         }
@@ -330,17 +378,91 @@ namespace StoryVerse.WebUI.Controllers
         {
         }
 
-        protected TEntity GetEntity(Guid id)
+        protected virtual void SetupUpdateEntity(TEntity entity)
         {
-            foreach (TEntity entity in EntitiesList)
-            {
-                if (entity.Id == id)
-                {
-                    return entity;
-                }
-            }
-            return default(TEntity);
         }
+
+        protected void Update(TEntity entity)
+        {
+            string successMessage = string.Format("{0} saved", _entityProperName);
+            string failureMessage = string.Format("{0} NOT saved", _entityProperName);
+
+            if (((Person)Context.CurrentUser).CanViewOnly)
+            {
+                RenderText(string.Format("{0}. {1}", failureMessage, "You do not have update permission"));
+                CancelView();
+                return;
+            }
+
+            try
+            {
+                SetupUpdateEntity(entity);
+                entity.Validate();
+                entity.UpdateAndFlush();
+                RenderText(successMessage);
+            }
+            catch (Exception ex)
+            {
+                Context.Response.StatusCode = 500;
+                RenderText(string.Format("{0}. {1}", failureMessage, GetErrorMessage(ex).Trim()));
+            }
+            finally
+            {
+                CancelView();
+            }
+        }
+
+        protected static T SetEntityValue<T>(string id)
+        {
+            Guid idGuid;
+            try
+            {
+                idGuid = new Guid(id);
+            }
+            catch
+            {
+                return default(T);
+            }
+            return ActiveRecordBase<T>.Find(idGuid);
+        }
+
+        protected void HandleEditError(Exception ex, TEntity entity, string actionResult)
+        {
+            ShowError(ex);
+            using (new SessionScope(FlushAction.Never))
+            {
+                DoEdit(entity, actionResult);
+            }
+        }
+
+        #endregion edit action
+
+        #region delete action
+
+        public virtual void Delete([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] TEntity entity)
+        {
+            string failureMessage = _entityProperName + " NOT deleted";
+
+            if (((Person)Context.CurrentUser).CanViewOnly)
+            {
+                HandleEditError(new Exception("You do not have delete permission"), entity, failureMessage);
+                return;
+            }
+
+            try
+            {
+                entity.DeleteAndFlush();
+                RedirectToList();
+            }
+            catch (Exception ex)
+            {
+                HandleEditError(ex, entity, failureMessage);
+            }
+        }
+
+        #endregion delete action
+
+        #region context/utilitiy/navigation
 
         private Guid? GetNextId(TEntity entity)
         {
@@ -372,96 +494,6 @@ namespace StoryVerse.WebUI.Controllers
                 }
             }
             return result;
-        }
-
-        protected void Update(TEntity entity)
-        {
-            string successMessage = entityProperName + " saved";
-            string failureMessage = entityProperName + " NOT saved";
-
-            if (((Person)Context.CurrentUser).CanViewOnly)
-            {
-                HandleEditError(new Exception("You do not have update permission"), entity, failureMessage);
-                return;
-            }
-
-            try
-            {
-                SetupUpdateEntity(entity);
-                entity.Validate();
-                entity.UpdateAndFlush();
-                DoEdit(entity, successMessage);
-            }
-            catch (Exception ex)
-            {
-                HandleEditError(ex, entity, failureMessage);
-            }
-        }
-
-        protected virtual void SetupUpdateEntity(TEntity entity)
-        {
-        }
-
-        protected virtual void Delete(TEntity entity)
-        {
-            string failureMessage = entityProperName + " NOT deleted";
-
-            if (((Person)Context.CurrentUser).CanViewOnly)
-            {
-                HandleEditError(new Exception("You do not have delete permission"), entity, failureMessage);
-                return;
-            }
-
-            try
-            {
-                entity.DeleteAndFlush();
-                RedirectToList();
-            }
-            catch (Exception ex)
-            {
-                HandleEditError(ex, entity, failureMessage);
-            }
-        }
-
-        protected static T SetEntityValue<T>(string id)
-        {
-            Guid idGuid;
-            try
-            {
-                idGuid = new Guid(id);
-            }
-            catch
-            {
-                return default(T);
-            }
-            return ActiveRecordBase<T>.Find(idGuid);
-        }
-
-        protected void HandleEditError(Exception ex, TEntity entity, string actionResult)
-        {
-            ShowError(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoEdit(entity, actionResult);
-            }
-        }
-
-        protected void HandleNewError(Exception ex, TEntity entity, string actionResult)
-        {
-            ShowError(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoNew(entity, actionResult);
-            }
-        }
-
-        protected void HandleListError(Exception ex)
-        {
-            ShowError(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoList(null);
-            }
         }
 
         protected void ShowError(Exception ex)
@@ -502,7 +534,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             get
             {
-                TContextEntity result = WebObjectCache.GetInstance().Retrieve<TContextEntity>(contextEntityName);
+                TContextEntity result = WebObjectCache.GetInstance().Retrieve<TContextEntity>(_contextEntityName);
                 if (result == null)
                 {
                     string cookieValue = Request.ReadCookie(contextCookieName);
@@ -511,7 +543,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 return result;
             }
-            set { WebObjectCache.GetInstance().Add(contextEntityName, value); }
+            set { WebObjectCache.GetInstance().Add(_contextEntityName, value); }
         }
 
         protected List<TEntity> EntitiesList
@@ -529,21 +561,6 @@ namespace StoryVerse.WebUI.Controllers
             set { WebObjectCache.GetInstance().Add(EntityListName, value); }
         }
 
-        protected TCriteria Criteria
-        {
-            get
-            {
-                TCriteria result = WebObjectCache.GetInstance().Retrieve<TCriteria>(criteriaName);
-                if (result == null)
-                {
-                    result = (TCriteria)Activator.CreateInstance(typeof(TCriteria));
-                    Criteria = result;
-                }
-                return result;
-            }
-            set { WebObjectCache.GetInstance().Add(criteriaName, value); }
-        }
-
         protected void RedirectToList()
         {
             RedirectToAction("list");
@@ -558,66 +575,11 @@ namespace StoryVerse.WebUI.Controllers
         {
             PropertyBag["userIsAdmin"] = ((Person)Context.CurrentUser).IsAdmin;
             PropertyBag["userCanEdit"] = !((Person)Context.CurrentUser).CanViewOnly;
-            PropertyBag["contextEntityName"] = contextEntityName;
-            string entityNameProper = char.ToUpper(entityName[0]) + entityName.Substring(1);
+            PropertyBag["contextEntityName"] = _contextEntityName;
+            string entityNameProper = char.ToUpper(_entityName[0]) + _entityName.Substring(1);
             PropertyBag["entityName"] = entityNameProper;
-            PropertyBag["entityNamePlural"] = MakePlural(entityNameProper);
-            PropertyBag["isEditFormLong"] = isEditFormLong;
-        }
-
-        protected void AddListSum(string propertyName)
-        {
-            PropertyBag["total" + propertyName] = GetListSum(propertyName);
-        }
-
-        protected void AddListAverage(string propertyName)
-        {
-
-            PropertyBag["average" + propertyName] = 
-                (GetListSum(propertyName) / EntitiesList.Count);
-        }
-
-        protected double GetListSum(string propertyName)
-        {
-            double sum = 0;
-            foreach (TEntity item in EntitiesList)
-            {
-                sum += Convert.ToDouble(
-                    typeof (TEntity).GetProperty(propertyName)
-                        .GetValue(item, null));
-            }
-            return sum;
-        }
-
-        private static string MakePlural(string name)
-        {
-
-            Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
-            Regex plural2 = new Regex("(?<keep>[aeiou]y)$");
-            Regex plural3 = new Regex("(?<keep>[sxzh])$");
-            Regex plural4 = new Regex("(?<keep>[^sxzhy])$");
-
-            if (plural1.IsMatch(name))
-                return plural1.Replace(name, "${keep}ies");
-            else if (plural2.IsMatch(name))
-                return plural2.Replace(name, "${keep}s");
-            else if (plural3.IsMatch(name))
-                return plural3.Replace(name, "${keep}es");
-            else if (plural4.IsMatch(name))
-                return plural4.Replace(name, "${keep}s");
-
-            return name;
-        }
-
-        public class SelectItem
-        {
-            public object Id;
-            public string Text;
-            public SelectItem(object id, string text)
-            {
-                Id = id;
-                Text = text;
-            }
+            PropertyBag["entityNamePlural"] = TextUtil.MakePlural(entityNameProper);
+            PropertyBag["isEditFormLong"] = _isEditFormLong;
         }
 
         protected static T NullifyIfTransient<T>(T entity) where T : IEntity
@@ -631,5 +593,21 @@ namespace StoryVerse.WebUI.Controllers
                 return entity;
             }
         }
-    }
+
+        protected void RefreshContextEntity()
+        {
+            ContextEntity = GetContextEntity(ContextEntity.Id);
+        }
+
+        protected TContextEntity GetContextEntity(Guid id)
+        {
+            TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
+            HttpCookie cookie = new HttpCookie("contextId", id.ToString());
+            cookie.Expires = DateTime.MaxValue;
+            HttpContext.Response.SetCookie(cookie);
+            return result;
+        }
+    } 
+    
+    #endregion context/utilitiy/navigation
 }

@@ -40,7 +40,7 @@ namespace StoryVerse.Core.Models
             get { return _lastName; }
             set { _lastName = value; }
         }
-        [Property]
+        [Property, ValidateIsUnique("Another user exists with this username.")]
         public string Username
         {
             get { return _username; }

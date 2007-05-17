@@ -33,7 +33,7 @@ namespace StoryVerse.WebUI.Controllers
         }
 
         [Layout("edit")]
-        public override void Edit([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Story story)
+        public override void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Story story)
         {
             story.Component = NullifyIfTransient(story.Component);
             story.Iteration = NullifyIfTransient(story.Iteration);
@@ -41,7 +41,7 @@ namespace StoryVerse.WebUI.Controllers
             {
                 if (test.Number == 0) test.Number = story.GetNextTestNumber();
             }
-            DoEditAction(story);
+            Update(story);
         }
 
         protected override void SetupEntity(Story story)
@@ -63,7 +63,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             try
             {
-                PropertyBag[contextEntityName] = ContextEntity;
+                PropertyBag[_contextEntityName] = ContextEntity;
                 PropertyBag["currentDate"] = DateTime.Now.ToString("D");
                 PropertyBag[EntityListName] = Story.FindAll(Criteria.ToDetachedCriteria());
             }
@@ -91,7 +91,7 @@ namespace StoryVerse.WebUI.Controllers
             PopulateSelects();
         }
 
-        protected override void PopulateListSelects()
+        protected override void PopulateFilterSelects()
         {
             PopulateSelects();
         }
@@ -105,41 +105,17 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["components"] = ContextEntity.Components;
         }
 
-        protected override void DoCustomEditAction(Story story)
+        public void GoToTask()
         {
-            switch (Form["actionButton"])
-            {
-                case ("<<"):
-                    RemoveTask(story);
-                    break;
-                case (">>"):
-                    AddTask(story);
-                    break;
-                case ("New Task"):
-                    AddNewTask(story);
-                    break;
-                case ("Add Test"):
-                    AddTest(story);
-                    break;
-                default:
-                    if (!string.IsNullOrEmpty(Form["taskToGoToId"]))
-                    {
-                        RedirectToAction("../tasks/edit", "id=" + Form["taskToGoToId"]);
-                    }
-                    else
-                    {
-                        HandleEditError(new Exception("Action not recognized"), story, null);
-                    }
-                    break;
-            }
+            RedirectToAction("../tasks/edit", "id=" + Form["taskToGoToId"]);
         }
 
-        protected override void AddSummary()
+        protected override void AddListSummary()
         {
             PropertyBag["totalEstimate"] = GetListSum("Estimate");
         }
 
-        public void AddTask(Story story)
+        public void AddTask([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
             if (Form["tasksToAdd"] != null)
             {
@@ -161,7 +137,7 @@ namespace StoryVerse.WebUI.Controllers
                     story.AddTasks(taskIds);
                     story.Validate();
                     story.UpdateAndFlush();
-                    DoEdit(story, resultMessage);
+                    RedirectToEdit(story.Id, resultMessage);
                 }
                 catch (ValidationException ex)
                 {
@@ -171,7 +147,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        public void RemoveTask(Story story)
+        public void RemoveTask([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
             if (Form["tasksToRemove"] != null)
             {
@@ -193,7 +169,7 @@ namespace StoryVerse.WebUI.Controllers
                     story.RemoveTasks(taskIds);
                     story.Validate();
                     story.UpdateAndFlush();
-                    DoEdit(story, resultMessage);
+                    RedirectToEdit(story.Id, resultMessage);
                 }
                 catch (Exception ex)
                 {
@@ -203,7 +179,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        private void AddNewTask(Story story)
+        public void NewTask([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
             if (((Person)Context.CurrentUser).CanViewOnly)
             {
@@ -217,7 +193,7 @@ namespace StoryVerse.WebUI.Controllers
                 task.Iteration = story.Iteration;
                 task.Title = "[new task]";
                 task.AddStory(story);
-                ContextEntity.Refresh();
+                RefreshContextEntity();
                 ContextEntity.AddTask(task);
                 task.Number = ContextEntity.GetNextTaskNumber();
                 ContextEntity.Validate();
@@ -231,7 +207,7 @@ namespace StoryVerse.WebUI.Controllers
             }
         }
 
-        private void AddTest(Story story)
+        public void AddTest([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
             if (((Person)Context.CurrentUser).CanViewOnly)
             {

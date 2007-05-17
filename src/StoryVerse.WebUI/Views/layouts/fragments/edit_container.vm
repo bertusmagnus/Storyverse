@@ -1,4 +1,4 @@
-<form name="edit" action="edit.rails" method="post">
+<form name="edit" action="" method="post">
 
   $FormHelper.HiddenField("entity.Id")
 

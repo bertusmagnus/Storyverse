@@ -204,6 +204,10 @@
     <Content Include="Views\rescues\generalerror.vm" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StoryVerse.Common\StoryVerse.Common.csproj">
+      <Project>{4480FF1C-8989-4B5B-B002-C45BD39FE22A}</Project>
+      <Name>StoryVerse.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">
       <Project>{C3E8A61D-D650-464B-B754-AF8052BC7E49}</Project>
       <Name>StoryVerse.Core</Name>

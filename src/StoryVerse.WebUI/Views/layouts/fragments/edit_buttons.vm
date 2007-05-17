@@ -1,11 +1,11 @@
 <td colspan="3">
   <input type="hidden" id="userCanEdit" value="$userCanEdit" />
-  <input id="saveButton$position" type="submit" name="actionButton" class="actionButton" value="Save" onClick="save();"/>
-  <input id="listButton$position" type="submit" name="actionButton" class="actionButton" value="List"/>
-  <input id="deleteButton$position" type="submit"  name="actionButton" class="actionButton" value="Delete" onClick="return confirmDelete('$entityName')"
-    #if(!$userCanEdit) disabled="True" #end      
+  $AjaxHelper.ButtonToRemote("Save", "Save.rails", $DictHelper.CreateDict("update=actionResult", "OnSuccess=markClean();", "with=Form.serialize(document.forms[0])"), $DictHelper.CreateDict("id=saveButton$position", "class=actionButton"))
+  <input id="listButton$position" type="button" class="actionButton" value="List" onClick="return doAction('list');"/>
+  <input id="deleteButton$position" type="button" class="actionButton" value="Delete" onClick="return deleteEntity('$entityName')"
+     #if(!$userCanEdit) disabled="true" #end      
   />
-  #if ($actionResult)<span class="actionResult">$actionResult</span>#end
+  <span id="actionResult" class="actionResult">#if($actionResult)$actionResult#end</span>
 </td>
 <td align="right">
   <input id="previousButton$position" type="submit" name="previousButton" value="&lt;&lt;" class="navButton" onClick="return goToUrl('edit.rails?id=$previousId')"

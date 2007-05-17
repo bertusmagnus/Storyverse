@@ -58,11 +58,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Initialize  Story Planner Database</title>
+  <title>Initialize  StoryVerse Database</title>
 </head>
 <body style="font-family:Arial,Hevetica;">
     <form runat="server">
-        <h1>Initialize Story Planner Database</h1>
+        <h1>Initialize StoryVerse Database</h1>
         <table style="width:600px;">
             <tr>
                 <td style="white-space:nowrap; vertical-align:top;">Step 1:</td>

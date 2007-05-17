@@ -4,6 +4,8 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
+var saving = false;
+
 function handleFormLoad()
 {   
     if (document.forms[0].name == 'edit')
@@ -12,9 +14,19 @@ function handleFormLoad()
     }
 }
 
-function confirmDelete(itemTypeName)
+function deleteEntity(itemTypeName)
 {
-	return confirmAction("delete this " + itemTypeName);
+	if (!confirmAction("delete this " + itemTypeName)) return false;
+
+    doAction("delete");
+    return true;
+}
+
+function doAction(actionName)
+{
+    document.forms[0].action = actionName + '.rails';
+	document.forms[0].submit();
+	return true;
 }
 
 function goToUrl(url)
@@ -49,36 +61,43 @@ function markClean()
     setEditActionButtons();
 }
 
-var saving = false;
-function save()
-{
-    saving = true;
-    document.edit.actionButton.value = "Save";
-    document.edit.submit();
-}
-
-function updateHours()
+function updateEstimate()
 {
     if (!confirmAction('update the remaining hours for this task')) return false;
     
     saving = true;
-    document.edit.actionButton.value = "Update Hours";
-    document.edit.submit();
+    doAction("updateEstimate");
     return true;
 }
 
-function addStoryOrTask()
+function addStory()
 {   
     saving = true;
-    document.edit.actionButton.value = ">>";
-    document.edit.submit();
+    doAction('addStory');
 }
 
-function removeStoryOrTask()
+function removeStory()
 {
     saving = true;
-    document.edit.actionButton.value = ">>";
-    document.edit.submit();
+    doAction('removeStory');
+}
+
+function addTask()
+{   
+    saving = true;
+    doAction('addTask');
+}
+
+function removeTask()
+{
+    saving = true;
+    doAction('removeTask');
+}
+
+function newTask()
+{   
+    saving = true;
+    doAction('newTask');
 }
 
 function setEditActionButtons()
