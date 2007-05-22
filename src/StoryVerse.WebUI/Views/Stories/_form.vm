@@ -8,7 +8,7 @@
   {
       document.edit.taskToGoToId.value = control.options[control.selectedIndex].value;
       doAction('goToTask');
-  }
+  }  
 </script>
 
 $AjaxHelper.GetJavascriptFunctions()
@@ -24,7 +24,7 @@ $AjaxHelper.GetJavascriptFunctions()
   </tr>
 #end
 <tr>
-    <td class="label">Title:</td>
+    <td class="label" id="titleX">Title:</td>
     <td colspan="3">$FormHelper.TextField("entity.Title", "%{style='width:99%', onchange='markDirty()'}")</td>
   </tr>
   <tr>
@@ -39,10 +39,17 @@ $AjaxHelper.GetJavascriptFunctions()
     <td class="label">Technical Risk:</td>
     <td>$FormHelper.Select("entity.TechnicalRisk", $entity.TechnicalRisk, $techrisks, "%{firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
   <tr>
-    <td class="label">Estimate:</td>
-    <td>$FormHelper.TextField("entity.Estimate", "%{style='width:145px', onchange='markDirty()'}")</td>
+    <td class="label">Estimate (50%):</td>
+    <td>$FormHelper.TextField("entity.EstimateFiftyPercent", "%{style='width:145px', id='estimateFiftyPercent', onchange='markDirty()'}")</td>
     <td class="label">Component:</td>
     <td>$FormHelper.Select("entity.Component.Id", $entity.Component.Id, $components, "%{value='Id', text='Name', firstoption='-Choose-', firstoptionvalue='', style='width:150px', onchange='markDirty()'}")</td>
+  </tr>
+  <tr>
+    <td class="label">Estimate (90%):</td>
+    <td>$FormHelper.TextField("entity.EstimateNinetyPercent", "%{style='width:145px', onchange='markDirty()'}")</td>
+    <td colspan="2" style="vertical-align:bottom">
+        <div class="tip">Estimate percentages inidcate the probability that the estimate is NOT low</div>
+    </td>
   </tr>
   <tr>
    <td class="labelabove" colspan="4">

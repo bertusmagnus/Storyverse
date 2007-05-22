@@ -1,5 +1,6 @@
-#if($Flash.error)
-<p style="color: red; font-weight: bold;">
-	$Flash.error
-</p>
+#if($error)
+    <div id="error" style="color: red; font-weight: bold;">
+	    <br />
+	    $error
+    </div>
 #end

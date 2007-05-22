@@ -40,6 +40,7 @@
     </td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
   </tr>
   
 #foreach($entity in $stories)
@@ -70,7 +71,10 @@
           Tasks
         </td>
         <td align="center">
-          <a href="javascript:SortLink('Estimate');">Estimate</a>
+          <a href="javascript:SortLink('EstimateFiftyPercent');">Estimate (50%)*</a>
+        </td>
+        <td align="center">
+          <a href="javascript:SortLink('EstimateNinetyPercent');">Estimate (90%)*</a>
         </td>
       </tr>
   #before
@@ -90,7 +94,8 @@
     <td align="center">$!entity.Component.Name</td>
     <td align="center">$!entity.TechnicalRisk</td>
     <td align="center">$!entity.Tasks.Count</td>
-    <td align="center">$!entity.Estimate</td>
+    <td align="center">$!entity.EstimateFiftyPercent</td>
+    <td align="center">$!entity.EstimateNinetyPercent</td>
   #after
     </tr>
   #nodata
@@ -98,7 +103,9 @@
   #afterall
     <tr class="summary">
       <td colspan="8" style="font-weight:bold">Totals</td>
-      <td align="center">$!totalEstimate.ToString("n0")</td>
-    </tr>
+      <td align="center">$!totalEstimateFiftyPercent.ToString("n0")</td>
+      <td align="center">$!totalEstimateNinetyPercent.ToString("n0")</td>
 #end
 </table>
+<br />
+<div class="tip">* Percentages inidcate the probability that the estimate is NOT low</div>

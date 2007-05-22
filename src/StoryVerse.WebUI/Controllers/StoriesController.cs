@@ -82,7 +82,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                ShowError(ex);
+                SetError(ex);
             }
         }
 
@@ -112,7 +112,8 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void AddListSummary()
         {
-            PropertyBag["totalEstimate"] = GetListSum("Estimate");
+            PropertyBag["totalEstimateFiftyPercent"] = GetListSum("EstimateFiftyPercent");
+            PropertyBag["totalEstimateNinetyPercent"] = GetListSum("EstimateNinetyPercent");
         }
 
         public void AddTask([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
@@ -236,7 +237,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             if (((Person)Context.CurrentUser).CanViewOnly)
             {
-                ShowError(new Exception("You do not have permission to delete a test"));
+                SetError(new Exception("You do not have permission to delete a test"));
             }
             else
             {

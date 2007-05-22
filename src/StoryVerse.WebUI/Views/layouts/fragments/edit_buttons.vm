@@ -5,7 +5,7 @@
   <input id="deleteButton$position" type="button" class="actionButton" value="Delete" onClick="return deleteEntity('$entityName');"
      #if(!$userCanEdit) disabled="true" #end      
   />
-  <span id="actionResult" class="actionResult">$!actionResult</span>
+  <span id="actionResult"  name="actionResult" class="actionResult">$!actionResult</span>
 </td>
 <td align="right">
   <input id="previousButton$position" type="button" name="previousButton" value="&lt;&lt;" class="navButton" onClick="return goToUrl('edit.rails?id=$previousId');"

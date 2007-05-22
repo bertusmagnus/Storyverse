@@ -181,7 +181,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             if (!((Person)Context.CurrentUser).IsAdmin)
             {
-                ShowError(new Exception("You do not have permission to delete an estimate"));
+                SetError(new Exception("You do not have permission to delete an estimate"));
             }
             else
             {

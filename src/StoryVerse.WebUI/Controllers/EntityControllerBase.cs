@@ -96,6 +96,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void DoList()
         {
+            ShowError();
             SetViewContext();
             try
             {
@@ -181,16 +182,18 @@ namespace StoryVerse.WebUI.Controllers
             double sum = 0;
             foreach (TEntity item in EntitiesList)
             {
-                sum += Convert.ToDouble(
-                    typeof(TEntity).GetProperty(propertyName)
-                        .GetValue(item, null));
+                object value = typeof (TEntity).GetProperty(propertyName).GetValue(item, null);
+                if (value != null)
+                {
+                    sum += Convert.ToDouble(value);
+                }
             }
             return sum;
         }
 
         protected void HandleListError(Exception ex)
         {
-            ShowError(ex);
+            Flash["error"] = GetErrorMessage(ex);
             using (new SessionScope(FlushAction.Never))
             {
                 DoList();
@@ -226,7 +229,7 @@ namespace StoryVerse.WebUI.Controllers
         #region new action
 
 		[Layout("new")]
-        public virtual void New(string actionResult)
+        public virtual void New()
         {
             SetViewContext();
             if (_hasContext)
@@ -235,7 +238,7 @@ namespace StoryVerse.WebUI.Controllers
                 PropertyBag[_contextEntityName] = ContextEntity;
             }
             PropertyBag["entity"] = default(TEntity);
-            PropertyBag["actionResult"] = actionResult;
+            ShowActionResult();
             PropertyBag["entityIsNew"] = true;
             PopulateEditSelects();
         }
@@ -281,13 +284,14 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void HandleNewError(Exception ex, TEntity entity, string actionResult)
         {
-            ShowError(ex);
+            SetError(ex);
             RedirectToNew(actionResult);
         }
 
         protected void RedirectToNew(string actionResult)
         {
-            RedirectToAction("new", new string[] { "actionResult=" + actionResult });
+            ActionResult = actionResult;
+            RedirectToAction("new");
         }
 
         #endregion new action
@@ -297,13 +301,13 @@ namespace StoryVerse.WebUI.Controllers
         [Layout("edit")]
         public virtual void Edit(Guid id)
         {
-            Flash["error"] = null;
+            ShowError();
             try
             {
                 TEntity entity = ActiveRecordBase<TEntity>.Find(id);
                 SetupEntity(entity);
                 SetViewContext();
-                PropertyBag["actionResult"] = Form["actionResult"];
+                ShowActionResult();
                 PropertyBag["entity"] = entity;
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
@@ -320,7 +324,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                ShowError(ex);
+                SetError(ex);
             }
         }
 
@@ -391,13 +395,14 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void HandleEditError(Exception ex, TEntity entity, string actionResult)
         {
-            ShowError(ex);
+            SetError(ex);
             RedirectToEdit(entity.Id, actionResult);
         }
 
         protected void RedirectToEdit(Guid entityId, string actionResult)
         {
-            RedirectToAction("edit", new string[] { "id=" + entityId, "actionResult=" + actionResult });
+            ActionResult = actionResult;
+            RedirectToAction("edit", new string[] { "id=" + entityId });
         }
 
         #endregion edit action
@@ -461,10 +466,33 @@ namespace StoryVerse.WebUI.Controllers
             return result;
         }
 
-        protected void ShowError(Exception ex)
+        protected void SetError(Exception ex)
         {
-            string message = GetErrorMessage(ex);
-            Flash["error"] = message.Trim();
+            Error = GetErrorMessage(ex);
+        }
+
+        protected void ShowError()
+        {
+            PropertyBag["error"] = Error;
+            Error = null;
+        }
+
+        protected object Error
+        {
+            get { return Flash["error"]; }
+            set { Flash["error"] = value; }
+        }
+
+        protected void ShowActionResult()
+        {
+            PropertyBag["actionResult"] = ActionResult;
+            ActionResult = null;
+        }
+
+        private object ActionResult
+        {
+            get { return Flash["actionResult"]; }
+            set { Flash["actionResult"] = value; }
         }
 
         protected static string GetErrorMessage(Exception ex)

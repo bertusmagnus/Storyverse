@@ -65,6 +65,30 @@ function markDirty()
 {
     document.getElementById('isDirty').value = 'true';
     setEditActionButtons();
+    
+    clearChildElements(document.getElementById('error')); 
+       
+    //ToDo: this is a hack.  There are two elements with id of 'actionResult'.  
+    //This is done to allow ajaxhelper to populate the result message in two places
+    var spanElements = document.getElementsByTagName('span');   
+    for (var i = 0; i < spanElements.length; i++)
+    {
+        if (spanElements[i].id == 'actionResult')
+        {
+            clearChildElements(spanElements[i]);
+        }
+    }
+}
+
+function clearChildElements(element)
+{
+    if  (element.hasChildNodes())
+    {
+        while (element.childNodes.length > 0)
+        {
+            element.removeChild(element.firstChild);       
+        }
+    } 
 }
 
 function markClean()

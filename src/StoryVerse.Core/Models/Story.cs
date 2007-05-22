@@ -24,7 +24,8 @@ namespace StoryVerse.Core.Models
         private string _notes;
         private StoryPriority? _priority;
         private TechnicalRisk? _technicalRisk;
-        private int _estimate;
+        private int? _estimateFiftyPercent;
+        private int? _estimateNinetyPercent;
         private StoryStatus? _status;
         private Project _project;
         private Component _component;
@@ -74,10 +75,16 @@ namespace StoryVerse.Core.Models
             set { _technicalRisk = value; }
         }
         [Property]
-        public int Estimate
+        public int? EstimateFiftyPercent
         {
-            get { return _estimate; }
-            set { _estimate = value; }
+            get { return _estimateFiftyPercent; }
+            set { _estimateFiftyPercent = value; }
+        }
+        [Property]
+        public int? EstimateNinetyPercent
+        {
+            get { return _estimateNinetyPercent; }
+            set { _estimateNinetyPercent = value; }
         }
         [Property]
         public StoryStatus? Status
@@ -321,8 +328,11 @@ namespace StoryVerse.Core.Models
                 case "Status":
                     relativeValue = Status != null ? Status.Value.CompareTo(other.Status) : -1;
                     break;
-                case "Estimate":
-                    relativeValue = Estimate.CompareTo(other.Estimate);
+                case "EstimateFiftyPercent":
+                    relativeValue = EstimateFiftyPercent.Value.CompareTo(other.EstimateFiftyPercent);
+                    break;
+                case "EstimateNinetyPercent":
+                    relativeValue = EstimateNinetyPercent.Value.CompareTo(other.EstimateNinetyPercent);
                     break;
                 default:
                     relativeValue = 0;

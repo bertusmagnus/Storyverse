@@ -10,4 +10,5 @@
   <div class="app_title">StoryVerse</div> 
   
   <script language="javascript" src="../Scripts/scripts.js"></script>
+  
   $AjaxHelper.GetJavascriptFunctions()
