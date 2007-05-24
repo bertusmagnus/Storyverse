@@ -102,7 +102,7 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["companies"] = companies;
         }
 
-        public override void Delete(Project project)
+        public override void Delete([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Project project)
         {
             if (!((Person)Context.CurrentUser).IsAdmin)
             {
