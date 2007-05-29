@@ -150,9 +150,14 @@
     <Content Include="Views\Stories\printable.vm" />
     <Content Include="Views\Projects\_components.vm" />
     <Content Include="Views\layouts\fragments\burndown.vm" />
+    <Content Include="Views\Projects\list.vm" />
+    <Content Include="connections.config" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\EntityControllerBase.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -168,6 +173,8 @@
     <Compile Include="Utility\IWebObjectCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\WebObjectCache.cs" />
+    <Compile Include="ViewComponents\CheckboxListComponent.cs" />
+    <Compile Include="ViewComponents\GridComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="controllers.config" />
@@ -198,7 +205,6 @@
     <Content Include="Views\Iterations\list.vm" />
     <Content Include="Views\Iterations\new.vm" />
     <Content Include="Views\Projects\edit.vm" />
-    <Content Include="Views\Projects\list.vm" />
     <Content Include="Views\Projects\new.vm" />
     <Content Include="Views\rescues\generalerror.vm" />
   </ItemGroup>

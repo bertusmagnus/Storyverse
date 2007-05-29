@@ -2,7 +2,7 @@
   function GoToStory(form, control)
   {
     document.edit.storyToGoToId.value = control.options[control.selectedIndex].value;
-    doAction('goToStory');
+    submitToAction('goToStory');
   }
 </script>
 

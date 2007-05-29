@@ -69,6 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Criteria\CompanyCriteria.cs" />
     <Compile Include="Criteria\CriteriaUtility.cs" />
     <Compile Include="Criteria\IFindCriteria.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Lookups\TechnicalRisk.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Component.cs" />
+    <Compile Include="Models\UserPreferences.cs" />
     <Compile Include="Models\IParentEntity.cs" />
     <Compile Include="Models\EntityUtility.cs" />
     <Compile Include="Models\TaskEstimate.cs" />

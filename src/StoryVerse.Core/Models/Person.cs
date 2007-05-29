@@ -20,6 +20,7 @@ namespace StoryVerse.Core.Models
         private string _username;
         private string _password;
         private Company _company;
+        private UserPreferences _userPreferences;
         private bool _isAdmin = false;
         private bool _canViewOnly = false;
 
@@ -65,6 +66,13 @@ namespace StoryVerse.Core.Models
             set { _canViewOnly = value; }
         }
 
+        [OneToOne]
+        public UserPreferences UserPreferences
+        {
+            get { return _userPreferences ?? new UserPreferences(); }
+            internal set { _userPreferences = value; }
+        }
+
         [BelongsTo(), ValidateNotEmpty("Company is required.")]
         public Company Company
         {
@@ -75,6 +83,15 @@ namespace StoryVerse.Core.Models
         public UserProjectScope ProjectScope
         {
             get { return Company.UserProjectScope; }
+        }
+
+        public void InitUserPreferences()
+        {
+            if (_userPreferences == null)
+            {
+                _userPreferences = new UserPreferences();
+                _userPreferences.Person = this;
+            }
         }
 
         public string AlphaName

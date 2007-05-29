@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Castle.ActiveRecord;
+using Castle.MonoRail.Framework.Helpers;
 using StoryVerse.Common.Utilities;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
@@ -125,12 +126,30 @@ namespace StoryVerse.WebUI.Controllers
                 {
                     SortList(Form["sortExpression"]);
                 }
-                PropertyBag[EntityListName] = EntitiesList;
+
+                PopulateEntitiesList();
+
                 AddListSummary();
             }
             catch (Exception ex)
             {
                 HandleListError(ex);
+            }
+        }
+
+        private void PopulateEntitiesList()
+        {
+            int rowsPerPage = ((Person) Context.CurrentUser).UserPreferences.RowsPerPage;
+            if (rowsPerPage == 0)
+            {
+                PropertyBag[EntityListName] = EntitiesList;
+            }
+            else
+            {
+                int pageNumber;
+                int.TryParse(Context.Params["page"], out pageNumber);
+                PropertyBag[EntityListName] = PaginationHelper.CreatePagination(
+                    (ICollection<TEntity>)EntitiesList, rowsPerPage, pageNumber);
             }
         }
 
@@ -231,7 +250,7 @@ namespace StoryVerse.WebUI.Controllers
 		[Layout("new")]
         public virtual void New()
         {
-            SetViewContext();
+            SetViewContext();SetViewContext();
             if (_hasContext)
             {
                 ContextEntity.Refresh();
@@ -308,13 +327,14 @@ namespace StoryVerse.WebUI.Controllers
                 SetupEntity(entity);
                 SetViewContext();
                 ShowActionResult();
+                PropertyBag["userCanEdit"] = GetUserCanEdit(entity);
                 PropertyBag["entity"] = entity;
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
                 PropertyBag["entityIsNew"] = false;
                 if (_hasContext)
                 {
-                    //ToDo: this is a HACK.  It should not be needed, not should Refresh.  It 
+                    //ToDo: this is a HACK.  It should not be needed, nor should Refresh.  It 
                     //prevents a lazy load exception in the case of a redirect after a create.
                     ContextEntity = GetContextEntity(ContextEntity.Id);
 
@@ -338,7 +358,7 @@ namespace StoryVerse.WebUI.Controllers
             string successMessage = string.Format("{0} saved", _entityProperName);
             string failureMessage = string.Format("{0} NOT saved", _entityProperName);
 
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (!GetUserCanEdit(entity))
             {
                 RenderText(string.Format("{0}. {1}", failureMessage, "You do not have update permission"));
                 CancelView();
@@ -546,12 +566,28 @@ namespace StoryVerse.WebUI.Controllers
         protected void SetViewContext()
         {
             PropertyBag["userIsAdmin"] = ((Person)Context.CurrentUser).IsAdmin;
-            PropertyBag["userCanEdit"] = !((Person)Context.CurrentUser).CanViewOnly;
+            PropertyBag["deleteEditButtonVisible"] = DeleteEditButtonVisible;
+            PropertyBag["listEditButtonVisible"] = ListEditButtonVisible;
             PropertyBag["contextEntityName"] = _contextEntityName;
             string entityNameProper = char.ToUpper(_entityName[0]) + _entityName.Substring(1);
             PropertyBag["entityName"] = entityNameProper;
             PropertyBag["entityNamePlural"] = TextUtil.MakePlural(entityNameProper);
             PropertyBag["isEditFormLong"] = _isEditFormLong;
+        }
+
+        protected virtual bool GetUserCanEdit(TEntity entity)
+        {
+            return !((Person)Context.CurrentUser).CanViewOnly;
+        }
+
+        protected virtual bool DeleteEditButtonVisible
+        {
+            get { return true; }
+        }
+
+        protected virtual bool ListEditButtonVisible
+        {
+            get { return true; }
         }
 
         protected static T NullifyIfTransient<T>(T entity) where T : IEntity

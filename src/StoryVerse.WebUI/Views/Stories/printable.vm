@@ -36,16 +36,15 @@
 	<tr>
 		<td class="label" style="vertical-align:top">Tests:</td>
 		<td colspan="9">
-			<table class="report" style="width:100%">
-				#set($counter = 0)
-				#foreach($test in $entity.Tests)
-				<tr>
-					<td style="border-right-style:solid">$test.Number</td>
-					<td align="left" style="width:100%">$TextFormatHelper.AddLineBreaks($test.Body)</td>
-				</tr>
-				#set($counter = $counter + 1)
-				#end
-			</table>
+			#blockcomponent(GridComponent with "source=$entity.Tests") 
+              #tablestart
+                <table class="report" style="width:100%">
+              #end
+			  #cells
+			  	<td style="border-right-style:solid">$item.Number</td>
+				<td align="left" style="width:100%">$TextFormatHelper.AddLineBreaks($item.Body)</td>
+			  #end
+			#end
 		</td>
 	</tr>
 	#end

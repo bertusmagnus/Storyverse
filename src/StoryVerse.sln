@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		License.txt = License.txt
 	EndProjectSection
 EndProject
@@ -47,6 +48,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.WebUI", "StoryVe
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.Common", "StoryVerse.Common\StoryVerse.Common.csproj", "{4480FF1C-8989-4B5B-B002-C45BD39FE22A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbBuilder", "DbBuilder", "{ACC418A5-BACB-41C1-A914-800100D0C927}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.DbBuilder.Core", "StoryVerse.DbBuilder.Core\StoryVerse.DbBuilder.Core.csproj", "{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.DbBuilder.Console", "StoryVerse.DbBuilder.Console\StoryVerse.DbBuilder.Console.csproj", "{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -95,6 +114,18 @@ Global
 		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,5 +134,7 @@ Global
 		{D12D108B-250C-4A2D-A3CC-8B41430F433C} = {8182E32D-BE61-49B6-BBE5-D17D3CE5FAF7}
 		{2F2241CF-AB11-4533-B977-E2B0B28C470E} = {8182E32D-BE61-49B6-BBE5-D17D3CE5FAF7}
 		{86A6A724-618A-4EAA-B559-4B9F8D3A9EAB} = {8182E32D-BE61-49B6-BBE5-D17D3CE5FAF7}
+		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2} = {ACC418A5-BACB-41C1-A914-800100D0C927}
+		{166EFE98-23B5-4C8E-B21C-3B6234EEB8BE} = {ACC418A5-BACB-41C1-A914-800100D0C927}
 	EndGlobalSection
 EndGlobal

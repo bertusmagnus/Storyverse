@@ -31,9 +31,53 @@ namespace StoryVerse.WebUI.Controllers
             set { Person.SortDirection = value; }
         }
 
+        public override  void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Person person)
+        {
+            if (person.Password != Form["passwordConfirm"])
+            {
+                Context.Response.StatusCode = 500;
+                RenderText("Person NOT saved.  Passwords do not match");
+                return;
+            }
+            Update(person);
+        }
+
+        protected override void SetupEntity(Person person)
+        {
+            PropertyBag["passwordConfirm"] = person.Password;
+            person.InitUserPreferences();
+            if (person.UserPreferences.Id == Guid.Empty)
+            {
+                person.UserPreferences.SaveAndFlush();
+            }
+        }
+
         protected override void SetupNewEntity(Person person)
         {
             ContextEntity.AddEmployee(person);
+        }
+
+        [Layout("edit")]
+        public void EditUserPrefs()
+        {
+            ContextEntity = ((Person) Context.CurrentUser).Company;
+            RedirectToAction("edit", "id=" + ((Person)Context.CurrentUser).Id);
+        }
+
+        protected override bool GetUserCanEdit(Person person)
+        {
+            Person user = (Person) Context.CurrentUser;
+            return user.IsAdmin || person.Id == user.Id;
+        }
+
+        protected override bool DeleteEditButtonVisible
+        {
+            get { return ((Person)Context.CurrentUser).IsAdmin; }
+        }
+
+        protected override bool ListEditButtonVisible
+        {
+            get { return ((Person)Context.CurrentUser).IsAdmin; }
         }
     }
 }

@@ -1,109 +1,89 @@
-<table class="list">
-  <tr>
-    <td colspan="9" class="presets">
-      <a href="list.rails?preset=all">All Tasks</a>&nbsp;&nbsp;|&nbsp;
-      <a href="list.rails?preset=my">My Tasks</a>&nbsp;&nbsp;|&nbsp;
-      <a href="list.rails?preset=mystarted">My Started Tasks</a>&nbsp;&nbsp;|&nbsp;
-      <a href="list.rails?preset=mynotstarted">My Not Started Tasks</a>
-    </td>
-    <td class="presets" style="text-align:right">
-      <input class="actionButton" type="button" value="Update" onClick="return search();" />
-    </td>
-  </tr>
-  <tr class="filter">
-    <td align="left">$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
-    <td align="left">$FormHelper.TextField("criteria.Term", "%{style='width:98%'}")</td>
-    <td align="left">
-      $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{id='ownersFilter', value='Id', text='AlphaNameShort', multiple='true', size='5'}")<br/>
-      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('ownersFilter')")
-    </td>
-    <td align="left">
-      #set($cblStatuses = $FormHelper.CreateCheckboxList("criteria.Statuses", $statuses) )
-      #foreach($it in $cblStatuses)
-        $cblStatuses.Item() $it <br/>
-      #end
-    </td>
-    <td align="left">
-      $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{id='iterationsFilter', value='Id', text='Name', multiple='true', size='5'}")<br/>
-      $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('iterationsFilter')")
-    </td>
-    <td align="left">
-      #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )
-      #foreach($it in $cblTechRisks)
-        $cblTechRisks.Item() $it <br/>
-      #end
-    </td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-      
-#foreach($entity in $tasks)
-  #beforeall
+#blockcomponent(GridComponent with "source=$tasks") 
+    #tablestart
+      <table class="list">
+    #end
+    #header
+      <tr>
+        <td colspan="9" class="presets">
+          <a href="list.rails?preset=all">All $entityNamePlural</a>&nbsp;&nbsp;|&nbsp;
+          <a href="list.rails?preset=my">My $entityNamePlural</a>&nbsp;&nbsp;|&nbsp;
+          <a href="list.rails?preset=mystarted">My Started $entityNamePlural</a>&nbsp;&nbsp;|&nbsp;
+          <a href="list.rails?preset=mynotstarted">My Not Started $entityNamePlural</a>
+        </td>
+        <td class="presets" style="text-align:right">
+          <input class="actionButton" type="button" value="Update" onClick="return search();" />
+        </td>
+      </tr>
+      <tr class="filter">
+        <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
+        <td>$FormHelper.TextField("criteria.Term", "%{style='width:98%'}")</td>
+        <td>
+          $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{id='ownersFilter', value='Id', text='AlphaNameShort', multiple='true', size='5'}")<br/>
+          $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('ownersFilter')")
+        </td>
+        <td>
+          #set($cblStatuses = $FormHelper.CreateCheckboxList("criteria.Statuses", $statuses) )
+          #foreach($it in $cblStatuses)
+            $cblStatuses.Item() $it <br/>
+          #end
+        </td>
+        <td>
+          $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{id='iterationsFilter', value='Id', text='Name', multiple='true', size='5'}")<br/>
+          $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('iterationsFilter')")
+        </td>
+        <td>
+          #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )
+          #foreach($it in $cblTechRisks)
+            $cblTechRisks.Item() $it <br/>
+          #end
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
       <tr class="header">
-        <td align="left">
-          <a href="javascript:SortLink('Number');">#</a>
-        </td>
-        <td align="left">
-          <a href="javascript:SortLink('Title');">Title</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('Owner');">Owner</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('Status');">Status</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('Iteration');">Iteration</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('TechnicalRisk');">Tech Risk</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('StoriesCount');">Stories</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('InitialEstimateHours');">Intitial Est</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('LatestEstimateHours');">Remaining</a>
-        </td>
-        <td align="center">
-          <a href="javascript:SortLink('LatestEstimateDate');">Est Updated</a>
-        </td>
+        <td><a href="javascript:SortLink('Number');">#</a></td>
+        <td><a href="javascript:SortLink('Title');">Title</a></td>
+        <td><a href="javascript:SortLink('Owner');">Owner</a></td>
+        <td><a href="javascript:SortLink('Status');">Status</a></td>
+        <td><a href="javascript:SortLink('Iteration');">Iteration</a></td>
+        <td align="center"><a href="javascript:SortLink('TechnicalRisk');">Tech Risk</a></td>
+        <td align="center"><a href="javascript:SortLink('StoriesCount');">Stories</a></td>
+        <td align="right"><a href="javascript:SortLink('InitialEstimateHours');">Intitial Est</a></td>
+        <td align="right"><a href="javascript:SortLink('LatestEstimateHours');">Remaining</a></td>
+        <td align="center"><a href="javascript:SortLink('LatestEstimateDate');">Est Updated</a></td>
       </tr>  
-  #before
-    <tr     
-  #odd
-    class="oddrow">
-  #even
-    class="evenrow">
-  #each
-    <td align="left">$entity.Number</td>
-    <td align="left">
-      <a href="edit.rails?id=$entity.Id">$entity.Title</a>
-    </td>
-    <td align="center">$!entity.Owner.FullName</td>
-    <td align="center">$!entity.Status</td>
-    <td align="center">$!entity.Iteration.Name</td>
-    <td align="center">$!entity.TechnicalRisk</td>
-    <td align="center">$!entity.StoriesCount</td>
-    <td align="center">$!entity.InitialEstimateHours.ToString("n0")</td>
-    <td align="center">$!entity.LatestEstimateHours.ToString("n0")</td>
-    <td align="center">$!entity.LatestEstimateDate.ToString("MM/dd/yy")</td>
-  #after
-    </tr>
-  #nodata
-    <tr><td class="nodata_message" colspan="5">- no matching $entityNamePlural -</td></tr>
-  #afterall
-    <tr class="summary">
-      <td colspan="7" style="font-weight:bold">Totals</td>
-      <td align="center">$!totalInitialEstimate.ToString("n0")</td>
-      <td align="center">$!totalLatestEstimate.ToString("n0")</td>
-      <td align="center">&nbsp;</td>
-    </tr>
+    #end
+    #rowstart
+      <tr class="oddrow">
+    #end
+    #alternateRowstart
+      <tr class="evenrow">
+    #end   
+    #cells
+      <td>$item.Number</td>
+      <td><a href="edit.rails?id=$item.Id">$item.Title</a></td>
+      <td>$!item.Owner.FullName</td>
+      <td>$!item.Status</td>
+      <td>$!item.Iteration.Name</td>
+      <td align="center">$!item.TechnicalRisk</td>
+      <td align="center">$!item.StoriesCount</td>
+      <td align="right">$!item.InitialEstimateHours.ToString("n0")</td>
+      <td align="right">$!item.LatestEstimateHours.ToString("n0")</td>
+      <td align="center">$!item.LatestEstimateDate.ToString("MM/dd/yy")</td>
+    #end
+    #footer
+      <tr class="summary">
+        <td colspan="7" style="font-weight:bold">Totals</td>
+        <td align="right">$!totalInitialEstimate.ToString("n0")</td>
+        <td align="right">$!totalLatestEstimate.ToString("n0")</td>
+        <td>&nbsp;</td>
+      </tr>
+    #end
+    #empty
+      <tr><td class="nodata_message" colspan="10">- no matching $entityNamePlural -</td></tr>
+    #end
 #end
-</table>
 
     

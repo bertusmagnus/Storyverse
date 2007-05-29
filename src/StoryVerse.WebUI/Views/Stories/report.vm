@@ -9,6 +9,6 @@
 </div>
 
 #foreach($entity in $stories)
-#parse("stories/printable.vm")
-<br/>
+    #parse("stories/printable.vm")
+    <br/>
 #end

@@ -4,6 +4,6 @@
 </div>
 
 <form name="list" action="list.rails" method="post">
-  $FormHelper.HiddenField("sortExpression") 
+  $FormHelper.HiddenField("sortExpression")
   $childContent
 </form>

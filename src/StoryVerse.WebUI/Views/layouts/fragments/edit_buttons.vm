@@ -1,10 +1,12 @@
 <td colspan="3">
   <input type="hidden" id="userCanEdit" value="$userCanEdit" />
   $AjaxHelper.ButtonToRemote("Save", "Save.rails", $DictHelper.CreateDict("update=actionResult", "OnSuccess=markClean();", "with=Form.serialize(document.forms[0])"), $DictHelper.CreateDict("id=saveButton$position", "class=actionButton"))
-  <input id="listButton$position" type="button" class="actionButton" value="List" onClick="return doAction('list');"/>
-  <input id="deleteButton$position" type="button" class="actionButton" value="Delete" onClick="return deleteEntity('$entityName');"
-     #if(!$userCanEdit) disabled="true" #end      
-  />
+  #if($listEditButtonVisible)
+    <input id="listButton$position" type="button" class="actionButton" value="List" onClick="return submitToAction('list');"/>
+  #end
+  #if($deleteEditButtonVisible)
+    <input id="deleteButton$position" type="button" class="actionButton" value="Delete" onClick="return deleteEntity('$entityName');"/>
+  #end
   <span id="actionResult"  name="actionResult" class="actionResult">$!actionResult</span>
 </td>
 <td align="right">

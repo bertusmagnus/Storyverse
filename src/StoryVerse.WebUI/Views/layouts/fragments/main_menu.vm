@@ -5,6 +5,7 @@
       <a href="../companies/list.rails">Companies</a>&nbsp;
       #end
       <a href="../projects/list.rails?$projectId=$project.Company.Id"/>Projects</a>&nbsp;
+      <a href="../persons/editUserPrefs.rails"/>Preferences</a>&nbsp;
       #if ($contextEntityName == "project")
       <a href="../stories/list.rails?projectId=$project.Id">Stories</a>&nbsp;
       <a href="../tasks/list.rails?projectId=$project.Id">Tasks</a>&nbsp;

@@ -4,22 +4,12 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 namespace StoryVerse.WebUI.Helpers
 {
     public class GridHelper
     {
-
         public string Grid(GridInfo gridInfo)
         {
             string headerCellTemplate = "<td style='font-weight:bold'>{0}</td>";
@@ -50,8 +40,9 @@ namespace StoryVerse.WebUI.Helpers
             public IList<string> ColumnHeaders
             {
                 get { return content[0]; }
-                set { content[0] = value;  }
+                set { content[0] = value; }
             }
+
             public IList<IList<string>> Data
             {
                 set

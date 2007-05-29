@@ -2,6 +2,6 @@
   <input id="createButton" type="button" class="actionButton" value="Create" onClick="return createEntity();"
     #if(!$userCanEdit) disabled="true" #end
   />
-  <input id="cancelCreateButton" type="button" class="actionButton" value="Cancel" onClick="return doAction('list');"/>
+  <input id="cancelCreateButton" type="button" class="actionButton" value="Cancel" onClick="return submitToAction('list');"/>
   <span id="actionResult" class="actionResult">$!actionResult</span>
 </td>

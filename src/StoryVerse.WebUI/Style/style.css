@@ -70,6 +70,30 @@ a:hover
 	color:blue;
 }
 
+.pagination
+{
+	color: #3a4fa6;
+	padding: 5px 0px 0px 5px;
+	white-space: nowrap;
+}
+
+.pagination a
+{
+	color: #3a4fa6;
+	font-weight:bold;
+}
+
+.paginationRight
+{ 
+	color:silver;
+	padding-left:30px;
+}
+
+.paginationLeft
+{
+	font-weight:bold;
+}
+
 input.actionButton
 {
 	width: 75px;
@@ -203,7 +227,7 @@ table.list td
 	border-color:gray;
 	border-style:solid;
 	border-width:1px;
-	padding:2px 4px 2px 4px;
+	padding:2px 8px 2px 8px;
 	vertical-align: top;
 }
 
@@ -236,10 +260,16 @@ table.list td.presets a:hover
 
 table.list tr.header
 {
+	padding: 0px 0px 0px 0px;
 	background-color: #6f96df;
 	color: white;
 	font-weight:bold;
 	white-space:nowrap;
+}
+
+table.list td.header
+{
+	padding: 0px 0px 0px 0px;
 }
 
 table.list tr.header a
@@ -286,7 +316,6 @@ table.list td.presets
 
 table.list td.nodata_message
 {
-	border-style:none;
 	font-size:large;
 	color: #6f96df;
 	padding: 10px 10px 10px 10px;
@@ -322,6 +351,21 @@ table.report td
 table.report td.label
 {
 	font-weight: bold;
+	white-space:nowrap;
+}
+
+table.burndown td.nodata_message
+{
+	background-color:#dde8f8; 
+	white-space:nowrap; 
+	padding:10px 10px 10px 10px; 
+	margin:0px 0px 15px 3px;
+}
+
+table.burndown td.nodata_message
+{
+	color: #6f96df;
+	text-transform:lowercase;
 	white-space:nowrap;
 }
 

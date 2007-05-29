@@ -1,8 +1,8 @@
 <tr>
   <td class="label">First Name:</td>
   <td>$FormHelper.TextField("entity.FirstName", "%{onchange='markDirty()'}")</td>
-  <td class="label"></td>
-  <td></td>
+  <td class="label">Rows Per Page:&nbsp;<span class="tip">(1)</span></td>
+  <td>$FormHelper.TextField("entity.UserPreferences.RowsPerPage", "%{onchange='markDirty()'}")</td>
 </tr>
 <tr>
   <td class="label">Last Name:</td>
@@ -23,14 +23,27 @@
   <td></td>
 </tr>
 <tr>
-  <td class="label">Admin:</td>
-  <td>$FormHelper.CheckboxField("entity.IsAdmin", "%{onchange='markDirty()'}")</td>
+  <td class="label">Confirm Password:</td>
+  <td>$FormHelper.PasswordField("passwordConfirm", "%{onchange='markDirty()'}")</td>
   <td class="label"></td>
   <td></td>
 </tr>
+#if($userIsAdmin)
+    <tr>
+      <td class="label">Admin:</td>
+      <td>$FormHelper.CheckboxField("entity.IsAdmin", "%{onchange='markDirty()'}")</td>
+      <td class="label"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="label">View Only:</td>
+      <td>$FormHelper.CheckboxField("entity.CanViewOnly", "%{onchange='markDirty()'}")</td>
+      <td class="label"></td>
+      <td></td>
+    </tr>
+#end
 <tr>
-  <td class="label">View Only:</td>
-  <td>$FormHelper.CheckboxField("entity.CanViewOnly", "%{onchange='markDirty()'}")</td>
-  <td class="label"></td>
-  <td></td>
+  <td colspan="4">
+    <span class="tip">(1) Enter the number of rows per page to show in the main grids.  Enter '0' for no pagination</span>
+  </td>
 </tr>

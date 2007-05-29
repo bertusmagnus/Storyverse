@@ -3,14 +3,18 @@
 </tr>
 <tr>
   <td colspan="4">
-    <table style="background-color:#dde8f8; white-space:nowrap; padding:10px 10px 10px 10px; margin:0px 0px 15px 3px;">
-      #foreach ($item in $burndown)
-        <tr>
-          <td>$!item.Date.ToString("MM/dd/yy (ddd)")</td>
-          <td colspan="2">$!item.GetBar(150, $maxHours)&nbsp;$!item.HoursRemaining hours</td>
-        </tr>
-      #end
-    </table>
+  #blockcomponent(GridComponent with "source=$burndown") 
+    #tablestart
+      <table class="burndown">
+    #end 
+    #cells
+      <td>$!item.Date.ToString("MM/dd/yy (ddd)")</td>
+      <td colspan="2">$!item.GetBar(150, $maxHours)&nbsp;$!item.HoursRemaining hours</td>
+    #end
+    #empty
+      <tr><td class="nodata_message" colspan="4">no burndown yet for this $entityName</td></tr>
+    #end
+  #end
   </td>
 </tr>
 

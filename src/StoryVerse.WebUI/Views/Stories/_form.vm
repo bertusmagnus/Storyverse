@@ -7,7 +7,7 @@
   function GoToTask(control)
   {
       document.edit.taskToGoToId.value = control.options[control.selectedIndex].value;
-      doAction('goToTask');
+      submitToAction('goToTask');
   }  
 </script>
 

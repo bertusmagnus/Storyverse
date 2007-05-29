@@ -18,23 +18,23 @@ function deleteEntity(itemTypeName)
 {
 	if (!confirmAction("delete this " + itemTypeName)) return false;
 
-    doAction("delete");
+    submitToAction("delete");
     return true;
 }
 
 function createEntity()
 {
-    doAction("create");
+    submitToAction("create");
     return true;
 }
 
 function search()
 {
-    doAction("search");
+    submitToAction("search");
     return true;
 }
 
-function doAction(actionName)
+function submitToAction(actionName)
 {
     document.forms[0].action = actionName + '.rails';
 	document.forms[0].submit();
@@ -102,38 +102,38 @@ function updateEstimate()
     if (!confirmAction('update the remaining hours for this task')) return false;
     
     saving = true;
-    doAction("updateEstimate");
+    submitToAction("updateEstimate");
     return true;
 }
 
 function addStory()
 {   
     saving = true;
-    doAction('addStory');
+    submitToAction('addStory');
 }
 
 function removeStory()
 {
     saving = true;
-    doAction('removeStory');
+    submitToAction('removeStory');
 }
 
 function addTask()
 {   
     saving = true;
-    doAction('addTask');
+    submitToAction('addTask');
 }
 
 function removeTask()
 {
     saving = true;
-    doAction('removeTask');
+    submitToAction('removeTask');
 }
 
 function newTask()
 {   
     saving = true;
-    doAction('newTask');
+    submitToAction('newTask');
 }
 
 function setEditActionButtons()

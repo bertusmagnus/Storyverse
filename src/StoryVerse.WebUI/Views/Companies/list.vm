@@ -1,44 +1,28 @@
-$FormHelper.HiddenField("criteria.OrderBy")
-
-<table class="list">
-
-#foreach($entity in $companies)
-  #beforeall
+#blockcomponent(GridComponent with "source=$companies") 
+    #tablestart
+      <table class="list">
+    #end
+    #header
       <tr class="header">
-        <td align="left">
-          <a href="javascript:SortLink('Name');">Name</a>
-        </td>
-        <td align="left">
-          <a href="javascript:SortLink('Type');">Type</a>
-        </td>
+        <td><a href="javascript:SortLink('Name');">Name</a></td>
+        <td><a href="javascript:SortLink('Type');">Type</a></td>
         <td>Persons</td>
         <td>&nbsp;</td>
       </tr>
-    #before
-      <tr
-    #odd
-      class="oddrow">
-    #even
-      class="evenrow">
-    #each
-      <td align="left">
-        <a href="edit.rails?id=$entity.Id">$entity.Name</a>
-      </td>
-      <td align="left">
-        $!entity.Type
-      </td>
-      <td align="left">
-        $!entity.Employees.Count
-      </td>
-      <td align="left">
-        <a href="../persons/list.rails?companyId=$entity.Id">Persons</a>
-      </td>
-    #after
-      </tr>
-	#nodata
-		<tr><td class="nodata_message" colspan="4">- no $entityNamePlural -</td></tr>
-    #afterall
-  #end
-  
-</table>
-
+    #end
+    #rowstart
+      <tr class="oddrow">
+    #end
+    #alternateRowstart
+      <tr class="evenrow">
+    #end   
+    #cells
+      <td><a href="edit.rails?id=$item.Id">$item.Name</a></td>
+      <td>$!item.Type</td>
+      <td>$!item.Employees.Count</td>
+      <td><a href="../persons/list.rails?companyId=$item.Id">Persons</a></td>
+    #end
+    #empty
+      <tr><td class="nodata_message" colspan="4">- no $entityNamePlural -</td></tr>
+    #end
+#end

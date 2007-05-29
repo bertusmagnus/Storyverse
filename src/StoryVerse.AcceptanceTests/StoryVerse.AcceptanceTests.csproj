@@ -73,6 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="SeleniumExperiment_TestTestFixture.cs" />
     <Compile Include="FitnesseExperiment_TestTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="connections.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">
