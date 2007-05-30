@@ -15,7 +15,7 @@ namespace StoryVerse.WebUI.Controllers
     [Layout("default"), Rescue("generalerror")]
     public class IterationsController : EntityControllerBase<Iteration, IterationCriteria, Project>
     {
-        public IterationsController() : base(false) { }
+        public IterationsController() : base(true) { }
 
         public override string SortExpression
         {
@@ -38,9 +38,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             RefreshContextEntity();
             PropertyBag["project"] = ContextEntity;
-            int maxHours;
-            PropertyBag["burndown"] = ContextEntity.Burndown(iteration, out maxHours);
-            PropertyBag["maxHours"] = maxHours;
+            PropertyBag["burndown"] = ContextEntity.Burndown(iteration);
         }
     }
 }

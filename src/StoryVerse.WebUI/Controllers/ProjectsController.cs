@@ -17,7 +17,7 @@ namespace StoryVerse.WebUI.Controllers
     [Layout("default"), Rescue("generalerror")]
     public class ProjectsController : EntityControllerBase<Project, ProjectCriteria, IEntity>
     {
-        public ProjectsController() : base(false) { }
+        public ProjectsController() : base(true) { }
 
         public override string SortExpression
         {
@@ -50,9 +50,7 @@ namespace StoryVerse.WebUI.Controllers
         protected override void SetupEntity(Project project)
         {
             PropertyBag["project"] = project;
-            int maxHours;
-            PropertyBag["burndown"] = project.Burndown(project, out maxHours);
-            PropertyBag["maxHours"] = maxHours;
+            PropertyBag["burndown"] = project.Burndown(project);
         }
 
         protected override void SetupNewEntity(Project project)

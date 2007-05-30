@@ -1,29 +1,13 @@
 <tr>
-  <td class="labelabove" colspan="4">Burndown:</td>
-</tr>
-<tr>
   <td colspan="4">
-      <div class="horizontalGraph"> 
-          #set($pxPerHour=600/$maxHours)
-          #foreach($item in $burndown) 
-            #beforeall
-              <table class="plotArea">
-            #each
-              #set($widthPx=$pxPerHour*$item.HoursRemaining)
-              <tr>
-                  <td class="label">$!item.Date.ToString("MM/dd/yy (ddd)")</td>
-                  <td class="value">
-                    <div class="bar" style="width:${widthPx}px;">
-                      <span class="dataLabel">$!item.HoursRemaining hours</span>
-                    </div>
-                  </td>
-              </tr>
-            #nodata
-              <tr><td class="nodata_message" colspan="4">no burndown yet for this $entityName</td></tr>
-            #afterall
-              </table>  
-          #end
-     </div> 
+    #blockcomponent(ChartComponent with "source=$burndown" "width=600" "cssClass=horizontalGraph" "labelFormat=MM/dd/yy (ddd)")
+      #title
+        <div class='title'>Burndown For $entityName: $entity.Name</div>
+      #end
+      #empty
+        <tr><td class='empty_message'>no burndown yet for this $entityName</td></tr>
+      #end
+    #end
   </td>
 </tr>
 

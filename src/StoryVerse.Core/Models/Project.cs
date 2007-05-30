@@ -328,11 +328,11 @@ namespace StoryVerse.Core.Models
             return result;
         }
 
-        public IList<TaskEstimate> Burndown(IEntity entity, out int maxHours)
+        public IDictionary<object, decimal> Burndown(IEntity entity)
         {
             bool scopeIsProject = entity.GetType().IsAssignableFrom(typeof(Project));
 
-            IList<TaskEstimate> result = new List<TaskEstimate>();
+            IDictionary<object, decimal> result = new Dictionary<object, decimal>();
 
             DateTime startDate = DateTime.MaxValue;
             DateTime endDate = DateTime.MinValue;
@@ -358,25 +358,16 @@ namespace StoryVerse.Core.Models
             {
                 for (DateTime date = startDate; date.Date <= endDate.Date; date = date.AddDays(1))
                 {
-                    TaskEstimate est = new TaskEstimate();
-                    est.Date = date;
+                    int hoursRemaining = 0;
                     foreach (Task task in Tasks)
                     {
                         if (scopeIsProject || task.Iteration != null &&
                             task.Iteration.Id == entity.Id)
                         {
-                            est.HoursRemaining += task.GetHoursRemainingAsOf(date);
+                            hoursRemaining += task.GetHoursRemainingAsOf(date);
                         }
                     }
-                    result.Add(est);
-                }
-            }
-            maxHours = 0;
-            foreach (TaskEstimate item in result)
-            {
-                if (item.HoursRemaining > maxHours)
-                {
-                    maxHours = item.HoursRemaining;
+                    result.Add(date, hoursRemaining);
                 }
             }
             return result;

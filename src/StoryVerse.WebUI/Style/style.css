@@ -354,8 +354,22 @@ table.report td.label
 
 div.horizontalGraph
 {
+	background-color: white;
+}
+
+div.horizontalGraph div.title
+{
+	font-size:18px;
+	margin:10px 10px 10px 10px;
+	text-align:center;
+	font-weight:bold;
+	margin:15px;	
+}
+
+div.horizontalGraph div.chartArea
+{
 	background-color:#d9e4f8;
-	padding:15px;
+	padding:20px;
 }
 
 div.horizontalGraph table.plotArea
@@ -398,7 +412,7 @@ div.horizontalGraph span.dataLabel
 	color: white;
 }
 
-div.horizontalGraph td.nodata_message
+div.horizontalGraph td.empty_message
 {
 	color: #6f96df;
 	text-transform:lowercase;
