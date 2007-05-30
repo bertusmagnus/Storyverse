@@ -47,12 +47,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.WebUI", "StoryVe
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryVerse.Common", "StoryVerse.Common\StoryVerse.Common.csproj", "{4480FF1C-8989-4B5B-B002-C45BD39FE22A}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbBuilder", "DbBuilder", "{ACC418A5-BACB-41C1-A914-800100D0C927}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -108,12 +102,6 @@ Global
 		{235211B7-2B2D-49D7-9850-70189A7C8F2B}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{235211B7-2B2D-49D7-9850-70189A7C8F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{235211B7-2B2D-49D7-9850-70189A7C8F2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4480FF1C-8989-4B5B-B002-C45BD39FE22A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A72004F6-1588-43C8-9A1F-047EEDC1E1D2}.Development|Any CPU.ActiveCfg = Debug|Any CPU

@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Castle.ActiveRecord;
+using Castle.ActiveRecord.Framework.Internal;
 using Castle.MonoRail.Framework.Helpers;
-using StoryVerse.Common.Utilities;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.ActiveRecordSupport;
@@ -56,7 +56,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public string EntityListName
         {
-            get { return TextUtil.MakePlural(_entityName); }
+            get { return Inflector.Pluralize(_entityName); }
         }
 
         public string ContextEntityIdName
@@ -571,7 +571,7 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["contextEntityName"] = _contextEntityName;
             string entityNameProper = char.ToUpper(_entityName[0]) + _entityName.Substring(1);
             PropertyBag["entityName"] = entityNameProper;
-            PropertyBag["entityNamePlural"] = TextUtil.MakePlural(entityNameProper);
+            PropertyBag["entityNamePlural"] = Inflector.Pluralize(entityNameProper);
             PropertyBag["isEditFormLong"] = _isEditFormLong;
         }
 

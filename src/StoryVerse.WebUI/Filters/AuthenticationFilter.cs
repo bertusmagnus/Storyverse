@@ -5,8 +5,6 @@
 */
 
 using System;
-using System.Web;
-using System.Web.Security;
 using Castle.MonoRail.Framework;
 using StoryVerse.Core.Models;
 
@@ -40,21 +38,6 @@ namespace StoryVerse.WebUI
                 return false;
             }
             return true;
-        }
-
-        private static Guid? GetUserId(HttpCookie cookie)
-        {
-            try
-            {
-                FormsAuthenticationTicket ticket =
-                    FormsAuthentication.Decrypt(cookie.Value);
-                return new Guid(ticket.UserData);
-            }
-            catch (ArgumentException ex)
-            {
-                return null;
-            }
-
         }
     }
 }
