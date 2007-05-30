@@ -163,8 +163,6 @@ table.main_menu
 table.detail
 {
 	border-collapse: collapse;
-	border-color: gray;
-	border-width: 1px;
 	width: 700px;
 }
 
@@ -354,19 +352,56 @@ table.report td.label
 	white-space:nowrap;
 }
 
-table.burndown td.nodata_message
+div.horizontalGraph
 {
-	background-color:#dde8f8; 
-	white-space:nowrap; 
-	padding:10px 10px 10px 10px; 
-	margin:0px 0px 15px 3px;
+	background-color:#d9e4f8;
+	padding:15px;
 }
 
-table.burndown td.nodata_message
+div.horizontalGraph table.plotArea
+{
+	background-color:transparent;
+	white-space:nowrap;
+	padding:0px;
+	margin:0px;
+}
+
+div.horizontalGraph table.plotArea tr
+{
+}
+
+div.horizontalGraph table.plotArea td
+{
+	white-space:nowrap;
+}
+
+div.horizontalGraph table.plotArea td.label
+{
+	padding-right:5px;
+}
+
+div.horizontalGraph table.plotArea td.value
+{
+}
+
+div.horizontalGraph div.bar
+{
+	background-color:#6f96df;
+	text-align:right
+}
+
+div.horizontalGraph span.dataLabel
+{
+	font-size: smaller;
+	margin: 0px 5px 0px 5px;
+	vertical-align: middle;
+	color: white;
+}
+
+div.horizontalGraph td.nodata_message
 {
 	color: #6f96df;
 	text-transform:lowercase;
-	white-space:nowrap;
 }
 
 

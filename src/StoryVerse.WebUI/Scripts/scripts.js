@@ -11,6 +11,7 @@ function handleFormLoad()
     if (document.forms[0].name == 'edit')
     {
         setEditActionButtons();
+        initCharts();
     }
 }
 

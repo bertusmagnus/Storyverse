@@ -1,4 +1,3 @@
-$AjaxHelper.GetJavascriptFunctions()
 <tr>
   <td class="label">Name:</td>
   <td >$FormHelper.TextField("entity.Name", "%{onchange='markDirty()'}")</td>
