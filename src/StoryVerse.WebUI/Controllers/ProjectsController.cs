@@ -19,7 +19,6 @@ using StoryVerse.WebUI.ViewComponents;
 namespace StoryVerse.WebUI.Controllers
 {
     [Layout("default"), Rescue("generalerror")]
-    [Helper(typeof(ChartHelper))]
     public class ProjectsController : EntityControllerBase<Project, ProjectCriteria, IEntity>
     {
         public ProjectsController() : base(false) { }
