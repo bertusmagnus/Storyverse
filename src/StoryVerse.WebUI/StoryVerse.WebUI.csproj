@@ -170,7 +170,6 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="GlobalApplication.cs" />
-    <Compile Include="Helpers\ChartHelper.cs" />
     <Compile Include="Helpers\TextFormatHelper.cs" />
     <Compile Include="Utility\IWebObjectCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -189,8 +188,6 @@
     <Content Include="components.config" />
     <Content Include="logging.config" />
     <Content Include="Scripts\Graph.js" />
-    <Content Include="Scripts\jschart.js" />
-    <Content Include="Scripts\scripts.js" />
     <Content Include="Style\style.css" />
     <Content Include="Views\Companies\edit.vm" />
     <Content Include="Views\Companies\list.vm" />
@@ -248,6 +245,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>IF NOT EXIST $(ProjectDir)web.config copy $(ProjectDir)Example.Web.config $(ProjectDir)Web.config</PreBuildEvent>
+    <PreBuildEvent>IF NOT EXIST $(ProjectDir)connections.config copy $(ProjectDir)example.connections.config $(ProjectDir)connections.config</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -100,6 +100,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>IF NOT EXIST $(ProjectDir)app.config copy $(ProjectDir)Example.app.config $(ProjectDir)app.config</PreBuildEvent>
+    <PreBuildEvent>IF NOT EXIST $(ProjectDir)connections.config copy $(ProjectDir)example.connections.config $(ProjectDir)connections.config</PreBuildEvent>
   </PropertyGroup>
 </Project>

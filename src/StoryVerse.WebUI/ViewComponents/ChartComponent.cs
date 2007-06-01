@@ -18,6 +18,41 @@ namespace StoryVerse.WebUI.ViewComponents
                 "title", "empty"
             };
 
+        private static readonly string verticalBarTemplate =
+            @"<div class='bar' style='height:{1}px; width:{0}px; 
+                 display:table; margin-top:2px; margin-bottom:2px;'>
+                 <p class='dataLabel' style='display:table-cell; 
+                     vertical-align:middle; height:100%; font-size:{2}px;'>
+                    {3}
+                 </p>
+              </div>";
+
+        private static readonly string horizontalBarTemplate =
+            @"<div class='bar' style='height:{0}px; width:{1}px;
+                 margin-right:3px; margin-left:3px;'>
+                 <p class='dataLabel' style='text-align:center; font-size:{2}px;'>
+                    {3}
+                 </p>
+              </div>";
+
+        private static readonly string verticalLabelTemplate =
+            @"<td class='label' style='white-space:nowrap; font-size:{0}px;
+                    border-right:solid; border-width:1px; 
+                    padding:3px 3px 0px 3px;'>
+                {1}
+              </td>";
+
+        private static readonly string horizontalLabelTemplate =
+            @"<td class='label'style='white-space:normal; text-align:center;
+                    font-size:{0}px; border-top:solid; border-width:1px; 
+                    padding:3px 3px 0px 3px;'>
+                {1}
+            </td>";
+
+        private decimal? barLengthPixelsPerDataUnitCached;
+
+        private decimal? fontSizeChached;
+
         public override bool SupportsSection(string name)
         {
             foreach (string section in sections)
@@ -47,13 +82,13 @@ namespace StoryVerse.WebUI.ViewComponents
 
             RenderChartStart();
 
-            if (Props.Source.Count == 0)
+            if (Props.Source.Count > 0)
             {
-                RenderEmptySection();
+                RenderBars();
             }
             else
             {
-                RenderBars();
+                RenderEmptySection();
             }
 
             RenderChartEnd();
@@ -67,11 +102,6 @@ namespace StoryVerse.WebUI.ViewComponents
             RenderText("<table class='plotArea'>");
         }
 
-        private void RenderChartEnd()
-        {
-            RenderText(string.Format("</table></div></div>"));
-        }
-
         private void RenderTitleSection()
         {
             if (Context.HasSection("title"))
@@ -82,6 +112,11 @@ namespace StoryVerse.WebUI.ViewComponents
             {
                 RenderText(string.Format("<div class='title'>{0}</div>", Props.Title));
             }
+        }
+
+        private void RenderChartEnd()
+        {
+            RenderText(string.Format("</table></div></div>"));
         }
 
         private void RenderBars()
@@ -100,64 +135,52 @@ namespace StoryVerse.WebUI.ViewComponents
         {
             StringWriter writer = new StringWriter();
 
-            decimal barPxPerUnit = GetBarLengthPixelsPerDataUnit(Props.Source);
-            const decimal labelMaxFontSize = 14m;
-            decimal labelFontSize = Props.BarWidthPixels * .8m > labelMaxFontSize
-                ? labelMaxFontSize
-                : Props.BarWidthPixels * .8m;
-
             foreach (KeyValuePair<object, decimal> item in Props.Source)
             {
-                decimal barLength = barPxPerUnit * item.Value;
+                string html = string.Format(
+                     "<tr>" +
+                        GetLabel(item.Key) +
+                        @"<td class='value'>" +
+                            GetBar(item.Value) +
+                        @"</td>
+                      </tr>", 
+                      FontSize, item.Key);
 
-                string html = null;
-                html += 
-                    @"<tr>
-                        <td class='label' style='white-space:nowrap; font-size:{3}px;
-                                    border-right:solid; border-width:1px; padding:3px 3px 0px 3px;'>{0:" + 
-                                    Props.LabelFormat + @"}
-                        </td>
-                        <td class='value'>" +
-                        (barLength.Equals(0) ? null :
-                        @"<div class='bar' style='height:{1}px; width:{2}px; display:table;
-                                    margin-top:2px; margin-bottom:2px;'>
-                            <p class='dataLabel' style='display:table-cell; vertical-align:middle;
-                                    height:100%; font-size:{3}px;'>{4}</p>
-                          </div>") +
-                      @"</td>
-                      </tr>";
-
-                html = string.Format(html, item.Key, Props.BarWidthPixels, barLength, labelFontSize, item.Value);
                 writer.Write(html);
             }
 
             RenderText(writer.ToString());
         }
 
+        private string GetLabel(object labelValue)
+        {
+            string template = null;
+            switch (Props.Orientation)
+            {
+                case ChartOrientation.Vertical:
+                    template = verticalLabelTemplate;
+                    break;
+                case ChartOrientation.Horizontal:
+                    template = horizontalLabelTemplate;
+                    break;
+            }
+            return string.Format(template, FontSize,
+                string.Format("{0:" + Props.LabelFormat + "}", labelValue));
+        }
+
         private void RenderHorizontalBars()
         {
             StringWriter writer = new StringWriter();
-
-            decimal barPxPerUnit = GetBarLengthPixelsPerDataUnit(Props.Source);
 
             //write bars
             writer.Write("<tr>");
             foreach (KeyValuePair<object, decimal> item in Props.Source)
             {
-                decimal barLength = barPxPerUnit * item.Value;
-
                 string html;
-                html = string.Format(
-                    @"<td classbarLengthvalue' style='vertical-align:bottom;' align='center'>" +
-                        (barLength > 0 ? 
-                        @"<div class='bar' style='height:{0}px; width:{1}px;
-                                margin-right:3px; margin-left:3px;'>
-                          <p class='dataLabel' style='text-align:center;'>{2}</p>
-                        </div>" : string.Empty) +
-                      @"</td>",
-                    barPxPerUnit * item.Value, 
-                    Props.BarWidthPixels,
-                    item.Value);
+                html =
+                    @"<td class='value' style='vertical-align:bottom;' align='center'>" +
+                        GetBar(item.Value) +
+                    @"</td>";
                 writer.Write(html);
             }
             writer.Write("</tr>");
@@ -166,17 +189,31 @@ namespace StoryVerse.WebUI.ViewComponents
             writer.Write("<tr>");
             foreach (KeyValuePair<object, decimal> item in Props.Source)
             {
-                string html = string.Format(
-                    @"<td class='label'style='white-space:normal; text-align:center;
-                            border-top:solid; border-width:1px; padding:3px 3px 0px 3px;'>{0:" + 
-                            Props.LabelFormat + @"}
-                    </td>",
-                    item.Key);
-                writer.Write(html);
+                writer.Write(GetLabel(item.Key));
             }
             writer.Write("</tr>");
 
             RenderText(writer.ToString());
+
+        }
+
+        private string GetBar(decimal itemValue)
+        {
+            decimal barLength = BarLengthPixelsPerDataUnit * itemValue;
+
+            if (barLength.Equals(0)) return null;
+
+            string template = null;
+            switch (Props.Orientation)
+            {
+                case ChartOrientation.Vertical:
+                    template = verticalBarTemplate;
+                    break;
+                case ChartOrientation.Horizontal:
+                    template = horizontalBarTemplate;
+                    break;
+            }
+            return string.Format(template, barLength, Props.BarWidthPixels, FontSize, itemValue);
 
         }
 
@@ -192,18 +229,49 @@ namespace StoryVerse.WebUI.ViewComponents
             }
         }
 
-        private decimal GetBarLengthPixelsPerDataUnit(IDictionary<object, decimal> source)
+        private decimal BarLengthPixelsPerDataUnit
         {
-            decimal maxValue = 0;
-            foreach (decimal value in source.Values)
+            get
             {
-                if (value > maxValue)
+                if (!barLengthPixelsPerDataUnitCached.HasValue)
                 {
-                    maxValue = value;
+                    decimal maxValue = 0;
+                    foreach (decimal value in Props.Source.Values)
+                    {
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                        }
+                    }
+                    if (maxValue == 0) return 0;
+                    barLengthPixelsPerDataUnitCached =
+                        Props.LongestBarPixels / Math.Round(maxValue, 0);
+                }
+                return barLengthPixelsPerDataUnitCached.Value;
+            }
+        }
+
+        private string FontSize
+        {
+            get
+            {
+                switch (Props.Orientation)
+                {
+                    case ChartOrientation.Vertical:
+                        if (!fontSizeChached.HasValue)
+                        {
+                            const decimal maxFontSize = 14m;
+                            decimal relativeFontSize = Props.BarWidthPixels * .8m;
+                            fontSizeChached = Props.BarWidthPixels * relativeFontSize > maxFontSize
+                                       ? maxFontSize
+                                       : relativeFontSize;
+                        }
+                        return fontSizeChached.Value.ToString();
+                    case ChartOrientation.Horizontal:
+                    default:
+                        return "normal";
                 }
             }
-            if (maxValue == 0) return 0;
-            return Props.LongestBarPixels / Math.Round(maxValue, 0);
         }
     }
 }
