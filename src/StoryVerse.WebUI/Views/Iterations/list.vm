@@ -7,6 +7,7 @@
         <td><a href="javascript:SortLink('Name');">Name</a></td>
         <td>Stories</td>
         <td>Tasks</td>
+        <td>&nbsp;</td>
       </tr>
     #end
     #rowstart
@@ -19,6 +20,9 @@
       <td><a href="edit.rails?id=$item.id">$item.Name</a></td>
       <td align="center">$item.GetStoriesCount()</td>
       <td align="center">$item.GetTasksCount()</td>
+      <td align="center" style="white-space:nowrap">
+        <a href="../iterations/burndown.rails?id=$item.Id">Burndown</a>
+      </td>
     #end
     #empty
       <tr><td class="nodata_message" colspan="3">- no $entityNamePlural -</td></tr>

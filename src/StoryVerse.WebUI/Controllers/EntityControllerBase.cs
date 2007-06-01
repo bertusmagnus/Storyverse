@@ -46,7 +46,7 @@ namespace StoryVerse.WebUI.Controllers
             _entityName = _entityProperName.ToLower();
             _contextEntityName = typeof(TContextEntity).Name.ToLower();
             _criteriaName = typeof(TCriteria).Name.ToLower();
-            this._isEditFormLong = isEditFormLong;
+            _isEditFormLong = isEditFormLong;
             _hasContext = typeof(TContextEntity).IsClass;
         } 
 
@@ -569,9 +569,8 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["deleteEditButtonVisible"] = DeleteEditButtonVisible;
             PropertyBag["listEditButtonVisible"] = ListEditButtonVisible;
             PropertyBag["contextEntityName"] = _contextEntityName;
-            string entityNameProper = char.ToUpper(_entityName[0]) + _entityName.Substring(1);
-            PropertyBag["entityName"] = entityNameProper;
-            PropertyBag["entityNamePlural"] = Inflector.Pluralize(entityNameProper);
+            PropertyBag["entityName"] = _entityProperName;
+            PropertyBag["entityNamePlural"] = Inflector.Pluralize(_entityProperName);
             PropertyBag["isEditFormLong"] = _isEditFormLong;
         }
 

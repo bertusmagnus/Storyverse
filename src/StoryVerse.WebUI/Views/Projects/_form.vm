@@ -1,4 +1,12 @@
 <tr>
+  <td colspan="4" style="white-space:nowrap; padding:3px 0px 15px 5px">
+    <a href="../stories/list.rails?projectId=$entity.Id">Stories</a> |
+    <a href="../tasks/list.rails?projectId=$entity.Id">Tasks</a> |
+    <a href="../iterations/list.rails?projectId=$entity.Id">Iterations</a> |
+    <a href="../projects/burndown.rails?id=$entity.Id">Burndown</a>
+  </td>
+</tr>
+<tr>
   <td class="label">Name:</td>
   <td >$FormHelper.TextField("entity.Name", "%{onchange='markDirty()'}")</td>
   <td class="label"></td>
@@ -12,9 +20,5 @@
   <td class="label"></td>
   <td></td>
 </tr>
-#if(!$entityIsNew)
-    <div id="components">#parse("projects/_components.vm")</div>
-    #parse("layouts/fragments/burndown.vm")
-#end
 
 

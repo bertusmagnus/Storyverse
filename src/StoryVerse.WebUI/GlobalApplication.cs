@@ -7,7 +7,6 @@
 using System.Reflection;
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Config;
-using StoryVerse.Core.Models;
 
 namespace StoryVerse.WebUI
 {

@@ -1,9 +1,11 @@
 <tr>
+  <td colspan="4" style="white-space:nowrap; padding:3px 0px 15px 5px">
+    <a href="../iterations/burndown.rails?id=$entity.Id">Burndown</a>
+  </td>
+</tr>
+<tr>
   <td class="label">Name:</td>
   <td>$FormHelper.TextField("entity.Name", "%{onchange='markDirty()'}")</td>
   <td class="label">&nbsp;</td>
   <td>&nbsp;</td>
 </tr>
-#if(!$entityIsNew)
-    #parse("layouts/fragments/burndown.vm")
-#end

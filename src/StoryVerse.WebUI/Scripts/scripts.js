@@ -8,7 +8,7 @@ var saving = false;
 
 function handleFormLoad()
 {   
-    if (document.forms[0].name == 'edit')
+    if (document.forms[0] != null && document.forms[0].name == 'edit')
     {
         setEditActionButtons();
     }

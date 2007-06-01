@@ -352,67 +352,56 @@ table.report td.label
 	white-space:nowrap;
 }
 
-div.horizontalGraph
+.chart
 {
 	background-color: white;
 }
 
-div.horizontalGraph div.title
+.chart .title
 {
 	font-size:18px;
-	margin:10px 10px 10px 10px;
-	text-align:center;
-	font-weight:bold;
-	margin:15px;	
+	margin:10px 10px 10px 0px;
+	text-align:left;
+	font-weight:bold;	
 }
 
-div.horizontalGraph div.chartArea
+.chart .chartArea
 {
 	background-color:#d9e4f8;
 	padding:20px;
 }
 
-div.horizontalGraph table.plotArea
+.chart .plotArea
 {
 	background-color:transparent;
 	white-space:nowrap;
-	padding:0px;
-	margin:0px;
+	border-collapse:collapse;
 }
 
-div.horizontalGraph table.plotArea tr
+.chart .plotArea .label
 {
+	font-size:smaller;
 }
 
-div.horizontalGraph table.plotArea td
+.chart .plotArea .value
 {
 	white-space:nowrap;
 }
 
-div.horizontalGraph table.plotArea td.label
-{
-	padding-right:5px;
-}
-
-div.horizontalGraph table.plotArea td.value
-{
-}
-
-div.horizontalGraph div.bar
+.chart .bar
 {
 	background-color:#6f96df;
-	text-align:right
+	text-align:right;
 }
 
-div.horizontalGraph span.dataLabel
+.chart .dataLabel
 {
-	font-size: smaller;
-	margin: 0px 5px 0px 5px;
-	vertical-align: middle;
-	color: white;
+	font-size:smaller;
+	padding:2px;
+	color:white;
 }
 
-div.horizontalGraph td.empty_message
+.chart .empty_message
 {
 	color: #6f96df;
 	text-transform:lowercase;

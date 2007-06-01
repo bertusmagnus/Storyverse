@@ -1,0 +1,9 @@
+#parse("layouts/fragments/head.vm")
+#parse("layouts/fragments/main_menu.vm")
+#parse("layouts/fragments/error.vm")
+<tr>
+  <td colspan="4">
+    $childContent
+  </td>
+</tr>
+#parse("layouts/fragments/foot.vm")

@@ -28,41 +28,48 @@ namespace StoryVerse.WebUI.ViewComponents
             return false;
         }
 
+        private ChartProperties Props
+        {
+            get { return ComponentParams["properties"] as ChartProperties; }
+        }
+
         public override void Render()
         {
-            IDictionary<object, decimal> source = ComponentParams["source"] as IDictionary<object, decimal>;
-            if (source == null)
+            if (Props == null)
+            {
+                throw new ViewComponentException("The chart component requires a parameter named 'properties' of type ChartProperties");
+            }
+
+            if (Props.Source == null)
             {
                 throw new ViewComponentException("The chart component requires a parameter named 'source' which implements IDictionary");
             }
 
             RenderChartStart();
-            
-            if (source.Count == 0)
+
+            if (Props.Source.Count == 0)
             {
                 RenderEmptySection();
             }
             else
             {
-                RenderRows(source);
+                RenderBars();
             }
-            
+
             RenderChartEnd();
+        }
+
+        private void RenderChartStart()
+        {
+            RenderText(string.Format("<div class={0} style='position:absolute'>", Props.CssClass));
+            RenderTitleSection();
+            RenderText("<div class='chartArea'>");
+            RenderText("<table class='plotArea'>");
         }
 
         private void RenderChartEnd()
         {
             RenderText(string.Format("</table></div></div>"));
-        }
-
-        private void RenderChartStart()
-        {
-            string cssClass = ComponentParams["cssClass"] as string;
-            RenderText(string.Format("<div class={0}>", 
-                string.IsNullOrEmpty(cssClass) ? "chart" : cssClass));
-            RenderTitleSection();
-            RenderText("<div class='chartArea'>");
-            RenderText("<table class='plotArea'>");
         }
 
         private void RenderTitleSection()
@@ -71,32 +78,106 @@ namespace StoryVerse.WebUI.ViewComponents
             {
                 RenderSection("title");
             }
+            else if (!string.IsNullOrEmpty(Props.Title))
+            {
+                RenderText(string.Format("<div class='title'>{0}</div>", Props.Title));
+            }
         }
 
-        private void RenderRows(IDictionary<object, decimal> source)
+        private void RenderBars()
+        {
+            if (Props.Orientation == ChartOrientation.Vertical)
+            {
+                RenderVerticalBars();
+            }
+            else
+            {
+                RenderHorizontalBars();
+            }
+        }
+
+        private void RenderVerticalBars()
         {
             StringWriter writer = new StringWriter();
 
-            string labelFormat = ComponentParams["labelFormat"] as string;
+            decimal barPxPerUnit = GetBarLengthPixelsPerDataUnit(Props.Source);
+            const decimal labelMaxFontSize = 14m;
+            decimal labelFontSize = Props.BarWidthPixels * .8m > labelMaxFontSize
+                ? labelMaxFontSize
+                : Props.BarWidthPixels * .8m;
 
-            foreach (KeyValuePair<object, decimal> item in source)
+            foreach (KeyValuePair<object, decimal> item in Props.Source)
             {
-                string html;
-                html = string.Format(
+                decimal barLength = barPxPerUnit * item.Value;
+
+                string html = null;
+                html += 
                     @"<tr>
-                        <td class='label'>{0" + (string.IsNullOrEmpty(labelFormat) ? null : ":" + labelFormat) + "}" +
-                      @"</td>
-                        <td class='value'>
-                          <div class='bar' style='width:{1}px;'>
-                            <span class='dataLabel'>{2}</span>
-                          </div>
+                        <td class='label' style='white-space:nowrap; font-size:{3}px;
+                                    border-right:solid; border-width:1px; padding:3px 3px 0px 3px;'>{0:" + 
+                                    Props.LabelFormat + @"}
                         </td>
-                      </tr>",
-                    item.Key, GetPixelsPersUnit(source) * item.Value, item.Value);
+                        <td class='value'>" +
+                        (barLength.Equals(0) ? null :
+                        @"<div class='bar' style='height:{1}px; width:{2}px; display:table;
+                                    margin-top:2px; margin-bottom:2px;'>
+                            <p class='dataLabel' style='display:table-cell; vertical-align:middle;
+                                    height:100%; font-size:{3}px;'>{4}</p>
+                          </div>") +
+                      @"</td>
+                      </tr>";
+
+                html = string.Format(html, item.Key, Props.BarWidthPixels, barLength, labelFontSize, item.Value);
                 writer.Write(html);
             }
 
             RenderText(writer.ToString());
+        }
+
+        private void RenderHorizontalBars()
+        {
+            StringWriter writer = new StringWriter();
+
+            decimal barPxPerUnit = GetBarLengthPixelsPerDataUnit(Props.Source);
+
+            //write bars
+            writer.Write("<tr>");
+            foreach (KeyValuePair<object, decimal> item in Props.Source)
+            {
+                decimal barLength = barPxPerUnit * item.Value;
+
+                string html;
+                html = string.Format(
+                    @"<td classbarLengthvalue' style='vertical-align:bottom;' align='center'>" +
+                        (barLength > 0 ? 
+                        @"<div class='bar' style='height:{0}px; width:{1}px;
+                                margin-right:3px; margin-left:3px;'>
+                          <p class='dataLabel' style='text-align:center;'>{2}</p>
+                        </div>" : string.Empty) +
+                      @"</td>",
+                    barPxPerUnit * item.Value, 
+                    Props.BarWidthPixels,
+                    item.Value);
+                writer.Write(html);
+            }
+            writer.Write("</tr>");
+
+            //write labels
+            writer.Write("<tr>");
+            foreach (KeyValuePair<object, decimal> item in Props.Source)
+            {
+                string html = string.Format(
+                    @"<td class='label'style='white-space:normal; text-align:center;
+                            border-top:solid; border-width:1px; padding:3px 3px 0px 3px;'>{0:" + 
+                            Props.LabelFormat + @"}
+                    </td>",
+                    item.Key);
+                writer.Write(html);
+            }
+            writer.Write("</tr>");
+
+            RenderText(writer.ToString());
+
         }
 
         private void RenderEmptySection()
@@ -111,7 +192,7 @@ namespace StoryVerse.WebUI.ViewComponents
             }
         }
 
-        private decimal GetPixelsPersUnit(IDictionary<object, decimal> source)
+        private decimal GetBarLengthPixelsPerDataUnit(IDictionary<object, decimal> source)
         {
             decimal maxValue = 0;
             foreach (decimal value in source.Values)
@@ -122,16 +203,7 @@ namespace StoryVerse.WebUI.ViewComponents
                 }
             }
             if (maxValue == 0) return 0;
-
-            int width = 600;
-            if (ComponentParams["width"] != null)
-            {
-                int.TryParse(ComponentParams["width"].ToString(), out width);
-            }
-
-            return width/Math.Round(maxValue, 0);
+            return Props.LongestBarPixels / Math.Round(maxValue, 0);
         }
-
-
     }
 }

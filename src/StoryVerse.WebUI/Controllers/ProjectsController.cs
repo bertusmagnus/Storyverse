@@ -7,17 +7,22 @@
 using System;
 using System.Collections.Generic;
 using Castle.MonoRail.ActiveRecordSupport;
+using Castle.MonoRail.Framework.Helpers;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Criteria;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.Framework;
+using StoryVerse.Helpers;
+using System.Collections;
+using StoryVerse.WebUI.ViewComponents;
 
 namespace StoryVerse.WebUI.Controllers
 {
     [Layout("default"), Rescue("generalerror")]
+    [Helper(typeof(ChartHelper))]
     public class ProjectsController : EntityControllerBase<Project, ProjectCriteria, IEntity>
     {
-        public ProjectsController() : base(true) { }
+        public ProjectsController() : base(false) { }
 
         public override string SortExpression
         {
@@ -35,6 +40,21 @@ namespace StoryVerse.WebUI.Controllers
         {
             project.Company = NullifyIfTransient(project.Company);
             Update(project);
+        }
+
+        [Layout("chart")]
+        public void Burndown()
+        {
+            Project project = Project.Find(new Guid(Context.Params["id"]));
+
+            ChartProperties props = new ChartProperties();
+            props.Source = project.Burndown(project);
+            props.Orientation = ChartOrientation.Vertical;
+            props.LabelFormat = "M/dd/yy (ddd)";
+            props.LongestBarPixels = 600;
+            props.BarWidthPixels = 15;
+            props.Title = "Burndown For " + project.Name;
+            PropertyBag["burndownProps"] = props;
         }
 
         protected override void SetCustomFilterPreset(string presetName)

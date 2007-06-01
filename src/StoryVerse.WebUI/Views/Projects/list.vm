@@ -44,7 +44,8 @@
       <td align="center" style="white-space:nowrap">
           &nbsp;<a href="../stories/list.rails?projectId=$item.Id">Stories</a> |
           <a href="../tasks/list.rails?projectId=$item.Id">Tasks</a> |
-          <a href="../iterations/list.rails?projectId=$item.Id">Iterations</a>&nbsp;
+          <a href="../iterations/list.rails?projectId=$item.Id">Iterations</a> |
+          <a href="../projects/burndown.rails?id=$item.Id">Burndown</a>&nbsp;
       </td>
     #end
     #empty

@@ -1,0 +1,6 @@
+#blockcomponent(ChartComponent with "properties=$burndownProps")
+  #empty
+    <tr><td class='empty_message'>no burndown yet for this iteration</td></tr>
+  #end
+#end
+
