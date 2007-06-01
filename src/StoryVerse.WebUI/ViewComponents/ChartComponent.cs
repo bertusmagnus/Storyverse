@@ -50,8 +50,51 @@ namespace StoryVerse.WebUI.ViewComponents
             </td>";
 
         private decimal? barLengthPixelsPerDataUnitCached;
+        private decimal BarLengthPixelsPerDataUnit
+        {
+            get
+            {
+                if (!barLengthPixelsPerDataUnitCached.HasValue)
+                {
+                    decimal maxValue = 0;
+                    foreach (decimal value in Props.Source.Values)
+                    {
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                        }
+                    }
+                    if (maxValue == 0) return 0;
+                    barLengthPixelsPerDataUnitCached =
+                        Props.LongestBarPixels / Math.Round(maxValue, 0);
+                }
+                return barLengthPixelsPerDataUnitCached.Value;
+            }
+        }
 
         private decimal? fontSizeChached;
+        private string FontSize
+        {
+            get
+            {
+                switch (Props.Orientation)
+                {
+                    case ChartOrientation.Vertical:
+                        if (!fontSizeChached.HasValue)
+                        {
+                            const decimal maxFontSize = 14m;
+                            decimal relativeFontSize = Props.BarWidthPixels * .8m;
+                            fontSizeChached = Props.BarWidthPixels * relativeFontSize > maxFontSize
+                                       ? maxFontSize
+                                       : relativeFontSize;
+                        }
+                        return fontSizeChached.Value.ToString();
+                    case ChartOrientation.Horizontal:
+                    default:
+                        return "normal";
+                }
+            }
+        }
 
         public override bool SupportsSection(string name)
         {
@@ -152,22 +195,6 @@ namespace StoryVerse.WebUI.ViewComponents
             RenderText(writer.ToString());
         }
 
-        private string GetLabel(object labelValue)
-        {
-            string template = null;
-            switch (Props.Orientation)
-            {
-                case ChartOrientation.Vertical:
-                    template = verticalLabelTemplate;
-                    break;
-                case ChartOrientation.Horizontal:
-                    template = horizontalLabelTemplate;
-                    break;
-            }
-            return string.Format(template, FontSize,
-                string.Format("{0:" + Props.LabelFormat + "}", labelValue));
-        }
-
         private void RenderHorizontalBars()
         {
             StringWriter writer = new StringWriter();
@@ -194,7 +221,22 @@ namespace StoryVerse.WebUI.ViewComponents
             writer.Write("</tr>");
 
             RenderText(writer.ToString());
+        }
 
+        private string GetLabel(object labelValue)
+        {
+            string template = null;
+            switch (Props.Orientation)
+            {
+                case ChartOrientation.Vertical:
+                    template = verticalLabelTemplate;
+                    break;
+                case ChartOrientation.Horizontal:
+                    template = horizontalLabelTemplate;
+                    break;
+            }
+            return string.Format(template, FontSize,
+                string.Format("{0:" + Props.LabelFormat + "}", labelValue));
         }
 
         private string GetBar(decimal itemValue)
@@ -226,51 +268,6 @@ namespace StoryVerse.WebUI.ViewComponents
             else
             {
                 RenderText("<tr><td class='empty_message'>No data to display</td></tr>");
-            }
-        }
-
-        private decimal BarLengthPixelsPerDataUnit
-        {
-            get
-            {
-                if (!barLengthPixelsPerDataUnitCached.HasValue)
-                {
-                    decimal maxValue = 0;
-                    foreach (decimal value in Props.Source.Values)
-                    {
-                        if (value > maxValue)
-                        {
-                            maxValue = value;
-                        }
-                    }
-                    if (maxValue == 0) return 0;
-                    barLengthPixelsPerDataUnitCached =
-                        Props.LongestBarPixels / Math.Round(maxValue, 0);
-                }
-                return barLengthPixelsPerDataUnitCached.Value;
-            }
-        }
-
-        private string FontSize
-        {
-            get
-            {
-                switch (Props.Orientation)
-                {
-                    case ChartOrientation.Vertical:
-                        if (!fontSizeChached.HasValue)
-                        {
-                            const decimal maxFontSize = 14m;
-                            decimal relativeFontSize = Props.BarWidthPixels * .8m;
-                            fontSizeChached = Props.BarWidthPixels * relativeFontSize > maxFontSize
-                                       ? maxFontSize
-                                       : relativeFontSize;
-                        }
-                        return fontSizeChached.Value.ToString();
-                    case ChartOrientation.Horizontal:
-                    default:
-                        return "normal";
-                }
             }
         }
     }
