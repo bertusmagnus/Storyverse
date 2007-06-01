@@ -1,6 +1,6 @@
 <div class="section_title">
   $entityNamePlural 
-  #if($userCanEdit)&nbsp;&nbsp;<a href="new.rails">New</a>#end
+  #if($newLinkVisible)&nbsp;&nbsp;<a href="new.rails">New</a>#end
 </div>
 
 <form name="list" action="list.rails" method="post">

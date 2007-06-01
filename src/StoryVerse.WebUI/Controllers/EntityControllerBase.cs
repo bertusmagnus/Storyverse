@@ -99,6 +99,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             ShowError();
             SetViewContext();
+            PropertyBag["newLinkVisible"] = !((Person) Context.CurrentUser).CanViewOnly;
             try
             {
                 if (_hasContext)
@@ -250,7 +251,7 @@ namespace StoryVerse.WebUI.Controllers
 		[Layout("new")]
         public virtual void New()
         {
-            SetViewContext();SetViewContext();
+		    SetViewContext();
             if (_hasContext)
             {
                 ContextEntity.Refresh();
