@@ -257,6 +257,7 @@ namespace StoryVerse.WebUI.Controllers
                 ContextEntity.Refresh();
                 PropertyBag[_contextEntityName] = ContextEntity;
             }
+            PropertyBag["userCanEdit"] = GetUserCanEdit(default(TEntity));
             PropertyBag["entity"] = default(TEntity);
             ShowActionResult();
             PropertyBag["entityIsNew"] = true;
