@@ -1,4 +1,4 @@
-#blockcomponent(GridComponent with "source=$persons") 
+#blockcomponent(GridComponent with "source=$people") 
     #tablestart
       <table class="list">
     #end
