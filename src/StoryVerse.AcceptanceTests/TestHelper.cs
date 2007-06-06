@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.WebHost;
+using NUnit.Framework;
 using WatiN.Core;
 using System.Reflection;
+using Attribute = WatiN.Core.Attribute;
 
 namespace StoryVerse.AcceptanceTests
 {
@@ -25,6 +27,17 @@ namespace StoryVerse.AcceptanceTests
                 }
                 return _ie;
             }
+        }
+
+        public void SetUp()
+        {
+            StartWebServer();
+        }
+
+        public void TearDown()
+        {
+            StopWebServer();
+            _ie.ForceClose();
         }
 
         public void Login()

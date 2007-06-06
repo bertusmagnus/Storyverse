@@ -9,31 +9,25 @@ using WatiN.UnitTests;
 namespace StoryVerse.AcceptanceTests
 {
     [TestFixture]
-    public class WatinTestTestFixture
+    public class CreateAndDeleteTests
     {
-        private TestHelper helper = new TestHelper();
+        private TestHelper h;
         private IE ie;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            helper.StartWebServer();
-            ie = helper.Ie;
+            h = new TestHelper();
+            ie = h.Ie;
+            h.SetUp();
         }
 
         [Test]
-        public void LoginTest()
-        {
-            helper.Login();
-            Assert.IsTrue(ie.ContainsText("Project"));
-        }
-
-        [Test]
-        public void AddAndDeleteProjectTest()
+        public void Can_create_and_delete_project()
         {
             string newProjectName = "TESTPROJECT";
 
-            helper.Login();
+            h.Login();
             ie.Link(Find.ByText("New")).Click();
 
             ie.TextField(Find.ByName("entity.Name")).TypeText(newProjectName);
@@ -60,7 +54,7 @@ namespace StoryVerse.AcceptanceTests
         [TestFixtureTearDown]
         public void TearDown()
         {
-            helper.StopWebServer();
+            h.TearDown();
         }
 
     }
