@@ -76,8 +76,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="TestHelper.cs" />
     <Compile Include="SeleniumExperiment_TestTestFixture.cs" />
-    <Compile Include="FitnesseExperiment_TestTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WatinExperiment_TestFixture.cs" />
   </ItemGroup>

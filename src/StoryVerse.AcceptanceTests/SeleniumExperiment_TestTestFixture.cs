@@ -132,14 +132,6 @@ namespace StoryVerse.AcceptanceTests
             if (webServer != null) webServer.Stop();
         }
 
-        //private void StartWebServerProc()
-        //{
-        //    webServerProc = new Process();
-        //    webServerProc.StartInfo.FileName = @"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\WebDev.WebServer.EXE";
-        //    webServerProc.StartInfo.Arguments = string.Format(@"/port:{0} /path:{1}", webServerPort, physicalPath);
-        //    webServerProc.Start();
-        //}
-
         private static void StopProc(Process proc)
         {
             if (proc != null) proc.Kill();
