@@ -20,5 +20,11 @@
   <td class="label"></td>
   <td></td>
 </tr>
+<tr>
+  <td class="label">Company:</td>
+  <td>
+    #parse("projects/_components.vm")
+  </td>
+</tr>
 
 

@@ -20,7 +20,7 @@
           <tr>
             <td>
               $FormHelper.HiddenField("entity.ComponentsArray[$i].Id")
-              $FormHelper.TextField("entity.ComponentsArray[$i].Name")
+              $FormHelper.TextField("entity.ComponentsArray[$i].Name", "%{ onchange='markDirty()' }")
             </td>
             <td style="vertical-align:middle;">
               #if($userCanEdit && !$entityIsNew)

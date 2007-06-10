@@ -34,10 +34,10 @@ function deleteEstimate(theCell, estimateId)
         #end  
         #cells
           <td style="width:125px; white-space:nowrap;">
-            $!estimate.Date.ToString('ddd MM/dd/yy').Replace(" ", "&nbsp;")
+            $!item.Date.ToString('ddd MM/dd/yy').Replace(" ", "&nbsp;")
           </td>
           <td style="width:50px">
-		    $!estimate.HoursRemaining.ToString("n0") hours
+		    $!item.HoursRemaining.ToString("n0") hours
           </td>
           #if ($userIsAdmin)
             <td>

@@ -187,7 +187,7 @@
     <Content Include="properties.config" />
     <Content Include="components.config" />
     <Content Include="logging.config" />
-    <Content Include="Scripts\Graph.js" />
+    <Content Include="Scripts\scripts.js" />
     <Content Include="Style\style.css" />
     <Content Include="Views\Companies\edit.vm" />
     <Content Include="Views\Companies\list.vm" />

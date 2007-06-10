@@ -55,8 +55,8 @@
         <td><a href="javascript:SortLink('Component');">Component</a></td>
         <td align="center"><a href="javascript:SortLink('TechnicalRisk');">Tech Risk</a></td>
         <td align="center">Tasks</td>
-        <td align="right"><a href="javascript:SortLink('EstimateFiftyPercent');">Estimate (50%)*</a></td>
-        <td align="right"><a href="javascript:SortLink('EstimateNinetyPercent');">Estimate (90%)*</a></td>
+        <td align="right"><a href="javascript:SortLink('EstimateFiftyPercent');">Est (50%)*</a></td>
+        <td align="right"><a href="javascript:SortLink('EstimateNinetyPercent');">Est (90%)*</a></td>
       </tr>
     #end
     #rowstart
