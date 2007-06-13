@@ -244,6 +244,13 @@ table.list tr.filter
 	background-color: #f5f5f5;
 }
 
+table.list tr.filter select,
+table.list tr.filter a,
+table.list tr.filter .verticalCheckboxListItem
+{
+	font-size: 0.8em;
+}
+
 table.list td.presets a
 {
 	color: #3a4fa6;

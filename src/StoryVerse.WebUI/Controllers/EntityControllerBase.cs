@@ -118,16 +118,6 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 PropertyBag["criteria"] = Criteria;
                 PopulateFilterSelects();
-                if (string.IsNullOrEmpty(Form["sortExpression"]))
-                {
-                    EntitiesList.Clear();
-                    EntitiesList.InsertRange(0, ActiveRecordBase<TEntity>.FindAll(Criteria.ToDetachedCriteria()));
-                }
-                else
-                {
-                    SortList(Form["sortExpression"]);
-                }
-
                 PopulateEntitiesList();
 
                 AddListSummary();
@@ -140,17 +130,32 @@ namespace StoryVerse.WebUI.Controllers
 
         private void PopulateEntitiesList()
         {
-            int rowsPerPage = ((Person) Context.CurrentUser).UserPreferences.RowsPerPage;
-            if (rowsPerPage == 0)
+            bool sortRequested = !string.IsNullOrEmpty(Form["sortExpression"]);
+            int rowsPerPage = ((Person)Context.CurrentUser).UserPreferences.RowsPerPage;
+            bool paginated = rowsPerPage != 0;
+            bool isMultiPage = paginated && rowsPerPage < EntitiesList.Count;
+
+            if (!sortRequested || isMultiPage)
             {
-                PropertyBag[EntityListName] = EntitiesList;
+                EntitiesList.Clear();
+                EntitiesList.InsertRange(0, ActiveRecordBase<TEntity>.FindAll(Criteria.ToDetachedCriteria()));
             }
-            else
+
+            if (sortRequested)
+            {
+                SortList(Form["sortExpression"]);
+            }
+
+            if (paginated)
             {
                 int pageNumber;
                 int.TryParse(Context.Params["page"], out pageNumber);
                 PropertyBag[EntityListName] = PaginationHelper.CreatePagination(
                     (ICollection<TEntity>)EntitiesList, rowsPerPage, pageNumber);
+            }
+            else
+            {
+                PropertyBag[EntityListName] = EntitiesList;
             }
         }
 

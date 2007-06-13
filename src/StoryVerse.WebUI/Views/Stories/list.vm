@@ -17,16 +17,10 @@
         <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
         <td>$FormHelper.TextField("criteria.Term", "%{style='width:width:98%'}")</td>
         <td>
-          #set($cblPriorities = $FormHelper.CreateCheckboxList("criteria.Priorities", $priorities) )
-          #foreach($it in $cblPriorities)
-            $cblPriorities.Item() $it <br/>
-          #end
+          #component(CheckboxList with "target=criteria.Priorities" "source=$priorities")
         </td>
         <td>
-          #set($cblStatuses = $FormHelper.CreateCheckboxList("criteria.Statuses", $statuses) )
-          #foreach($it in $cblStatuses)
-            $cblStatuses.Item() $it <br/>
-          #end
+          #component(CheckboxList with "target=criteria.Statuses" "source=$statuses")
         </td>
         <td>
           $FormHelper.Select("criteria.IterationIds", $criteria.IterationIds, $iterations, "%{id='iterationsFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
@@ -37,10 +31,7 @@
           $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('componentsFilter')")
         </td>
         <td>
-          #set($cblTechRisks = $FormHelper.CreateCheckboxList("criteria.TechRisks", $techRisks) )
-          #foreach($it in $cblTechRisks)
-            $cblTechRisks.Item() $it <br/>
-          #end
+          #component(CheckboxList with "target=criteria.TechRisks" "source=$techRisks")
         </td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
