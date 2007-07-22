@@ -80,12 +80,12 @@
             <div class="tip">Double-click to go to the story</div>
           </td>
           <td style="text-align:center; width:50px">
-            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px" onClick="return addStory()";
+            <input type="submit" name="actionButton" class="actionButton" value="&gt;&gt;" style="width:40px" onClick="return addStory();"
               #if(!$userCanEdit || $entityIsNew) disabled="true" #end      
             />
             <br />
             <br/>
-            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px" onClick="return addStory()";
+            <input type="submit" name="actionButton" class="actionButton" value="&lt;&lt;" style="width:40px" onClick="return addStory();"
               #if(!$userCanEdit || $entityIsNew) disabled="true" #end    
             />
           </td>

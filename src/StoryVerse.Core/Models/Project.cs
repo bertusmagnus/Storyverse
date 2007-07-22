@@ -19,11 +19,11 @@ namespace StoryVerse.Core.Models
         private Guid _id;
         private string _name;
         private Company _company;
-        private IList<Story> _storiesList;
-        private IList<Iteration> _iterationsList;
-        private IList<Task> _tasksList;
-        private IList<ProductionRelease> _productionReleasesList;
-        private IList<Component> _componentsList;
+        private IList<Story> _storiesList = new List<Story>();
+        private IList<Iteration> _iterationsList = new List<Iteration>();
+        private IList<Task> _tasksList = new List<Task>();
+        private IList<ProductionRelease> _productionReleasesList = new List<ProductionRelease>();
+        private IList<Component> _componentsList = new List<Component>();
 
         [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id
@@ -47,221 +47,156 @@ namespace StoryVerse.Core.Models
         [HasMany(typeof(Story), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
         private IList<Story> StoriesList
         {
-            get
-            {
-                if (_storiesList == null) _storiesList = new List<Story>();
-                return _storiesList;
-            }
+            get { return _storiesList; }
             set { _storiesList = value; }
         }
 
         [HasMany(typeof(Iteration), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
         private IList<Iteration> IterationsList
         {
-            get
-            {
-                if (_iterationsList == null) _iterationsList = new List<Iteration>();
-                return _iterationsList;
-            }
+            get { return _iterationsList; }
             set { _iterationsList = value; }
         }
 
         [HasMany(typeof(Task), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
         private IList<Task> TasksList
         {
-            get
-            {
-                if (_tasksList == null) _tasksList = new List<Task>();
-                return _tasksList;
-            }
+            get { return _tasksList; }
             set { _tasksList = value; }
         }
 
         [HasMany(typeof(ProductionRelease), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All, Table="ProductionRelease", ColumnKey="Project")]
         private IList<ProductionRelease> ProductionReleasesList
         {
-            get
-            {
-                if (_productionReleasesList == null) _productionReleasesList = new List<ProductionRelease>();
-                return _productionReleasesList;
-            }
+            get { return _productionReleasesList; }
             set { _productionReleasesList = value; }
         }
 
         [HasMany(typeof(Component), RelationType = RelationType.Bag, Lazy = false, Cascade = ManyRelationCascadeEnum.All, Table="Component", ColumnKey="Project")]
         private IList<Component> ComponentsList
         {
-            get
-            {
-                if (_componentsList == null) _componentsList = new List<Component>();
-                return _componentsList;
-            }
+            get { return _componentsList; }
             set { _componentsList = value; }
         }
 
         public IList<Story> Stories
         {
-            get
-            {
-                List<Story> result = new List<Story>();
-                foreach (Story item in StoriesList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Story>(_storiesList).AsReadOnly(); }
         }
 
         public IList<Iteration> Iterations
         {
-            get
-            {
-                List<Iteration> result = new List<Iteration>();
-                foreach (Iteration item in IterationsList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Iteration>(_iterationsList).AsReadOnly();}
         }
 
         public IList<Task> Tasks
         {
-            get
-            {
-                List<Task> result = new List<Task>();
-                foreach (Task item in TasksList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Task>(_tasksList).AsReadOnly(); }
         }
 
         public IList<ProductionRelease> ProductionReleases
         {
-            get
-            {
-                List<ProductionRelease> result = new List<ProductionRelease>();
-                foreach (ProductionRelease item in ProductionReleasesList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<ProductionRelease>(_productionReleasesList).AsReadOnly(); }
         }
 
         public IList<Component> Components
         {
-            get
-            {
-                List<Component> result = new List<Component>();
-                foreach (Component item in ComponentsList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Component>(_componentsList).AsReadOnly(); }
         }
 
         public Component[] ComponentsArray
         {
-            get
-            {
-                Component[] items = new Component[ComponentsList.Count];
-                ComponentsList.CopyTo(items, 0);
-                return items;
-            }
-            set { ComponentsList = new List<Component>(value); }
+            get { return EntityUtility.CollectionToArray(_componentsList); }
+            set { _componentsList = new List<Component>(value); }
         }
 
         public void AddIteration(Iteration item)
         {
-            if (!IterationsList.Contains(item))
+            if (!_iterationsList.Contains(item))
             {
-                IterationsList.Add(item);
+                _iterationsList.Add(item);
                 item.Project = this;
             }
         }
 
         public void RemoveIteration(Iteration item)
         {
-            if (IterationsList.Contains(item))
+            if (_iterationsList.Contains(item))
             {
-                IterationsList.Remove(item);
+                _iterationsList.Remove(item);
                 item.Project = null;
             }
         }
 
         public void AddStory(Story item)
         {
-            if (!StoriesList.Contains(item))
+            if (!_storiesList.Contains(item))
             {
-                StoriesList.Add(item);
+                _storiesList.Add(item);
                 item.Project = this;
             }
         }
 
         public void RemoveStory(Story item)
         {
-            if (StoriesList.Contains(item))
+            if (_storiesList.Contains(item))
             {
-                StoriesList.Remove(item);
+                _storiesList.Remove(item);
                 item.Project = null;
             }
         }
 
         public void AddTask(Task item)
         {
-            if (!TasksList.Contains(item))
+            if (!_tasksList.Contains(item))
             {
-                TasksList.Add(item);
+                _tasksList.Add(item);
             }
         }
 
         public void RemoveTask(Task item)
         {
-            if (TasksList.Contains(item))
+            if (_tasksList.Contains(item))
             {
-                TasksList.Remove(item);
+                _tasksList.Remove(item);
             }
         }
 
         public void AddProductionRelease(ProductionRelease item)
         {
-            if (!ProductionReleasesList.Contains(item))
+            if (!_productionReleasesList.Contains(item))
             {
-                ProductionReleasesList.Add(item);
+                _productionReleasesList.Add(item);
             }
         }
 
         public void RemoveProductionRelease(ProductionRelease item)
         {
-            if (ProductionReleasesList.Contains(item))
+            if (_productionReleasesList.Contains(item))
             {
-                ProductionReleasesList.Remove(item);
+                _productionReleasesList.Remove(item);
             }
         }
 
         public void AddComponent(Component item)
         {
-            if (!ComponentsList.Contains(item))
+            if (!_componentsList.Contains(item))
             {
-                ComponentsList.Add(item);
+                _componentsList.Add(item);
             }
         }
 
         public void RemoveComponent(Component item)
         {
-            if (ComponentsList.Contains(item))
+            if (_componentsList.Contains(item))
             {
-                ComponentsList.Remove(item);
+                _componentsList.Remove(item);
             }
         }
 
         public void RemoveComponent(Guid componentId)
         {
-            foreach (Component item in ComponentsList)
+            foreach (Component item in _componentsList)
             {
                 if (item.Id == componentId)
                 {
@@ -273,7 +208,7 @@ namespace StoryVerse.Core.Models
 
         public void ClearComponents()
         {
-            ComponentsList.Clear();
+            _componentsList.Clear();
         }
 
         public int GetNextStoryNumber()

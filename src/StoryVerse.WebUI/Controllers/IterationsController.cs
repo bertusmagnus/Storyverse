@@ -36,14 +36,9 @@ namespace StoryVerse.WebUI.Controllers
             Iteration iteration = Iteration.Find(new Guid(Context.Params["id"]));
             RefreshContextEntity();
 
-            ChartProperties props = new ChartProperties();
-            props.Source = ContextEntity.Burndown(iteration);
-            props.Orientation = ChartOrientation.Vertical;
-            props.LabelFormat = "M/dd/yy (ddd)";
-            props.LongestBarPixels = 600;
-            props.BarWidthPixels = 15;
-            props.Title = string.Format("Burndown For {0} (Iteration {1})",
-                ContextEntity.Name, iteration.Name);
+            BurndownChartProperties props = 
+                new BurndownChartProperties(ContextEntity.Burndown(iteration));
+            props.Title = "Burndown For " + iteration.Name;
             PropertyBag["burndownProps"] = props;
         }
 

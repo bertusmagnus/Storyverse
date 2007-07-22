@@ -93,6 +93,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\Castle.MonoRail.TestSupport.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.MonoRail.ViewComponents, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.MonoRail.ViewComponents.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.MonoRail.WindsorExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\Castle.MonoRail.WindsorExtension.dll</HintPath>
@@ -160,6 +164,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ViewComponents\BurndownChartProperties.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\EntityControllerBase.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -175,9 +180,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\WebObjectCache.cs" />
     <Compile Include="ViewComponents\CheckboxListComponent.cs" />
-    <Compile Include="ViewComponents\ChartProperties.cs" />
-    <Compile Include="ViewComponents\ChartComponent.cs" />
-    <Compile Include="ViewComponents\ChartOrientation.cs" />
     <Compile Include="ViewComponents\GridComponent.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,7 +212,7 @@
     <Content Include="Views\Iterations\new.vm" />
     <Content Include="Views\Projects\edit.vm" />
     <Content Include="Views\Projects\new.vm" />
-    <Content Include="Views\rescues\generalerror.vm" />
+    <Content Include="rescues\generalerror.vm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StoryVerse.Core\StoryVerse.Core.csproj">

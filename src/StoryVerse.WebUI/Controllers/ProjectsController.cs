@@ -46,12 +46,8 @@ namespace StoryVerse.WebUI.Controllers
         {
             Project project = Project.Find(new Guid(Context.Params["id"]));
 
-            ChartProperties props = new ChartProperties();
-            props.Source = project.Burndown(project);
-            props.Orientation = ChartOrientation.Vertical;
-            props.LabelFormat = "M/dd/yy (ddd)";
-            props.LongestBarPixels = 600;
-            props.BarWidthPixels = 15;
+            BurndownChartProperties props = 
+                new BurndownChartProperties(project.Burndown(project));
             props.Title = "Burndown For " + project.Name;
             PropertyBag["burndownProps"] = props;
         }

@@ -359,59 +359,69 @@ table.report td.label
 	white-space:nowrap;
 }
 
-.chart
+.burndown
 {
-	background-color: white;
+	font-size: 10px;
+	font-family: Arial, Helvetica, Sans-Serif;
+	margin: 20px;
 }
 
-.chart .title
+.burndown .title
 {
-	font-size:18px;
-	margin:10px 10px 10px 0px;
-	text-align:left;
-	font-weight:bold;	
+	padding: 0 0 20px 0;
+	font-size: 1.7em;
+	font-weight: bold;
+	text-align: center;
 }
 
-.chart .chartArea
+.burndown .bar
 {
-	background-color:#d9e4f8;
-	padding:20px;
+	background: #e19d53;
 }
 
-.chart .plotArea
+.burndown .x-unit-label,
+.burndown .y-unit-label,
+.burndown .x-label, 
+.burndown .y-label
 {
-	background-color:transparent;
-	white-space:nowrap;
-	border-collapse:collapse;
+	font-size: 0.8em;
+	color: #993300;
 }
 
-.chart .plotArea .label
+.burndown .plot-area-column, 
+.burndown .plot-area-left-margin, 
+.burndown .plot-area-right-margin
 {
-	font-size:smaller;
+	border-color: #993300;
+	background-color: #fdf8f2;
 }
 
-.chart .plotArea .value
+/* sdfsdfsdf */
+.burndown .plot-area-left-margin
 {
-	white-space:nowrap;
+	border-left-style: solid;
 }
 
-.chart .bar
+.burndown .x-unit-label,
+.burndown .y-unit-label
 {
-	background-color:#6f96df;
-	text-align:right;
+	font-weight: bold;
 }
 
-.chart .dataLabel
+.burndown .x-unit-label
 {
-	font-size:smaller;
-	padding:2px;
-	color:white;
+	padding-top: 4em;
 }
 
-.chart .empty_message
+.burndown .y-unit-label
 {
-	color: #6f96df;
-	text-transform:lowercase;
+	padding-right: 2.5em;
+}
+
+.burndown .gridline 
+{
+	border-top-style: dotted;
+	border-color: #f9d3a9;
 }
 
 

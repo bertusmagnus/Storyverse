@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Castle.MonoRail.ViewComponents</name>
+    </assembly>
+    <members>
+        <member name="T:Castle.MonoRail.ViewComponents.CaptchaImage">
+            <summary>
+            Based on: 
+            http://www.codeproject.com/aspnet/CaptchaControl.asp
+            http://www.codeproject.com/aspnet/CaptchaImage.asp
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.GridComponent.ShowRows(System.Collections.IEnumerable)">
+            <summary>
+            Render the rows from the source, return true if there are rows to render,
+            false otherwise.
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.ChartProperties">
+            <summary>
+            Contains the properties used be ColumnChart view component
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.ChartProperties.#ctor(System.Collections.Generic.IList{Castle.MonoRail.ViewComponents.ChartDataItem})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="data">The data to display on the chart</param>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.ChartProperties.#ctor(System.Collections.Generic.IDictionary{System.Object,System.Decimal})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="data">The data to display on the chart</param>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.Data">
+            <summary>
+            The data to display on the chart (read only)
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.Title">
+            <summary>
+            The title of the chart
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.LabelFormat">
+            <summary>
+            The format used to display the 'X' axis labels.  Uses 
+            standard .NET formatting notation.  Default is no formatting
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.EmptyMessage">
+            <summary>
+            The text of the message to show if the chart contains no data.
+            Defaults is 'No chart data to display'
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.BarWidthPixels">
+            <summary>
+            The width of each bar in pixels.  Default is 30
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.ShowDataLabels">
+            <summary>
+            Indicates whether to show data labels.  Default is FALSE
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.DataFormat">
+            <summary>
+            Format applied to data labels and 'Y' axis labels.  Uses 
+            standard .NET formatting notation
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.PlotHeightPixels">
+            <summary>
+            The height of the plot area of the chart in pixels.  
+            Default is 300
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.GridUnit">
+            <summary>
+            Determines at what interval gridlines are shown from 
+            the 'Y' axis.  Defaut is 10
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.XUnitLabel">
+            <summary>
+            Text indicating the unit that is represented by 
+            'X' axis.  Applies only if the chart does not contain
+            a XUnitLabel section
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.YUnitLabel">
+            <summary>
+            Text indicating the unit that is represented by 
+            'Y' axis.  Applies only if the chart does not contain
+            a YUnitLabel section.
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.BarSpacingPixels">
+            <summary>
+            The number of pixels padded on the left and right of each bar
+            and also added the sides of the plot area.  To 'spread out' 
+            the bars more, increase this value.  Default is 5
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.ItemCount">
+            <summary>
+            The number of items in the chart data (read only)
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.CssClass">
+            <summary>
+            CSS class applied to the chart container.  Default is 
+            "chart".  Applies only if the chart does not contain
+            a title section
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.ShowGridlines">
+            <summary>
+            Indicates whether to show gridlines. Default
+            is TRUE
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartProperties.LabelInterval">
+            <summary>
+            Interval at which to display 'X' axis labels. Default
+            is 1
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.ChartDataItem">
+            <summary>
+            Represents a data item in a single data series chart
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.ChartDataItem.#ctor(System.Object,System.Decimal)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="label">The label for the data item, usually shown on the 'X' axis</param>
+            <param name="value">The value of the data item</param>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartDataItem.Label">
+            <summary>
+            The label for the data item, usually shown on the 'X' axis
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.ViewComponents.ChartDataItem.Value">
+            <summary>
+            The value of the data item
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.SmartGridComponent.SplitPascalCase(System.String)">
+            <summary>
+            Split a PascalCase string into Pascal Case words.
+            Note that if the string contains spaces, we assume it is already formatted
+            http://weblogs.asp.net/jgalloway/archive/2005/09/27/426087.aspx
+            </summary>
+        </member>
+    </members>
+</doc>

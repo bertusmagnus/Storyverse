@@ -99,13 +99,21 @@ namespace StoryVerse.Core.Criteria
         {
             DetachedCriteria criteria = DetachedCriteria.For(typeof(Story));
             if (project != null)
+            {
                 criteria.Add(Expression.Eq("Project", project));
+            }
             if (techRisks != null && techRisks.Length > 0)
+            {
                 criteria.Add(Expression.In("TechnicalRisk", techRisks));
+            }
             if (priorities != null && priorities.Length > 0)
+            {
                 criteria.Add(Expression.In("Priority", priorities));
+            }
             if (statuses != null && statuses.Length > 0)
+            {
                 criteria.Add(Expression.In("Status", statuses));
+            }
             if (iterationIds != null)
             {
                 Disjunction orIterations = new Disjunction();
@@ -139,7 +147,9 @@ namespace StoryVerse.Core.Criteria
                 criteria.Add(orComponents);
             }
             if (number.HasValue)
+            {
                 criteria.Add(Expression.Eq("Number", number));
+            }
             if (!string.IsNullOrEmpty(term))
             {
                 Disjunction orTerm = new Disjunction();
@@ -149,7 +159,9 @@ namespace StoryVerse.Core.Criteria
                 criteria.Add(orTerm);
             }
             if (!string.IsNullOrEmpty(orderBy))
+            {
                 CriteriaUtility.AddOrder(this, criteria);
+            }
             return criteria;
         }
 

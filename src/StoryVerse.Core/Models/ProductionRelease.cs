@@ -15,7 +15,6 @@ namespace StoryVerse.Core.Models
     {
         private Guid _id;
         private string _name;
-        private Project _project;
 
         [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id

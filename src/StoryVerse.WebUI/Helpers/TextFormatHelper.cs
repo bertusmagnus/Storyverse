@@ -4,7 +4,6 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using Castle.MonoRail.Framework.Helpers;
 
 namespace StoryVerse.Helpers

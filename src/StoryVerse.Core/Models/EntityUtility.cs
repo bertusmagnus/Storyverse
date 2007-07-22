@@ -13,6 +13,13 @@ namespace StoryVerse.Core.Models
 {
     public class EntityUtility
     {
+        public static T[] CollectionToArray<T>(ICollection<T> collection)
+        {
+            T[] result = new T[collection.Count];
+            collection.CopyTo(result, 0);
+            return result;
+        }
+
         public static List<string> ValidateCollection<T>(IList<T> collection)
             where T : IEntity
         {
@@ -41,76 +48,63 @@ namespace StoryVerse.Core.Models
             throw new ValidationException("The entity is not valid", messagesArray);
         }
 
-        public static void AddChild<T>(IEntity entity, T item, bool inverse)
-            where T : IEntity
-        {
-            IList<T> list = GetCollection<T>(entity);
-            if (list != null)
-            {
-                if (!list.Contains(item))
-                {
-                    list.Add(item);
-                    if (inverse) SetParent<T>(entity, item);
-                }
-            }
-        }
+        //public static void AddChild<T>(IEntity entity, T item)
+        //    where T : IEntity
+        //{
+        //    IList<T> list = GetCollection<T>(entity);
+        //    if (list != null)
+        //    {
+        //        if (!list.Contains(item))
+        //        {
+        //            list.Add(item);
+        //        }
+        //    }
+        //}
 
-        public static void RemoveChild<T>(IEntity entity, T item, bool inverse)
-            where T : IEntity
-        {
-            IList<T> list = GetCollection<T>(entity);
-            if (list != null)
-            {
-                if (list.Contains(item))
-                {
-                    list.Remove(item);
-                    if (inverse) SetParent<T>(null, item);
-                }
-            }
-        }
+        //public static void RemoveChild<T>(IEntity entity, T item)
+        //    where T : IEntity
+        //{
+        //    IList<T> list = GetCollection<T>(entity);
+        //    if (list != null)
+        //    {
+        //        if (list.Contains(item))
+        //        {
+        //            list.Remove(item);
+        //        }
+        //    }
+        //}
 
-        public static void RemoveChild<T>(IEntity entity, Guid id, bool inverse)
-            where T : IEntity
-        {
-            IList<T> list = GetCollection<T>(entity);
-            foreach (T item in list)
-            {
-                if (item.Id == id)
-                {
-                    if (list.Contains(item))
-                    {
-                        list.Remove(item);
-                        if (inverse) SetParent<T>(null, item);
-                    }
-                    break;
-                }
-            }
-        }
+        //public static void RemoveChild<T>(IEntity entity, Guid id, bool inverse)
+        //    where T : IEntity
+        //{
+        //    IList<T> list = GetCollection<T>(entity);
+        //    foreach (T item in list)
+        //    {
+        //        if (item.Id == id)
+        //        {
+        //            if (list.Contains(item))
+        //            {
+        //                list.Remove(item);
+        //            }
+        //            break;
+        //        }
+        //    }
+        //}
 
-        private static IList<T> GetCollection<T>(IEntity entity)
-            where T : IEntity
-        {
-            IList<T> list = null;
-            foreach (PropertyInfo prop in entity.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
-            {
-                Type type = prop.PropertyType;
-                if (type.IsGenericType && type.GetGenericArguments()[0] == typeof(T) && prop.CanWrite)
-                {
-                    list = (IList<T>)prop.GetValue(entity, null);
-                }
-            }
-            return list;
-        }
+        //private static IList<T> GetCollection<T>(IEntity entity)
+        //    where T : IEntity
+        //{
+        //    IList<T> list = null;
+        //    foreach (PropertyInfo prop in entity.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
+        //    {
+        //        Type type = prop.PropertyType;
+        //        if (type.IsGenericType && type.GetGenericArguments()[0] == typeof(T) && prop.CanWrite)
+        //        {
+        //            list = (IList<T>)prop.GetValue(entity, null);
+        //        }
+        //    }
+        //    return list;
+        //}
 
-        private static void SetParent<T>(IEntity entity, IEntity item)
-        {
-            foreach (PropertyInfo prop in item.GetType().GetProperties())
-            {
-                if (prop.GetType() == typeof(T))
-                {
-                    prop.SetValue(item, entity, null);
-                }
-            }
-        }
     }
 }

@@ -18,7 +18,7 @@ namespace StoryVerse.Core.Models
         private Guid _id;
         private string _name;
         private CompanyType _type;
-        private IList<Person> _employeesList;
+        private IList<Person> _employeesList = new List<Person>();
 
         [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id
@@ -41,55 +41,31 @@ namespace StoryVerse.Core.Models
         [HasMany(typeof(Person), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
         private IList<Person> EmployeesList
         {
-            get
-            {
-                if (_employeesList == null) _employeesList = new List<Person>();
-                return _employeesList;
-            }
+            get { return _employeesList; }
             set { _employeesList = value; }
         }
 
         public IList<Person> Employees
         {
-            get
-            {
-                List<Person> result = new List<Person>();
-                foreach (Person item in EmployeesList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Person>(_employeesList).AsReadOnly(); }
         }
 
         public void AddEmployee(Person item)
         {
-            if (!EmployeesList.Contains(item))
+            if (!_employeesList.Contains(item))
             {
-                EmployeesList.Add(item);
+                _employeesList.Add(item);
                 item.Company = this;
             }
         }
 
         public void RemoveEmployee(Person item)
         {
-            if (EmployeesList.Contains(item))
+            if (_employeesList.Contains(item))
             {
-                EmployeesList.Remove(item);
+                _employeesList.Remove(item);
                 item.Company = null;
             }
-        }
-
-        public void AddChild<T>(T item) 
-            where T : IEntity
-        {
-            EntityUtility.AddChild(this, item, false);
-        }
-
-        public void RemoveChild<T>(T item)
-            where T : IEntity
-        {
-            EntityUtility.RemoveChild(this, item, false);
         }
 
         public UserProjectScope UserProjectScope

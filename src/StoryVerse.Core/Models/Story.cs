@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using Castle.ActiveRecord.Queries;
 using StoryVerse.Core.Lookups;
 using Castle.ActiveRecord;
-using System.Collections;
-using NHibernate.Expression;
 
 namespace StoryVerse.Core.Models
 {
@@ -30,8 +28,8 @@ namespace StoryVerse.Core.Models
         private Project _project;
         private Component _component;
         private Iteration _iteration;
-        private IList<Task> _tasksList;
-        private IList<Test> _testsList;
+        private IList<Task> _tasksList = new List<Task>();
+        private IList<Test> _testsList = new List<Test>();
 
         [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id
@@ -114,102 +112,71 @@ namespace StoryVerse.Core.Models
             set { _component = value; }
         }
 
-        [HasAndBelongsToMany(typeof(Task), Table = "TaskStory",
-            RelationType = RelationType.Bag,
-           ColumnRef = "TaskId", ColumnKey = "StoryId")]
+        [HasAndBelongsToMany(typeof(Task), Table = "TaskStory", RelationType = RelationType.Bag, ColumnRef = "TaskId", ColumnKey = "StoryId")]
         private IList<Task> TasksList
         {
-            get
-            {
-                if (_tasksList == null) _tasksList = new List<Task>();
-                return _tasksList;
-            }
+            get { return _tasksList; }
             set { _tasksList = value; }
         }
 
         [HasMany(typeof(Test), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All, Table = "Test", ColumnKey = "Story")]
         private IList<Test> TestsList
         {
-            get
-            {
-                if (_testsList == null) _testsList = new List<Test>();
-                return _testsList;
-            }
+            get { return _testsList; }
             set { _testsList = value; }
         }
 
         public IList<Task> Tasks
         {
-            get
-            {
-                List<Task> result = new List<Task>();
-                foreach (Task item in _tasksList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Task>(_tasksList).AsReadOnly(); }
         }
 
         public IList<Test> Tests
         {
-            get
-            {
-                List<Test> result = new List<Test>();
-                foreach (Test item in TestsList)
-                {
-                    result.Add(item);
-                }
-                return result.AsReadOnly();
-            }
+            get { return new List<Test>(_testsList).AsReadOnly(); }
         }
 
         public Test[] TestsArray
         {
-            get
-            {
-                Test[] items = new Test[TestsList.Count];
-                TestsList.CopyTo(items, 0);
-                return items;
-            }
-            set { TestsList = new List<Test>(value); }
+            get { return EntityUtility.CollectionToArray(_testsList); }
+            set { _testsList = new List<Test>(value); }
         }
 
         public void AddTask(Task item)
         {
-            if (!TasksList.Contains(item))
+            if (!_tasksList.Contains(item))
             {
-                TasksList.Add(item);
+                _tasksList.Add(item);
             }
         }
 
         public void RemoveTask(Task item)
         {
-            if (TasksList.Contains(item))
+            if (_tasksList.Contains(item))
             {
-                TasksList.Remove(item);
+                _tasksList.Remove(item);
             }
         }
 
         public void AddTest(Test item)
         {
-            if (!TestsList.Contains(item))
+            if (!_testsList.Contains(item))
             {
-                TestsList.Add(item);
+                _testsList.Add(item);
             }
         }
 
         public void RemoveTest(Test item)
         {
-            if (TestsList.Contains(item))
+            if (_testsList.Contains(item))
             {
-                TestsList.Remove(item);
+                _testsList.Remove(item);
             }
         }
 
         public void ClearTests()
         {
-            TestsList.Clear();
+            _testsList.Clear();
         }
 
         public int GetNextTestNumber()
@@ -329,10 +296,10 @@ namespace StoryVerse.Core.Models
                     relativeValue = Status != null ? Status.Value.CompareTo(other.Status) : -1;
                     break;
                 case "EstimateFiftyPercent":
-                    relativeValue = EstimateFiftyPercent.Value.CompareTo(other.EstimateFiftyPercent);
+                    relativeValue = EstimateFiftyPercent != null ? EstimateFiftyPercent.Value.CompareTo(other.EstimateFiftyPercent) : -1;
                     break;
                 case "EstimateNinetyPercent":
-                    relativeValue = EstimateNinetyPercent.Value.CompareTo(other.EstimateNinetyPercent);
+                    relativeValue = EstimateNinetyPercent != null ? EstimateNinetyPercent.Value.CompareTo(other.EstimateNinetyPercent) : -1;
                     break;
                 default:
                     relativeValue = 0;
