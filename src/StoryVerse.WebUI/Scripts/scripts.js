@@ -8,9 +8,10 @@ var saving = false;
 
 function handleFormLoad()
 {   
-    if (document.forms[0] != null && document.forms[0].name == 'edit')
+    var f = document.forms[0];
+    if (f != null && (f.name == 'edit' || f.name == 'new'))
     {
-        setEditActionButtons();
+        setDetailActionButtons();
     }
 }
 
@@ -64,9 +65,13 @@ function confirmUnloadIfDirty()
 function markDirty()
 {
     document.getElementById('isDirty').value = 'true';
-    setEditActionButtons();
+    setDetailActionButtons();
     
-    clearChildElements(document.getElementById('error')); 
+    var error = document.getElementById('error');
+    if (error != null)
+    {
+        clearChildElements(error); 
+    }
        
     //ToDo: this is a hack.  There are two elements with id of 'actionResult'.  
     //This is done to allow ajaxhelper to populate the result message in two places
@@ -82,7 +87,7 @@ function markDirty()
 
 function clearChildElements(element)
 {
-    if  (element.hasChildNodes())
+    if  (element != null && element.hasChildNodes())
     {
         while (element.childNodes.length > 0)
         {
@@ -94,7 +99,7 @@ function clearChildElements(element)
 function markClean()
 {
     document.getElementById('isDirty').value = 'false';
-    setEditActionButtons();
+    setDetailActionButtons();
 }
 
 function updateEstimate()
@@ -136,14 +141,35 @@ function newTask()
     submitToAction('newTask');
 }
 
-function setEditActionButtons()
+function setDetailActionButtons()
 {
-    var canSave = document.getElementById('isDirty').value == 'true' &&
+    if (document.forms[0] == null) return;
+
+    var buttonTop;
+    var buttonBottom;
+    if (document.forms[0].name == 'edit')
+    {
+        buttonTop = document.getElementById('saveButtonTop');
+        buttonBottom = document.getElementById('saveButtonBottom');
+        
+    }
+    else if (document.forms[0].name == 'new')
+    {
+        buttonTop = document.getElementById('createButtonTop');
+        buttonBottom = document.getElementById('createButtonBottom');
+    }
+
+    var canEdit = document.getElementById('isDirty').value == 'true' &&
                   document.getElementById('userCanEdit').value == 'True';
-    var saveTop = document.getElementById('saveButtonTop');
-    var saveBottom = document.getElementById('saveButtonBottom');
-    if (saveTop!= null) saveTop.disabled = !canSave;
-    if (saveBottom!= null) saveBottom.disabled = !canSave;
+
+    if (buttonTop!= null) 
+    {
+        buttonTop.disabled = !canEdit;
+    }
+    if (buttonBottom!= null)
+    {
+        buttonBottom.disabled = !canEdit;
+    }
 }
 
 function clearMultiSelect(name)

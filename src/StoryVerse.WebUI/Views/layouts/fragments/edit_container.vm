@@ -5,8 +5,10 @@
   <div class="section_title">
      $entityName Detail
   </div>
+  
   <input type="hidden" id="isDirty" value="false" />
-  <table class="detail" onLoad='setEditActionButtons()'>
+  
+  <table class="detail">
     #if ($isEditFormLong)
       <tr class="top_buttons">
           #set($position="Top")
