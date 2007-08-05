@@ -25,6 +25,7 @@ function deleteEntity(itemTypeName)
 
 function createEntity()
 {
+    markClean();
     submitToAction("create");
     return true;
 }
