@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.IO;
 using Castle.MonoRail.Framework;
 using Castle.MonoRail.Framework.Helpers;
 
@@ -101,14 +100,16 @@ namespace StoryVerse.WebUI.ViewComponents
             }
             else
             {
-                if (isHorizontal)
+                string cssClass = ComponentParams["cssClass"] as string;
+                if (string.IsNullOrEmpty(cssClass))
                 {
-                    RenderText("<span class='horizontalCheckboxListItem'>");
+                    cssClass = string.Format("{0}CheckboxListItem", 
+                        isHorizontal
+                            ? "horizontal"
+                            : "vertical");
                 }
-                else
-                {
-                    RenderText("<div class='verticalCheckboxListItem'>");
-                }
+                RenderText(string.Format("<{0} class='{1}'>", 
+                    isHorizontal ? "span" : "div", cssClass));
             }
         }
 
