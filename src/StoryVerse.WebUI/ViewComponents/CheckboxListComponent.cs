@@ -11,8 +11,33 @@ namespace StoryVerse.WebUI.ViewComponents
 
         private static readonly string[] sections = new string[]
             {
-                "label", "itemStart", "itemEnd"
+                "label", "containerStart", "containerEnd", "itemStart", "itemEnd"
             };
+
+        private string CssPrefix
+        {
+            get { return isHorizontal ? "horizontal" : "vertical"; }
+        }
+
+        private string CssClassList
+        {
+            get
+            {
+                string cssClass = ComponentParams["cssClass"] as string;
+                if (!string.IsNullOrEmpty(cssClass)) return cssClass;
+                return string.Format("{0}CheckboxListItem", CssPrefix);
+            }
+        }
+
+        private string CssClassItem
+        {
+            get
+            {
+                string cssClass = ComponentParams["cssClassItem"] as string;
+                if (!string.IsNullOrEmpty(cssClass)) return cssClass;
+                return string.Format("{0}CheckboxList", CssPrefix);
+            }
+        }
 
         public override bool SupportsSection(string name)
         {
@@ -51,17 +76,50 @@ namespace StoryVerse.WebUI.ViewComponents
             FormHelper.CheckboxList list = helper.CreateCheckboxList(
                 target, source, GetHtmlAttibutes());
 
+            RenderStart();
+
+            int index = 0;
             foreach (object item in list)
             {
                 PropertyBag["item"] = item;
                 RenderItemStart();
                 RenderText(list.Item());
-                RenderLabel(item);
+                string checkboxId = string.Format("{0}_{1}_", target.Replace('.', '_'), index);
+                RenderLabel(item, checkboxId);
                 RenderItemEnd();
+                index++;
+            }
+
+            RenderEnd();
+        }
+
+        private void RenderStart()
+        {
+            if (Context.HasSection("containerEnd"))
+            {
+                RenderSection("containerEnd");
+            }
+            else
+            {
+                RenderText(string.Format(
+                    "<div class='{0}' style='overflow:auto; white-space:nowrap;'>", 
+                    CssClassList));
             }
         }
 
-        private void RenderLabel(object item)
+        private void RenderEnd()
+        {
+            if (Context.HasSection("containerStart"))
+            {
+                RenderSection("containerStart");
+            }
+            else
+            {
+                RenderText("</div>");
+            }
+        }
+
+        private void RenderLabel(object item, string forId)
         {
             if (Context.HasSection("label"))
             {
@@ -69,7 +127,7 @@ namespace StoryVerse.WebUI.ViewComponents
             }
             else
             {
-                RenderText(item.ToString());
+                RenderText(string.Format("<label for='{0}'>{1}</label>", forId, item));
             }
         }
 
@@ -100,16 +158,8 @@ namespace StoryVerse.WebUI.ViewComponents
             }
             else
             {
-                string cssClass = ComponentParams["cssClass"] as string;
-                if (string.IsNullOrEmpty(cssClass))
-                {
-                    cssClass = string.Format("{0}CheckboxListItem", 
-                        isHorizontal
-                            ? "horizontal"
-                            : "vertical");
-                }
-                RenderText(string.Format("<{0} class='{1}'>", 
-                    isHorizontal ? "span" : "div", cssClass));
+                RenderText(string.Format("<{0} class='{1}'>",
+                    isHorizontal ? "span" : "div", CssClassItem));
             }
         }
 
