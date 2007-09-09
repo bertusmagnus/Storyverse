@@ -11,6 +11,306 @@
             http://www.codeproject.com/aspnet/CaptchaImage.asp
             </summary>
         </member>
+        <member name="T:Castle.MonoRail.ViewComponents.FaqItemComponent">
+             <summary>
+             ViewComponent to build one item of a Frequently Asked Questions list. 
+             The generated markup displays the question, and using DHTML, displays &amp; hides 
+             the answer when the question text is clicked.
+             </summary>
+             <remarks><para>
+             FaqItemComponent is one of two different components for creating FAQ pages.
+             </para><para>
+             It is intended for it format FAQ entries where the text in hard-coded in the view.
+             To format FAQ entries where the text is comes from an external data source, see <seealso cref="T:Castle.MonoRail.ViewComponents.FaqListComponent"/>.
+             </para><para>
+             FaqItem is a block component which has two required sections, 
+             <c>"question"</c> and <c>"answer"</c>, and four optional parameters.
+             </para>
+             <list type="table">
+             <listheader>
+             <term>Section</term>
+             <description>Description</description>
+             </listheader>
+             <item>
+             <term>        #question          </term>
+             <description>
+             
+             Contains the text of a Frequently asked question.  The text is 
+             always displayed on the page.  Clicking this text will display the answer.
+             
+             
+             </description>
+             </item>
+             <item>
+             <term>        #answer             </term>
+             <description>
+             
+             Contains the text of the answer to the FAQ.  The text is initially hidden,
+             and only displayed when the question is clicked.
+             
+             </description>
+             </item>
+             </list>
+             <list type="table">
+             <listheader>
+             <term>Parameter</term>
+             <description>Description</description>
+             </listheader>
+             <item>
+             <term>       QuestionCssClass      </term>
+             <description>
+             
+             CSS Class used for the DIV block holding the question.
+             (Default: <b>Question</b>)
+             
+             </description>
+             </item>
+             <item>
+             <term>       AnswerCssClass        </term>
+             <description>
+             
+             CSS Class used for the DIV block holding the answer. 
+             (Default: <b>Answer</b>)</description>
+             
+             </item>
+             <item>
+             <term>       WrapItems             </term>
+             <description>
+             
+             If set to "true", each question/answer block will be wrapped in a LI tags, 
+             so that a series of FaqItemComponents can be made a ordered (OL) or unordered (UL) list. 
+             (Default:<b>False</b>)
+             
+             </description>
+             </item>
+             <item>
+             <term>       Sticky                 </term>
+             <description>
+             
+             If set to "True", the values given for the other parameters will be used for all
+             subsequent FaqItemComponents on this page. If <i>explicitly</i> set to "False", 
+             previously save values are forgotten.(Default:<b>False</b>)</description>
+             
+             </item>
+             </list>
+             
+             <b>NOTE:</b> This ViewComponent makes use of the prototype.js javascript library, and therefore
+             requires the following line appears in either the view which FaqItemComponent is used, or the layout 
+             template used by that view:
+             <code>
+             $AjaxHelper.GetJavascriptFunctions()
+             </code>
+             
+             Copyright © 2007, James M. Curran  <br/>
+             Licensed under the Apache License, Version 2.0
+             </remarks>
+             <example>
+             <code><![CDATA[
+             #blockcomponent (FaqItemComponent) 
+             #question 
+              Is MonoRail stable? Why it's not 1.0? 
+             #end 
+            
+             #answer 
+                 Yes, very stable, albeit there's always room for improvements. 
+                 Check our issue tracker. 
+             
+                  We are not 1.0 because there are important features not 
+                  implemented yet, like Caching and Logging support.
+             #end
+             #end
+             ]]></code>
+             will generate the following markup:
+             <code><![CDATA[
+             <div id="Faq_Q1" onclick="Element.toggle('Faq_A1')" class="Question">
+             Is MonoRail stable? Why it's not 1.0?  
+             </div>
+             <div id="Faq_A1" style="display:none" class="Answer">
+                  <br/>
+                 Yes, very stable, albeit there's always room for improvements. 
+                 Check our issue tracker. 
+             
+                  We are not 1.0 because there are important features not 
+                  implemented yet, like Caching and Logging support. 
+             <hr/>
+             </div>
+             ]]></code>
+             
+             </example>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.FaqItemComponent.Initialize">
+            <summary>
+            Initializes this instance.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.FaqItemComponent.Render">
+            <summary>
+            Renders this instance.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.FaqItemComponent.SupportsSection(System.String)">
+            <summary>
+            Indicates if the section is supported by the FaqViewComponent.
+            </summary>
+            <param name="name">The name of the section.</param>
+            <returns>Returns true for "question" or "answer"; and false otherwise.</returns>
+            <remarks>Called by the framework.</remarks>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.QnA">
+            <summary>
+            Simple class to hold a Question &amp; Answer pair.
+            </summary>
+            <remarks>
+            <list type="table">
+            <listheader>
+            <term>Section</term>
+            <description>Description</description>
+            </listheader>
+            <item>
+            <term>        Question          </term>
+            <description>
+            
+            Contains the text of a Frequently asked question.  The text is 
+            always displayed on the page.  Clicking this text will display the answer.
+            
+            
+            </description>
+            </item>
+            <item>
+            <term>        Answer             </term>
+            <description>
+            
+            Contains the text of the answer to the FAQ.  The text is initially hidden,
+            and only displayed when the question is clicked.
+            
+            </description>
+            </item>
+            </list> 
+            </remarks>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.FaqListComponent">
+            <summary>
+            ViewComponent to build a list of Frequently Asked Questions.
+            The generated markup displays the question, and using DHTML, displays &amp; hides 
+            the answer when the question text is clicked.
+            </summary>
+            <remarks><para>
+            FaqItemComponent is one of two different components for creating FAQ pages.
+            </para><para>
+            It is intended to format FAQ entries where the text is comes from an external data source. <br/>
+            To format FAQ entries where the text in hard-coded in the view, see <seealso cref="T:Castle.MonoRail.ViewComponents.FaqItemComponent"/>.
+            </para><para>
+            FaqItem is a line component which has no subsections, one required and three optional parameters.
+            </para>
+            <list type="table">
+            <listheader>
+            <term>Parameter</term>
+            <description>Description</description>
+            </listheader>
+            <item>
+            <term>       Elements      </term>
+            <description>
+            
+            An IEnumerable collection of <see cref="T:Castle.MonoRail.ViewComponents.QnA"/> objects, holding the
+            text of the FAQs to display.  (Required, no default)
+            
+            </description>
+            </item>
+            <item>
+            <term>       QuestionCssClass      </term>
+            <description>
+            
+            CSS Class used for the DIV block holding the question.
+            (Default: <b>Question</b>)
+            
+            </description>
+            </item>
+            <item>
+            <term>       AnswerCssClass        </term>
+            <description>
+            
+            CSS Class used for the DIV block holding the answer. 
+            (Default: <b>Answer</b>)</description>
+            
+            </item>
+            <item>
+            <term>       ListType             </term>
+            <description>
+            Indicates how the items should be formatted into alist.  
+            Must be one of values in the table below. (Default: <b>None</b>)
+            
+            </description>
+            </item>
+            </list>
+            
+            <list type="table">
+            <listheader>
+            <term>ListType</term>
+            <description>Description</description>
+            </listheader>
+            <item>
+            <term>        None                 </term>
+            <description>
+            
+            Items are rendered without any form of list structure.
+            
+            </description>
+            </item>
+            <item>
+            <term>        Ordered             </term>
+            <description>
+            
+            Items are numbered.  ("OL" and "Numbered" are acceptable alternatives)
+            
+            </description>
+            </item>
+            <item>
+            <term>        Unordered            </term>
+            <description>
+            
+            Items are bulleted.   ("UL" and "bullet" are acceptable alternatives)
+            
+            </description>
+            </item>
+            </list>
+            <b>NOTE:</b> This ViewComponent makes use of the prototype.js javascript library, and therefore
+            requires the following line appears in either the view which FaqItemComponent is used, or the layout 
+            template used by that view:
+            <code>
+            $AjaxHelper.GetJavascriptFunctions()
+            </code>
+            
+            Copyright © 2007, James M. Curran  <br/>
+            Licensed under the Apache License, Version 2.0
+            </remarks>
+            <example><code><![CDATA[
+            #component (FaqListComponent with "Elements=$faqItems")
+            ]]></code>
+            See <see cref="T:Castle.MonoRail.ViewComponents.FaqItemComponent"/> for example of markup generated.
+            </example>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.FaqListComponent.Initialize">
+            <summary>
+            Called by the framework once the component instance
+            is initialized
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.FaqListComponent.Render">
+            <summary>
+            Called by the framework so the component can
+            render its content
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.FaqParameters">
+            <summary>
+            Private class used to pass around parameter easily.
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.ViewComponents.FaqItemHelper">
+            <summary>
+            Private class to do the really work of FaqItemComponent &amp; FaqListComponent.
+            </summary>
+        </member>
         <member name="M:Castle.MonoRail.ViewComponents.GridComponent.ShowRows(System.Collections.IEnumerable)">
             <summary>
             Render the rows from the source, return true if there are rows to render,
@@ -157,6 +457,15 @@
             Note that if the string contains spaces, we assume it is already formatted
             http://weblogs.asp.net/jgalloway/archive/2005/09/27/426087.aspx
             </summary>
+        </member>
+        <member name="M:Castle.MonoRail.ViewComponents.CheckboxListComponent.PascalCaseToPhrase(System.String)">
+            <summary>
+            Converts pascal case string into a phrase,  Treats consecutive capital 
+            letters as a word.  For example, 'HasABCDAcronym' would be tranformed to
+            'Has ABCD Acronym'
+            </summary>
+            <param name="input">A string containing pascal case words</param>
+            <returns>string</returns>
         </member>
     </members>
 </doc>

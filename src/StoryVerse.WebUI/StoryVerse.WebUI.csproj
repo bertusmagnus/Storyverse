@@ -179,7 +179,6 @@
     <Compile Include="Utility\IWebObjectCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\WebObjectCache.cs" />
-    <Compile Include="ViewComponents\CheckboxListComponent.cs" />
     <Compile Include="ViewComponents\GridComponent.cs" />
   </ItemGroup>
   <ItemGroup>

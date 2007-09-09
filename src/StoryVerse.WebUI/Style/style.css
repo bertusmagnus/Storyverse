@@ -246,7 +246,7 @@ table.list tr.filter
 
 table.list tr.filter select,
 table.list tr.filter a,
-table.list tr.filter .verticalCheckboxListItem
+table.list tr.filter .verticalCheckboxList label
 {
 	font-size: 0.8em;
 }

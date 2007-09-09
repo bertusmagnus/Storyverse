@@ -5,7 +5,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Castle.ActiveRecord;
 using Castle.MonoRail.ActiveRecordSupport;
 using StoryVerse.Core.Models;
