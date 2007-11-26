@@ -24,9 +24,10 @@ namespace StoryVerse.WebUI.ViewComponents
         private string id;
         private string showButtonImagePath;
         private string hideButtonImagePath;
+        private bool toggleOnClickHeader;
         private string cssClass;
         private string style;
-        private bool visible;
+        private bool collapsed;
         private string initialCommand;
         private string panelId;
         private string toggleId;
@@ -46,12 +47,12 @@ namespace StoryVerse.WebUI.ViewComponents
 
             GetParameters();
 
-            initialCommand = visible ? "Hide" : "Show";
+            initialCommand = collapsed ? "Show" : "Hide";
             panelId = string.Format("{0}Panel", id);
             toggleId = string.Format("{0}Toggle", id);
             javascriptCall = string.Format("javascript:{0}(\"{1}\", \"{2}\")",
                 javascriptFunctionName, panelId, toggleId);
-            initialImage = visible ? hideButtonImagePath : showButtonImagePath;
+            initialImage = collapsed ? showButtonImagePath : hideButtonImagePath;
             useImage =
                 !string.IsNullOrEmpty(showButtonImagePath) ||
                 !string.IsNullOrEmpty(hideButtonImagePath);
@@ -68,9 +69,10 @@ namespace StoryVerse.WebUI.ViewComponents
             hideButtonImagePath = ComponentParams["hideButtonImagePath"] as string;
             cssClass = ComponentParams["cssClass"] as string;
             style = ComponentParams["style"] as string;
-            visible = GetBoolParamValue("visible", true);
+            collapsed = GetBoolParamValue("collapsed", false);
             effect = ComponentParams["effect"] as string ?? "blind";
             effectDuration = ComponentParams["effectDuration"] as decimal? ?? 0.4m;
+            toggleOnClickHeader = GetBoolParamValue("toggleOnClickHeader", false);
         }
 
         public override void Render()
@@ -107,12 +109,19 @@ namespace StoryVerse.WebUI.ViewComponents
 
         private void RenderHeader()
         {
-            RenderText("<div class='header'>");
+            string toolTipAttribute = "title='Click to show/hide'";
+
+            RenderText(string.Format("<div class='header'{0}>", 
+                toggleOnClickHeader 
+                    ? string.Format(" onclick='{0}' style='cursor:pointer;' {1}",
+                        javascriptCall, toolTipAttribute) 
+                    : null));
 
             if (useImage)
             {
-                RenderText(string.Format(@"<img id='{0}' src='{1}' class='toggleImage' onclick='{2}' alt='{3}'/>", 
-                    toggleId, initialImage, javascriptCall, initialCommand));
+                RenderText(string.Format("<img id='{0}' src='{1}' class='toggleImage' " + 
+                                         "onclick='{2}' alt='{3}' {4}/>",
+                    toggleId, initialImage, javascriptCall, initialCommand, toolTipAttribute));
             }
 
             if (Context.HasSection("heading"))
@@ -120,7 +129,7 @@ namespace StoryVerse.WebUI.ViewComponents
                 RenderSection("heading");
             }
 
-            if (!useImage)
+            if (!useImage && !toggleOnClickHeader)
             {
                 RenderText(string.Format("<a id='{0}' href='{1}' class='toggleLink'>{2}</a>",
                     toggleId, javascriptCall, initialCommand));
@@ -132,7 +141,7 @@ namespace StoryVerse.WebUI.ViewComponents
         private void RenderContent()
         {
             RenderText(string.Format("<div id='{0}' class='content'{1}>",
-                panelId, visible ? null : "style='display:none'"));
+                panelId, collapsed ? "style='display:none'" : null));
 
             if (Context.HasSection("content"))
             {
