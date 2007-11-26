@@ -1,10 +1,11 @@
 using System;
 using Castle.MonoRail.Framework;
 using Castle.MonoRail.Framework.Helpers;
+using Castle.MonoRail.ViewComponents;
 
 namespace StoryVerse.WebUI.ViewComponents
 {
-    public class CollapsiblePanelComponent : ViewComponent
+    public class CollapsiblePanelComponent : ViewComponentEx
     {
         private static readonly string[] sections = new string[] { "content", "heading", };
 
@@ -39,12 +40,6 @@ namespace StoryVerse.WebUI.ViewComponents
 
         public override void Initialize()
         {
-            base.Initialize();
-
-            ScriptaculousHelper helper = new ScriptaculousHelper();
-            helper.SetController(RailsContext.CurrentController);
-            RenderText(helper.InstallScripts());
-
             GetParameters();
 
             initialCommand = collapsed ? "Show" : "Hide";
@@ -56,6 +51,8 @@ namespace StoryVerse.WebUI.ViewComponents
             useImage =
                 !string.IsNullOrEmpty(showButtonImagePath) ||
                 !string.IsNullOrEmpty(hideButtonImagePath);
+
+            base.Initialize();
         }
 
         private void GetParameters()
@@ -83,13 +80,13 @@ namespace StoryVerse.WebUI.ViewComponents
 
         private void RenderComponent()
         {
-            RenderText(string.Format("<div id='{0}' class='{1}'{2}>", id,
+            RenderTextFormat("<div id='{0}' class='{1}'{2}>", id,
                 !string.IsNullOrEmpty(cssClass) 
                     ? cssClass 
                     : "collapsiblePanel",
                 !string.IsNullOrEmpty(style) 
                     ? string.Format("style='{0}'", style) 
-                    : null));
+                    : null);
 
             RenderHeader();
 
@@ -102,6 +99,10 @@ namespace StoryVerse.WebUI.ViewComponents
         {
             if (Context.ContextVars[wasJsRenderedKey] as bool? != true)
             {
+                ScriptaculousHelper helper = new ScriptaculousHelper();
+                helper.SetController(RailsContext.CurrentController);
+                RenderText(helper.InstallScripts());
+
                 RenderText(AjaxHelper.ScriptBlock(ToggleJsFunction));
                 Context.ContextVars[wasJsRenderedKey] = true;
             }
@@ -111,17 +112,17 @@ namespace StoryVerse.WebUI.ViewComponents
         {
             string toolTipAttribute = "title='Click to show/hide'";
 
-            RenderText(string.Format("<div class='header'{0}>", 
+            RenderTextFormat("<div class='header'{0}>", 
                 toggleOnClickHeader 
                     ? string.Format(" onclick='{0}' style='cursor:pointer;' {1}",
                         javascriptCall, toolTipAttribute) 
-                    : null));
+                    : null);
 
             if (useImage)
             {
-                RenderText(string.Format("<img id='{0}' src='{1}' class='toggleImage' " + 
+                RenderTextFormat("<img id='{0}' src='{1}' class='toggleImage' " + 
                                          "onclick='{2}' alt='{3}' {4}/>",
-                    toggleId, initialImage, javascriptCall, initialCommand, toolTipAttribute));
+                    toggleId, initialImage, javascriptCall, initialCommand, toolTipAttribute);
             }
 
             if (Context.HasSection("heading"))
@@ -131,8 +132,8 @@ namespace StoryVerse.WebUI.ViewComponents
 
             if (!useImage && !toggleOnClickHeader)
             {
-                RenderText(string.Format("<a id='{0}' href='{1}' class='toggleLink'>{2}</a>",
-                    toggleId, javascriptCall, initialCommand));
+                RenderTextFormat("<a id='{0}' href='{1}' class='toggleLink'>{2}</a>",
+                    toggleId, javascriptCall, initialCommand);
             }
 
             RenderText("</div>");
@@ -140,8 +141,8 @@ namespace StoryVerse.WebUI.ViewComponents
 
         private void RenderContent()
         {
-            RenderText(string.Format("<div id='{0}' class='content'{1}>",
-                panelId, collapsed ? "style='display:none'" : null));
+            RenderTextFormat("<div id='{0}' class='content'{1}>",
+                panelId, collapsed ? "style='display:none'" : null);
 
             if (Context.HasSection("content"))
             {
@@ -183,16 +184,6 @@ function {0}(controlName, togglerName)
                 useImage ? "alt" : "innerHTML",
                 showButtonImagePath, hideButtonImagePath);
             }
-        }
-
-        private bool GetBoolParamValue(string paramName, bool defaultValue)
-        {
-            object paramValue = ComponentParams[paramName];
-            if (paramValue == null)
-            {
-                return defaultValue;
-            }
-            return Convert.ToBoolean(paramValue);
         }
     }
 }
