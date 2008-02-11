@@ -54,7 +54,7 @@
       </td>
     #end
     #empty
-      <tr><td class="nodata_message" colspan="5">- no matching $entityNamePlural -</td></tr>
+      <tr><td class="nodata_message" colspan="6">- no matching $entityNamePlural -</td></tr>
     #end
 #end
 

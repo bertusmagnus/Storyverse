@@ -70,7 +70,7 @@ namespace StoryVerse.Core.Models
             set { _title = value; }
         }
 
-        [Property, ValidateNonEmpty("Description is required.")]
+        [Property(SqlType = "nvarchar(MAX)"), ValidateNonEmpty("Description is required.")]
         public string Description
         {
             get { return _description; }

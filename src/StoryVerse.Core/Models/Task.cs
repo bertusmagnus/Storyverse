@@ -39,13 +39,13 @@ namespace StoryVerse.Core.Models
             get { return _title; }
             set { _title = value; }
         }
-        [Property(SqlType = "ntext")]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string Description
         {
             get { return _description; }
             set { _description = value; }
         }
-        [Property(SqlType = "ntext")]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string Notes
         {
             get { return _notes; }

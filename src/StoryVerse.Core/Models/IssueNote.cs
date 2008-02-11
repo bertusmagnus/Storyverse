@@ -24,7 +24,7 @@ namespace StoryVerse.Core.Models
             set { _issue = value; }
         }
 
-        [Property]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string Body
         {
             get { return _body; }

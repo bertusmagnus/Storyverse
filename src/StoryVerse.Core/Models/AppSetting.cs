@@ -23,7 +23,7 @@ namespace StoryVerse.Core.Models
             get { return _name; }
             set { _name = value; }
         }
-        [Property]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string Value
         {
             get { return _value; }

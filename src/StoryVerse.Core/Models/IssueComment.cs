@@ -33,14 +33,14 @@ namespace StoryVerse.Core.Models
             set { _propertName = value; }
         }
 
-        [Property]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string OldValue
         {
             get { return _oldValue; }
             set { _oldValue = value; }
         }
 
-        [Property]
+        [Property(SqlType = "nvarchar(MAX)")]
         public string NewValue
         {
             get { return _newValue; }
