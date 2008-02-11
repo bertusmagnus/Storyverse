@@ -10,14 +10,14 @@
 */
 
 using Lunaverse.DbBuilder.Core;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace StoryVerse.DbBuilder.Core
 {
     public partial class Methods : MethodsBase
     {
-        public Methods(string ServerName, string DatabaseName, string Username, string Password,
-                                IAcceptOutput OutputReceiver)
-            : base(ServerName, DatabaseName, Username, Password, OutputReceiver)
+        public Methods(string connectionString, IAcceptOutput outputReceiver)
+            : base(connectionString, outputReceiver)
         {
         }
 
@@ -29,6 +29,13 @@ namespace StoryVerse.DbBuilder.Core
         public void ApplyAllNewUpdates()
         {
             ApplyNewUpdates();
+        }
+
+        private void AddLookupTable(string name)
+        {
+            Du.AddTable(name, "Id", DataType.Int, false)
+                .AddColumn("Name", DataType.VarChar(30), false)
+                .AddColumn("Sort", DataType.Int);
         }
     }
 }

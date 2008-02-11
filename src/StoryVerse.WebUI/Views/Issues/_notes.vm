@@ -1,0 +1,20 @@
+#blockcomponent(StoryVerseCollapsiblePanel with "id=notes" "caption=Notes") 
+    #body
+        #blockcomponent(IssueNoteGroupedList with "source=$groupedNotes" "cssClass=issueNotes") 
+            #groupHeading
+                <div style="border-bottom: solid 1px gray; padding-top:10px">
+                    $DateCreated_Date.ToString("M/d/yy") - $CreatedBy_FullName
+                </div>
+            #end
+            #item
+                $TextFormatHelper.AddLineBreaks($item.Body)
+            #end
+        #end
+        #if($userCanEdit && !$entityIsNew && $entity.Status != "Closed")
+            <div style="font-weight:bold; margin-top:8px;">New Note:</div>
+            <div>
+                $FormHelper.TextArea("newNote", "%{rows='6', onchange='markDirty()', style='width:100%; font-family:Arial; font-size: 12px'}")
+            </div>
+        #end
+    #end
+#end

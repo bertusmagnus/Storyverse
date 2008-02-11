@@ -197,6 +197,12 @@
             Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.Views.NVelocity.CustomDirectiveManager"/> class.
             </summary>
         </member>
+        <member name="T:Castle.MonoRail.Framework.Views.NVelocity.CustomResourceManager">
+            <summary>
+             Manages resource (views) loading and processing, calls and is also
+             called by NVelocity to allow recursive expansion of templates
+            </summary>
+        </member>
         <member name="M:Castle.MonoRail.Framework.Views.NVelocity.CustomTemplate.Process">
             <summary>
             gets the named resource as a stream, parses and inits
@@ -348,9 +354,9 @@
             Resolves the template name into a velocity JS template file name.
             </summary>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Views.NVelocity.NVelocityViewEngine.ResolveTemplateName(System.String,System.String)">
+        <member name="M:Castle.MonoRail.Framework.Views.NVelocity.NVelocityViewEngine.ResolveLayoutTemplateName(System.String)">
             <summary>
-            Resolves the template name into a velocity template file name.
+            Resolves the layout template name into a velocity template file name.
             </summary>
         </member>
         <member name="P:Castle.MonoRail.Framework.Views.NVelocity.NVelocityViewEngine.SupportsJSGeneration">
@@ -373,6 +379,11 @@
             Gets the JS generator file extension.
             </summary>
             <value>The JS generator file extension.</value>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.Views.NVelocity.ResourceProcessingException">
+            <summary>
+             This exception is thrown when an error occurs during resource processing (expansion)
+            </summary>
         </member>
     </members>
 </doc>

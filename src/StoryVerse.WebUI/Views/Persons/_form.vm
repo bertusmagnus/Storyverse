@@ -7,14 +7,14 @@
 <tr>
   <td class="label">Last Name:</td>
   <td>$FormHelper.TextField("entity.LastName", "%{onchange='markDirty()'}")</td>
-  <td class="label"></td>
-  <td></td>
+  <td class="label">Email:</td>
+  <td>$FormHelper.TextField("entity.Email", "%{onchange='markDirty()'}")</td>
 </tr>
 <tr>
   <td class="label">Username:</td>
   <td>$FormHelper.TextField("entity.Username", "%{onchange='markDirty()'}")</td>
-  <td class="label"></td>
-  <td></td>
+  <td class="label">Notify Of Issue Assignment:</td>
+  <td>$FormHelper.CheckboxField("entity.UserPreferences.NotifyOfIssueAssignment", "%{onchange='markDirty()'}")</td>
 </tr>
 <tr>
   <td class="label">Password:</td>

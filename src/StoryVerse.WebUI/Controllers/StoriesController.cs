@@ -5,8 +5,9 @@
 */
 
 using System;
-using Castle.ActiveRecord;
+using Castle.Components.Validator;
 using Castle.MonoRail.ActiveRecordSupport;
+using Lunaverse.Tools.Common;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.Framework;
 using StoryVerse.Core.Lookups;
@@ -19,26 +20,17 @@ namespace StoryVerse.WebUI.Controllers
     {
         public StoriesController() : base(true) { }
 
-        public override string SortExpression
-        {
-            get { return Story.SortExpression; }
-            set { Story.SortExpression = value; }
-        }
-
-        public override SortDirection SortDirection
-        {
-            get { return Story.SortDirection; }
-            set { Story.SortDirection = value; }
-        }
-
         [Layout("edit")]
         public override void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Story story)
         {
-            story.Component = NullifyIfTransient(story.Component);
-            story.Iteration = NullifyIfTransient(story.Iteration);
+            story.Component = NullifyEntityIfTransient(story.Component);
+            story.Iteration = NullifyEntityIfTransient(story.Iteration);
             foreach (Test test in story.Tests)
             {
-                if (test.Number == 0) test.Number = story.GetNextTestNumber();
+                if (test.Number == 0)
+                {
+                    test.Number = story.GetNextTestNumber();
+                }
             }
             Update(story);
         }
@@ -68,6 +60,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 HandleListError(ex);
             }
         }
@@ -81,11 +74,12 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 SetError(ex);
             }
         }
 
-        protected override void PopulateEditSelects()
+        protected override void PopulateEditSelects(Story story)
         {
             PopulateSelects();
         }
@@ -126,7 +120,7 @@ namespace StoryVerse.WebUI.Controllers
                                            : taskIds.Length + " " + resultNoun + " added";
                 string failureMessage = string.Format("{0} NOT added", resultNoun);
 
-                if (((Person)Context.CurrentUser).CanViewOnly)
+                if (CurrentUser.CanViewOnly)
                 {
                     HandleEditError(new Exception("You do not have permission to add a task to a story"), story, failureMessage);
                     return;
@@ -144,6 +138,12 @@ namespace StoryVerse.WebUI.Controllers
                     story.RemoveTasks(taskIds);
                     HandleEditError(ex, story, failureMessage);
                 }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    story.RemoveTasks(taskIds);
+                    HandleEditError(ex, story, failureMessage);
+                }
             }
         }
 
@@ -158,7 +158,7 @@ namespace StoryVerse.WebUI.Controllers
                                            : taskIds.Length + " " + resultNoun + " removed";
                 string failureMessage = string.Format("{0} NOT removed", resultNoun);
 
-                if (((Person)Context.CurrentUser).CanViewOnly)
+                if (CurrentUser.CanViewOnly)
                 {
                     HandleEditError(new Exception("You do not have permission to remove a task from a story"), story, failureMessage);
                     return;
@@ -173,6 +173,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex);
                     story.AddTasks(taskIds);
                     HandleEditError(ex, story, failureMessage);
                 }
@@ -181,7 +182,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public void NewTask([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (CurrentUser.CanViewOnly)
             {
                 HandleEditError(new Exception("You do not have permission to add a new task"), story, "Task NOT created");
                 return;
@@ -195,13 +196,13 @@ namespace StoryVerse.WebUI.Controllers
                 task.AddStory(story);
                 RefreshContextEntity();
                 ContextEntity.AddTask(task);
-                task.Number = ContextEntity.GetNextTaskNumber();
                 ContextEntity.Validate();
                 ContextEntity.UpdateAndFlush();
                 RedirectToAction("../tasks/edit", "id=" + task.Id);
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 ContextEntity.RemoveTask(task);
                 HandleEditError(ex, story, "Task NOT created");
             }
@@ -209,7 +210,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public void AddTest([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Story story)
         {
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (CurrentUser.CanViewOnly)
             {
                 HandleEditError(new Exception("You do not have permission to add a new test"), story, "Test NOT added");
                 return;
@@ -227,6 +228,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 story.RemoveTest(test);
                 HandleEditError(ex, story, "Test NOT added");
             }
@@ -234,7 +236,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public void DeleteTest()
         {
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (CurrentUser.CanViewOnly)
             {
                 SetError(new Exception("You do not have permission to delete a test"));
             }
@@ -248,10 +250,14 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetupNewEntity(Story story)
         {
-            story.Iteration = SetEntityValue<Iteration>(Form["entity.Iteration.Id"]);
-            story.Component = SetEntityValue<Component>(Form["entity.Component.Id"]);
+            story.Iteration = SetValueFromKey<Iteration>(Form["entity.Iteration.Id"]);
+            story.Component = SetValueFromKey<Component>(Form["entity.Component.Id"]);
             ContextEntity.AddStory(story);
-            story.Number = ContextEntity.GetNextStoryNumber();
+        }
+
+        protected override void RemoveFromContextEntity(Story story)
+        {
+            ContextEntity.RemoveStory(story);
         }
     }
 }

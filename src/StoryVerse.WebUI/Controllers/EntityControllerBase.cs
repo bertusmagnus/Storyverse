@@ -6,10 +6,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Web;
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Internal;
+using Castle.Components.Validator;
 using Castle.MonoRail.Framework.Helpers;
+using Lunaverse.Tools.Common;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.ActiveRecordSupport;
@@ -22,13 +26,13 @@ namespace StoryVerse.WebUI.Controllers
     [Helper(typeof(TextFormatHelper))]
     [Filter(ExecuteEnum.BeforeAction, typeof(AuthenticationFilter))]
     public abstract class EntityControllerBase<TEntity, TCriteria, TContextEntity> : ARSmartDispatcherController
-        where TEntity : IEntity
+        where TEntity : BaseEntity<TEntity>
         where TContextEntity : IEntity
         where TCriteria : IFindCriteria
     {
         #region private/protected fields
 
-        private bool _hasContext;
+        private readonly bool _hasContext;
         protected string _entityProperName;
         protected string _entityName;
         protected string _contextEntityName;
@@ -66,6 +70,11 @@ namespace StoryVerse.WebUI.Controllers
 
         #endregion
 
+        protected Person CurrentUser
+        {
+            get { return (Person)Context.CurrentUser; }
+        }
+
         #region list action
 
         [Layout("list")]
@@ -99,7 +108,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             ShowError();
             SetViewContext();
-            PropertyBag["newLinkVisible"] = !((Person) Context.CurrentUser).CanViewOnly;
+            PropertyBag["newLinkVisible"] = !CurrentUser.CanViewOnly;
             try
             {
                 if (_hasContext)
@@ -124,6 +133,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 HandleListError(ex);
             }
         }
@@ -131,14 +141,23 @@ namespace StoryVerse.WebUI.Controllers
         private void PopulateEntitiesList()
         {
             bool sortRequested = !string.IsNullOrEmpty(Form["sortExpression"]);
-            int rowsPerPage = ((Person)Context.CurrentUser).UserPreferences.RowsPerPage;
+            int rowsPerPage = CurrentUser.UserPreferences.RowsPerPage;
             bool paginated = rowsPerPage != 0;
             bool isMultiPage = paginated && rowsPerPage < EntitiesList.Count;
 
             if (!sortRequested || isMultiPage)
             {
                 EntitiesList.Clear();
-                EntitiesList.InsertRange(0, ActiveRecordBase<TEntity>.FindAll(Criteria.ToDetachedCriteria()));
+                try
+                {
+                    TEntity[] items = ActiveRecordBase<TEntity>.FindAll(Criteria.ToDetachedCriteria());
+                    EntitiesList.InsertRange(0, items);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    HandleListError(ex);
+                }
             }
 
             if (sortRequested)
@@ -218,11 +237,9 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void HandleListError(Exception ex)
         {
-            Flash["error"] = GetErrorMessage(ex);
-            using (new SessionScope(FlushAction.Never))
-            {
-                DoList();
-            }
+            //Criteria = default(TCriteria); //reset criteria to prevent error from repeating
+            SetError(ex);
+            //RedirectToList();
         }
 
         protected void RedirectToList()
@@ -230,8 +247,17 @@ namespace StoryVerse.WebUI.Controllers
             RedirectToAction("list");
         }
 
-        public abstract string SortExpression { get; set;}
-        public abstract SortDirection SortDirection { get; set; }
+        public string SortExpression
+        {
+            get { return BaseEntity<TEntity>.SortExpression; }
+            set { BaseEntity<TEntity>.SortExpression = value; }
+        }
+
+        public SortDirection SortDirection
+        {
+            get { return BaseEntity<TEntity>.SortDirection; }
+            set { BaseEntity<TEntity>.SortDirection = value; }
+        }
 
         protected virtual void PopulateFilterSelects()
         {
@@ -262,19 +288,32 @@ namespace StoryVerse.WebUI.Controllers
                 ContextEntity.Refresh();
                 PropertyBag[_contextEntityName] = ContextEntity;
             }
-            PropertyBag["userCanEdit"] = GetUserCanEdit(default(TEntity));
-            PropertyBag["entity"] = default(TEntity);
-            ShowActionResult();
-            PropertyBag["entityIsNew"] = true;
-            PopulateEditSelects();
+            TEntity entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
+            SetupEditView(entity, true);
+		    SetActionResult(ActionResult);
+		    ActionResult = null;
+            PopulateEditSelects(entity);
         }
 
-        public void Create([DataBind("entity")] TEntity entity)
+        protected virtual void SetupEditView(TEntity entity, bool isNew)
+        {
+            SetViewContext();
+            PropertyBag["userCanEdit"] = GetUserCanEdit(entity);
+            PropertyBag["entity"] = entity;
+            PropertyBag["entityIsNew"] = isNew;
+        }
+
+        public virtual void Create([DataBind("entity")] TEntity entity)
+        {
+            CreateEntity(entity);
+        }
+
+        protected void CreateEntity(TEntity entity)
         {
             string successMessage = string.Format("{0} created", _entityProperName);
             string failureMessage = string.Format("{0} NOT saved", _entityProperName);
 
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (CurrentUser.CanViewOnly)
             {
                 HandleNewError(new Exception("You do not have create permission"), entity, failureMessage);
                 return;
@@ -300,6 +339,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 HandleNewError(ex, entity, failureMessage);
             }
         }
@@ -327,30 +367,41 @@ namespace StoryVerse.WebUI.Controllers
         [Layout("edit")]
         public virtual void Edit(Guid id)
         {
-            ShowError();
             try
             {
                 TEntity entity = ActiveRecordBase<TEntity>.Find(id);
+                Edit(entity);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                SetError(ex);
+            }
+        }
+
+        private void Edit(TEntity entity)
+        {
+            ShowError();
+            try
+            {
                 SetupEntity(entity);
-                SetViewContext();
-                ShowActionResult();
-                PropertyBag["userCanEdit"] = GetUserCanEdit(entity);
-                PropertyBag["entity"] = entity;
+                SetupEditView(entity, false);
                 PropertyBag["previousId"] = GetPreviousId(entity);
                 PropertyBag["nextId"] = GetNextId(entity);
                 PropertyBag["entityIsNew"] = false;
                 if (_hasContext)
                 {
-                    //ToDo: this is a HACK.  It should not be needed, nor should Refresh.  It 
-                    //prevents a lazy load exception in the case of a redirect after a create.
+                    //TODO: this is a HACK.  It should not be needed, nor should Refresh.  It 
+                    //TODO: prevents a lazy load exception in the case of a redirect after a create.
                     ContextEntity = GetContextEntity(ContextEntity.Id);
 
                     PropertyBag[_contextEntityName] = ContextEntity;
                 }
-                PopulateEditSelects();
+                PopulateEditSelects(entity);
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 SetError(ex);
             }
         }
@@ -362,13 +413,12 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void Update(TEntity entity)
         {
-            string successMessage = string.Format("{0} saved", _entityProperName);
-            string failureMessage = string.Format("{0} NOT saved", _entityProperName);
+            string failureMessageTemplate = string.Format("{0} NOT saved{{1}}", _entityProperName);
 
             if (!GetUserCanEdit(entity))
             {
-                RenderText(string.Format("{0}. {1}", failureMessage, "You do not have update permission"));
-                CancelView();
+                SetActionResult(failureMessageTemplate, "You do not have update permission");
+                RenderEditContainer(entity);
                 return;
             }
 
@@ -377,24 +427,48 @@ namespace StoryVerse.WebUI.Controllers
                 SetupUpdateEntity(entity);
                 entity.Validate();
                 entity.UpdateAndFlush();
-                RenderText(successMessage);
+                SetActionResult("{0} saved", _entityProperName);
+            }
+            catch (ValidationException ex)
+            {
+                Context.Response.StatusCode = 500;
+                SetActionResult(failureMessageTemplate, _entityProperName, 
+                    ". " + GetErrorMessage(ex));
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 Context.Response.StatusCode = 500;
-                RenderText(string.Format("{0}. {1}", failureMessage, GetErrorMessage(ex).Trim()));
+                SetActionResult(failureMessageTemplate, _entityProperName, null);
+                SetError(ex);
             }
             finally
             {
-                CancelView();
+                RenderEditContainer(entity);
             }
+
+        }
+
+        protected void RenderEditContainer(TEntity entity)
+        {
+            using (new SessionScope())
+            {
+                Edit(entity);
+            }
+            LayoutName = "fragments/edit_container";
+            RenderView("edit");
+        }
+
+        protected void SetActionResult(string message, params object[] args)
+        {
+            PropertyBag["actionResult"] = string.Format(message ?? string.Empty, args);
         }
 
         protected virtual void SetupEntity(TEntity entity)
         {
         }
 
-        protected virtual void PopulateEditSelects()
+        protected virtual void PopulateEditSelects(TEntity entity)
         {
         }
 
@@ -406,18 +480,26 @@ namespace StoryVerse.WebUI.Controllers
         {
         }
 
-        protected static T SetEntityValue<T>(string id)
+        protected static T SetValueFromKey<T>(string id)
         {
-            Guid idGuid;
-            try
+            if (typeof(IEntity).IsAssignableFrom(typeof(T)))
             {
-                idGuid = new Guid(id);
+                try
+                {
+                    Guid key = new Guid(id);
+                    return ActiveRecordBase<T>.Find(key);
+                }
+                catch {}
             }
-            catch
+            else if (typeof(ILookup).IsAssignableFrom(typeof(T)))
             {
-                return default(T);
+                int key;
+                if (int.TryParse(id, out key))
+                {
+                    return ActiveRecordBase<T>.Find(key);
+                }
             }
-            return ActiveRecordBase<T>.Find(idGuid);
+            return default(T);
         }
 
         protected void HandleEditError(Exception ex, TEntity entity, string actionResult)
@@ -440,7 +522,7 @@ namespace StoryVerse.WebUI.Controllers
         {
             string failureMessage = _entityProperName + " NOT deleted";
 
-            if (((Person)Context.CurrentUser).CanViewOnly)
+            if (CurrentUser.CanViewOnly)
             {
                 HandleEditError(new Exception("You do not have delete permission"), entity, failureMessage);
                 return;
@@ -448,13 +530,27 @@ namespace StoryVerse.WebUI.Controllers
 
             try
             {
-                entity.DeleteAndFlush();
+                if (_hasContext)
+                {
+                    ContextEntity = GetContextEntity(ContextEntity.Id);
+                    RemoveFromContextEntity(entity);
+                    ContextEntity.UpdateAndFlush();
+                }
+                else
+                {
+                    entity.DeleteAndFlush();   
+                }
                 RedirectToList();
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 HandleEditError(ex, entity, failureMessage);
             }
+        }
+
+        protected virtual void RemoveFromContextEntity(TEntity entity)
+        {
         }
 
         #endregion delete action
@@ -510,15 +606,16 @@ namespace StoryVerse.WebUI.Controllers
             set { Flash["error"] = value; }
         }
 
-        protected void ShowActionResult()
+        private string ActionResult
         {
-            PropertyBag["actionResult"] = ActionResult;
-            ActionResult = null;
-        }
-
-        private object ActionResult
-        {
-            get { return Flash["actionResult"]; }
+            get 
+            { 
+                if (Flash["actionResult"] == null)
+                {
+                    return null;
+                }
+                return Flash["actionResult"].ToString(); 
+            }
             set { Flash["actionResult"] = value; }
         }
 
@@ -536,7 +633,8 @@ namespace StoryVerse.WebUI.Controllers
             {
                 message = ex.ToString();
             }
-            return message;
+            message = message.Replace("\r\n", "<br/>");
+            return message.Trim();
         }
 
         protected TContextEntity ContextEntity
@@ -572,7 +670,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected void SetViewContext()
         {
-            PropertyBag["userIsAdmin"] = ((Person)Context.CurrentUser).IsAdmin;
+            PropertyBag["userIsAdmin"] = CurrentUser.IsAdmin;
             PropertyBag["deleteEditButtonVisible"] = DeleteEditButtonVisible;
             PropertyBag["listEditButtonVisible"] = ListEditButtonVisible;
             PropertyBag["contextEntityName"] = _contextEntityName;
@@ -583,7 +681,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected virtual bool GetUserCanEdit(TEntity entity)
         {
-            return !((Person)Context.CurrentUser).CanViewOnly;
+            return !CurrentUser.CanViewOnly;
         }
 
         protected virtual bool DeleteEditButtonVisible
@@ -596,9 +694,9 @@ namespace StoryVerse.WebUI.Controllers
             get { return true; }
         }
 
-        protected static T NullifyIfTransient<T>(T entity) where T : IEntity
+        protected static T NullifyEntityIfTransient<T>(T entity) where T : IEntity
         {
-            if (entity.Id == Guid.Empty)
+            if (entity != null && entity.Id == Guid.Empty)
             {
                 return default(T);
             }
@@ -621,7 +719,85 @@ namespace StoryVerse.WebUI.Controllers
             HttpContext.Response.SetCookie(cookie);
             return result;
         }
+
+        protected void WriteResponse(object content, bool asAttachment, string contentType, string filename, params object[] filenameArgs)
+        {
+            if (content != null)
+            {
+                filename = string.Format(filename, filenameArgs);
+
+                bool isBinary = content.GetType().IsAssignableFrom(typeof(byte[]));
+
+                Response.Clear();
+                CancelLayout();
+                CancelView();
+
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    Response.ContentType = GetContentType(filename, isBinary);
+                }
+                else
+                {
+                    Response.ContentType = contentType;
+                }
+                string header = string.Format("{0}Filename={1}",
+                    asAttachment
+                        ? "attachment; "
+                        : string.Empty,
+                    filename);
+                Response.AppendHeader("Content-Disposition", header);
+                try
+                {
+                    if (isBinary)
+                    {
+                        Response.AppendHeader("Content-Length", ((byte[])content).Length.ToString());
+                        Response.BinaryWrite((byte[])content);
+                    }
+                    else
+                    {
+                        Response.AppendHeader("Content-Length",
+                            Encoding.Default.GetByteCount(content.ToString()).ToString());
+                        Response.Write(content);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    Response.Clear();
+                }
+            }
+        }
+
+        private string GetContentType(string filename, bool isBinary)
+        {
+            string ext = Path.GetExtension(filename);
+            switch (ext.ToLower())
+            {
+                case "htm":
+                case "html":
+                    return "text/html";
+                case "txt":
+                    return "text/plain";
+                case "doc":
+                case "rtf":
+                case "docx":
+                    return "application/msword";
+                case "xls":
+                    return "application/msexcel";
+                case "pdf":
+                    return "application/pdf";
+                default:
+                    if (isBinary)
+                    {
+                        return "application/octet-stream";
+                    }
+                    else
+                    {
+                        return "text/plain";
+                    }
+            }
+        }
+
+        #endregion context/utilitiy/navigation
     } 
-    
-    #endregion context/utilitiy/navigation
 }

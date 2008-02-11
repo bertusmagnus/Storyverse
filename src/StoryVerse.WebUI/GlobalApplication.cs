@@ -7,6 +7,7 @@
 using System.Reflection;
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Config;
+using Lunaverse.Tools.Common;
 
 namespace StoryVerse.WebUI
 {
@@ -22,8 +23,8 @@ namespace StoryVerse.WebUI
 
 		public GlobalApplication()
 		{
-            BeginRequest += new EventHandler(OnBeginRequest);
-            EndRequest += new EventHandler(OnEndRequest);
+            BeginRequest += OnBeginRequest;
+            EndRequest += OnEndRequest;
 		}
 
 		#region IContainerAccessor
@@ -66,6 +67,7 @@ namespace StoryVerse.WebUI
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 HttpContext.Current.Trace.Warn("Error", "EndRequest: " + ex.Message, ex);
             }
         }

@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lunaverse.DbBuilder.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Lunaverse.DbBuilder.Core.DatabaseUtility">
+            <summary>
+            DatabaseUltility provides an interface to make changes to a SQL Server 
+            database.  It exposes method to add/remove/change a variety of objects
+            within a database. DatabaseUltility assumes the database exists.  It does not
+            create a drop a database.
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.#ctor(System.String,Lunaverse.DbBuilder.Core.IAcceptOutput)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="connectionString">Connection string</param>
+            <param name="outputReceiver">The output received which receives all output messages</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.#ctor(System.String,System.String,Lunaverse.DbBuilder.Core.IAcceptOutput)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="serverName">The name of the target server</param>
+            <param name="databaseName">The name of the target database</param>
+            <param name="outputReceiver">The output received which receives all output messages</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.#ctor(System.String,Lunaverse.DbBuilder.Core.IAcceptOutput,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="connectionString">The name of the target server</param>
+            <param name="pkPostfix">The name used as a postfix when auto-creating primary keys.  Typical examples: ID, Id, _id</param>
+            <param name="outputReceiver">The output received which receives all output messages</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.#ctor(System.String,System.String,Lunaverse.DbBuilder.Core.IAcceptOutput,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="serverName">The name of the target server</param>
+            <param name="databaseName">The name of the target database</param>
+            <param name="pkPostfix">The name used as a postfix when auto-creating primary keys.  Typical examples: ID, Id, _id</param>
+            <param name="outputReceiver">The output received which receives all output messages</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.Table(System.String)">
+            <summary>
+            Returns a table object
+            </summary>
+            <param name="tableName">The name of the table</param>
+            <returns>A table object</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.Login(System.String)">
+            <summary>
+            Returns a login object
+            </summary>
+            <param name="loginName">The name of the login</param>
+            <returns>A login object</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.User(System.String)">
+            <summary>
+            Returns a user object
+            </summary>
+            <param name="userName">The name of the user</param>
+            <returns>A user object</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.AddTable(System.String)">
+            <summary>
+            Adds a table and adds a primary key of type uniqueidentifier.  The name of the primary 
+            key will be the same as the table name with the PkPostfix added
+            </summary>
+            <param name="tableName">The name of the new table</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.AddTable(System.String,System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean)">
+            <summary>
+            Adds a table
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkColumnName">The name of the primary key column</param>
+            <param name="pkDataType">The data type of the primary key</param>
+            <param name="pkisIdentity">Sets the IsIdentity property of the primary key.  If TRUE, the increment and seed will both be 1</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreateStandardUser(System.String,System.String)">
+            <summary>
+            Creates a server login and a database user with 'standard' permissions.  These are: 
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert
+            </summary>
+            <param name="name">The name of the login and user</param>
+            <param name="password">The password of the login and user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreateStandardUser(Lunaverse.DbBuilder.Core.Login)">
+            <summary>
+            Creates a server login and a database user with 'standard' permissions.  These are: 
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert
+            </summary>
+            <param name="login">The login for which to create the user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreatePowerUser(System.String,System.String)">
+            <summary>
+            Creates a server login and a database user with 'power' permissions.  These are:
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert, 
+            Server_AdministerBulkOperations, Object_Control, Database_CreateTable
+            </summary>
+            <param name="name">Username for the user</param>
+            <param name="password">Password for the user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreatePowerUser(Lunaverse.DbBuilder.Core.Login)">
+            <summary>
+            Creates a server login and a database user with 'power' permissions.  These are:
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert, 
+            Server_AdministerBulkOperations, Object_Control, Database_CreateTable
+            </summary>
+            <param name="login">The login for which to create the user</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreateLogin(System.String,System.String)">
+            <summary>
+            Creates a server login.
+            </summary>
+            <param name="name">The name of the login</param>
+            <param name="password">The password of the login</param>
+            <returns>The newly created login</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreateUser(System.String,Lunaverse.DbBuilder.Core.Login)">
+            <summary>
+            Creates a new database user with the specified login
+            </summary>
+            <param name="name">The name of the new user</param>
+            <param name="login">The login for the the user</param>
+            <returns>A User object</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.DefineRelation(System.String,System.String,System.String,System.String)">
+            <summary>
+            Defines a relation between two tables
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="fkColumnName">The name of the foreign key column in the table  in the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="pkColumnName">The name of the primary key column in the table  in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.DefineRelation(System.String,System.String,System.String,System.String,Microsoft.SqlServer.Management.Smo.ForeignKeyAction)">
+            <summary>
+            Defines a relation between two tables
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="fkColumnName">The name of the foreign key column in the table  in the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="pkColumnName">The name of the primary key column in the table  in the primary key table</param>
+            <param name="updateRule">Specified the action to be taken when the primary key of the primary key table is updated</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.DefineRelation(System.String,System.String,System.String[][])">
+            <summary>
+            Defines a relation between two tables.  The override allows defining compound key relations
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="columnNames">Each 'row' in this array contains a two cell where the first cell is the foreign key column name and the second is the primary key column name</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.DefineRelation(System.String,System.String,System.String[][],Microsoft.SqlServer.Management.Smo.ForeignKeyAction)">
+            <summary>
+            Defines a relation between two tables.  The override allows defining compound key relations
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="columnNames">Each 'row' in this array contains a two cell where the first cell is the foreign key column name and the second is the primary key column name</param>
+            <param name="updateRule">Specified the action to be taken when the primary key of the primary key table is updated</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.ClearDatabase">
+            <summary>
+            Drops all the tables, defaults and stored procedures from the database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.ClearDatabase(System.String)">
+            <summary>
+            Drops all the tables, defaults and stored procedures from the database, except table with names that contain the specified substring
+            </summary>
+            <param name="doNotDropTableNameSubstring">The substring in tables to not drop (case insensitive)</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.Report(System.String,System.Object[])">
+            <summary>
+            Sends a message to the ouput receiver
+            </summary>
+            <param name="message">Message to report</param>
+            /// <param name="args">Format arugments for message</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.ReportError(System.String,System.Object[])">
+            <summary>
+            Sends an error message to the output receiver and increments the error count
+            </summary>
+            <param name="messageDetail">Message detail</param>
+            <param name="args">Format arugments for messageDetail</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.ReportError(System.String,System.Exception,System.Object[])">
+            <summary>
+            Sends an error message to the output receiver and increments the error count
+            </summary>
+            <param name="messageDetail">Message detail</param>
+            <param name="ex">The message of this exception and all inner exceptions will be included in the final message</param>
+            /// <param name="messageArgs">Format arugments for messageDetail</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.AddStoredProcedure(System.String,System.String,System.Collections.IList)">
+            <summary>
+            Adds a stored procedure
+            </summary>
+            <param name="storedProcName">The name of the stored procedure</param>
+            <param name="body">The body of the stored procedure</param>
+            <param name="parameters">The parameters of the stored procedure.  Each item in this ArrayList should an object array.  Ech object array should follow this form: { "@paramName", DataType.Int }, where the second item any DataType</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.GenerateRelations">
+            <summary>
+            Generates all the relations created using AddColumn or DefineRelation methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.CreateDefault(System.String,System.String)">
+            <summary>
+            Creates a default object
+            </summary>
+            <param name="defaultName">The name of the default object</param>
+            <param name="rule">The body of the default which specifies the rule</param>
+            <returns>The newly created default</returns>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.DatabaseUtility.MakeSingular(System.String)">
+            <summary>
+            Makes an English word singular
+            </summary>
+            <param name="name">Word to make singular</param>
+            <returns>Singular of 'name'</returns>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.Server">
+            <summary>
+            The target server
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.Database">
+            <summary>
+            The target database
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.CurrentTableName">
+            <summary>
+            The name of the current table.  All method override that alter a table, but do include a table name parameter will use this table name
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.OutputReceiver">
+            <summary>
+            The detination for output messages
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.PkPostfix">
+            <summary>
+            The name used as a postfix when auto-creating primary keys.  Typical examples: ID, Id, _id
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.CombAlgorithm">
+            <summary>
+            A string that represents the body of a SQL Server function that returns a COMB guid
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.DatabaseUtility.GuidDefault">
+            <summary>
+            Returns a the default that is bound to guid primary key columns
+            that are created auotmatically by DbBuilder. Returns NULL is the
+            default does not exist.
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Column.Drop">
+            <summary>
+            Drops the column
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Column.RenameColumn(System.String)">
+            <summary>
+            Renames a column in the specified table
+            </summary>
+            <param name="newColumnName">The new name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Column.ChangeDataType(Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Changes the data type of the column and attempts to covert the data.  if the data cannot be converted (ToDo: specify what happens)
+            </summary>
+            <param name="newType">The new type of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String)">
+            <summary>
+            Adds a column to the current table.
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pKTableName">If not null, this will be a foregn key column.  The name of the primary key table.  The name of the primary key of this table must be the same as the foreign key</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.String)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pKTableName">If not null, this will be a foregn key column.  The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table.  If null,  the name of the primary key of this table must be the same as the foreign key</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pKTableName">If not null, this will be a foregn key column.  The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table.  If null,  the name of the primary key of this table must be the same as the foreign key</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean,System.String)">
+            <summary>
+            Adds a column to the current table that is bound to a default object
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="defaultName">The name of the default object to be bound to the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumnWithDefaultValue(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean,System.String)">
+            <summary>
+            Adds a column to the current table with a default value
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="defaultValue">The default value for the column.  The value must be valid for the data type.  This parameter can be a SQL Server function</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddDatestampColumn(System.String)">
+            <summary>
+            Adds a datestamp column to the current table.  The column will be type of date time, not nullable and have a default value of GETDATE()
+            </summary>
+            <param name="columnName">The name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.Boolean,System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Adds a column to the specified table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="defaultName">The name of the default object to be bound to the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="isIdentity">Specifies whether the column is an identity column.  If TRUE, the increment and seed will both be 1</param>
+            <param name="atColumnName">The name of the column to add this column after.  NOTE: THIS IS NOT WORKING!!!!</param>
+            <param name="pKTableName">The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.AddColumnWithDefaultValue(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.Boolean,System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Adds a column to the specified table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="defaultValue">The default value for the column.  The value must be valid for the data type.  This parameter can be a SQL Server function</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="isIdentity">Specifies whether the column is an identity column.  If TRUE, the increment and seed will both be 1</param>
+            <param name="atColumnName">The name of the column to add this column after.  NOTE: THIS IS NOT WORKING!!!!</param>
+            <param name="pKTableName">The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.DropColumn(System.String)">
+            <summary>
+            Drops the specified column from the current table
+            </summary>
+            <param name="columnName">The name of the column to drop</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.SetPK(System.String[])">
+            <summary>
+            Sets the primary key of the current table.  This override allows defining coumpound primary keys
+            </summary>
+            <param name="columnNames">The names of the columns to include in the primary key</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.Drop">
+            <summary>
+            Drops the specified table
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.RenameColumn(System.String,System.String)">
+            <summary>
+            Renames a column in the specified table
+            </summary>
+            <param name="oldColumnName">The current name of the column</param>
+            <param name="newColumnName">The new name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Table.ChangeColumnDataType(System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Changes the data type of the column and attempts to covert the data.  if the data cannot be converted (ToDo: specify what happens)
+            </summary>
+            <param name="columnName">The name of the column of which to change the data type</param>
+            <param name="type">The new type of the column</param>
+        </member>
+        <member name="T:Lunaverse.DbBuilder.Core.MethodsBase">
+            <summary>
+            The base class for methods for creating an modifying a database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.#ctor(System.String,Lunaverse.DbBuilder.Core.IAcceptOutput)">
+            <summary>
+            Create a new instance of MethodBase
+            </summary>
+            <param name="connectionString">Connection string</param>
+            <param name="outputReceiver">The object to receive the output</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.#ctor(System.String,System.String,System.String,System.String,Lunaverse.DbBuilder.Core.IAcceptOutput)">
+            <summary>
+            Create a new instance of MethodBase
+            </summary>
+            <param name="serverName">The name of the server where the database resides</param>
+            <param name="databaseName">The name of the database to affect</param>
+            <param name="username">A username with admin permissions</param>
+            <param name="password">The password for the username</param>
+            <param name="outputReceiver">The object to receive the output</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.AddRow(System.String,System.String,System.Data.SqlClient.SqlConnection)">
+            <summary>
+            Adds a row to a table using ADO
+            </summary>
+            <param name="tableName">The name of the table to add the row to</param>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the table.</param>
+            <param name="sqlConn">A Sql connection</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.AddRow(System.String,System.String,System.String,System.Data.SqlClient.SqlConnection)">
+            <summary>
+            Adds a row to a table using ADO
+            </summary>
+            <param name="tableName">The name of the table to add the row to</param>
+            <param name="fieldNameString">The field names fragment of the SAL INSERT statement</param>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the fieldNameString parameter</param>
+            <param name="sqlConn">A Sql connection</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.AddRow(System.String,System.String,System.Data.SqlClient.SqlConnection,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="tableName">The name of the table to add the row to</param>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the fieldNameString parameter</param>
+            <param name="sqlConn">A Sql connection</param>
+            <param name="prependQAGuidToValues">
+                If set to TRUE a guid will be be prepended to the VALUES string.  The first time 
+                this method is called the guid will be an empty guid.  The second time the 
+                first segment of the guid will be '00000000', the second time it will be 
+                '00000001' and so on until ResetQaGuid is called, which will set it back to
+                '00000000'.  This method is useful for populating lookup tables with 
+                a uniqueidentifier key
+            </param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.AddRow(System.String,System.String,System.String,System.Data.SqlClient.SqlConnection,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="tableName">The name of the table to add the row to</param>
+            <param name="fieldNameString">The field names fragment of the SAL INSERT statement</param>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the fieldNameString parameter</param>
+            <param name="sqlConn">A Sql connection</param>
+            <param name="prependQAGuidToValues">
+                If set to TRUE a guid will be be prepended to the VALUES string.  The first time 
+                this method is called the guid will be an empty guid.  The second time the 
+                first segment of the guid will be '00000000', the second time it will be 
+                '00000001' and so on until ResetQaGuid is called, which will set it back to
+                '00000000'.  This method is useful for populating lookup tables with 
+                a uniqueidentifier key
+            </param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.ResetQAguid">
+            <summary>
+            Use in conjunction with AddRow.  The method resets the ordinal value of QA guids used by in class
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.Report(System.String)">
+            <summary>
+            Sends a message to the output receiver
+            </summary>
+            <param name="message">The message to send to the output receiver</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.Report(System.String,System.Boolean)">
+            <summary>
+            Sends a message to the output receiver
+            </summary>
+            <param name="message">The message to send to the output receiver</param>
+            <param name="isError">If TRUE, this message will be formatted as an error</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.CreateDatabaseUpdatesTable">
+            <summary>
+            Creates a table that is used by DbBuilder to track which updates have been applied
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.ApplyAllUpdates">
+            <summary>
+            Executes all update methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.ApplyNewUpdates">
+            <summary>
+            Executes all update methods that have not beed previously executed for the 
+            current database as determined by the contents of the DatabaseUpdates table
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.MethodsBase.ExecuteMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Executes a method in the class
+            </summary>
+            <param name="method"></param>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.MethodsBase.Du">
+            <summary>
+            The database utlity object
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.MethodsBase.SqlConn">
+            <summary>
+            The SQL connection used for all ADO operations
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbBuilder.Core.MethodsBase.DatabaseUpdatesTableName">
+            <summary>
+            The name of the database updates table.  This table records which DbBuilder updates 
+            have been applied to the current database.
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.User.GrantDatabasePermission(Microsoft.SqlServer.Management.Smo.DatabasePermission)">
+            <summary>
+            Grants a database permission to the user
+            </summary>
+            <param name="permission">The permission to grant to the user</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.User.GrantSchemaPermission(Microsoft.SqlServer.Management.Smo.ObjectPermission)">
+            <summary>
+            Grants a schema permission to the user
+            </summary>
+            <param name="permission">The permission to grant to the user</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Login.GrantPermission(Microsoft.SqlServer.Management.Smo.ServerPermission)">
+            <summary>
+            Grants a server permission to a user
+            </summary>
+            <param name="permission">The permission to grant to the login</param>
+        </member>
+        <member name="M:Lunaverse.DbBuilder.Core.Login.Drop">
+            <summary>
+            Drops the server login
+            </summary>
+        </member>
+    </members>
+</doc>

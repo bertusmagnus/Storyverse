@@ -1,0 +1,20 @@
+#blockcomponent(StoryVerseCollapsiblePanel with "id=changes" "caption=Changes" "collapsed=true")
+    #body        
+        #blockcomponent(IssueChangeGroupedList with "source=$groupedChanges") 
+            #groupHeading
+                <div style="border-bottom: solid 1px gray;">
+                    $ChangeDate.ToString("M/d/yy  h:MM:ss tt") - $ChangedBy_FullName
+                </div>
+            #end
+            #item
+                <b>$!item.PropertyName.ToLower()</b> 
+                #if(!$item.OldValue || $item.OldValue == "")
+                    set
+                #else
+                    changed from '$!item.OldValue'
+                #end
+                to '$!item.NewValue'
+            #end
+        #end
+    #end
+#end

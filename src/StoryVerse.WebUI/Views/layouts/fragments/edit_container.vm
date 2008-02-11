@@ -1,4 +1,5 @@
-<form name="edit" action="" method="post">
+#parse("layouts/fragments/error.vm")
+<form id="edit" name="edit" action="" method="post" enctype="multipart/form-data">
 
   $FormHelper.HiddenField("entity.Id")
 
@@ -7,13 +8,13 @@
   </div>
   
   <input type="hidden" id="isDirty" value="false" />
-  
-  <table class="detail">
-    #if ($isEditFormLong)
-      <tr class="top_buttons">
-          #set($position="Top")
-          #parse("layouts/fragments/edit_buttons.vm")
-      </tr>
+   
+    <table class="detail">
+      #if ($isEditFormLong)
+          <tr class="top_buttons">
+              #set($position="Top")
+              #parse("layouts/fragments/edit_buttons.vm")
+          </tr>
       <tr style="height:8px;"><td colspan="4"></td></tr>
       #end
 

@@ -4,13 +4,12 @@
         <name>Castle.Components.Validator</name>
     </assembly>
     <members>
-        <member name="T:Castle.Components.Validator.ValidateEmailAttribute">
+        <member name="T:Castle.Components.Validator.ValidateCreditCardAttribute">
             <summary>
-            Validate that this email address is a valid one.
+            Properties decorated with this attribute will be validated to ensure that they represent a valid
+            credit card number.
+            <see ref="CreditCardValidator"/> for more details.
             </summary>
-            <remarks>
-            This only check the format of the email, not if it really exists.
-            </remarks>
         </member>
         <member name="T:Castle.Components.Validator.AbstractValidationAttribute">
             <summary>
@@ -24,10 +23,12 @@
             Constructs an <see cref="T:Castle.Components.Validator.IValidator"/> implementation.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.IValidatorBuilder.Build">
+        <member name="M:Castle.Components.Validator.IValidatorBuilder.Build(Castle.Components.Validator.ValidatorRunner,System.Type)">
             <summary>
             Builds this instance.
             </summary>
+            <param name="validatorRunner">The validator runner.</param>
+            <param name="type">The type that this validator is built for</param>
             <returns></returns>
         </member>
         <member name="M:Castle.Components.Validator.AbstractValidationAttribute.#ctor">
@@ -47,6 +48,12 @@
             instance based on the properties set on the attribute instance.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Castle.Components.Validator.AbstractValidationAttribute.Build(Castle.Components.Validator.ValidatorRunner,System.Type)">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
         </member>
         <member name="M:Castle.Components.Validator.AbstractValidationAttribute.ConfigureValidatorMessage(Castle.Components.Validator.IValidator)">
             <summary>
@@ -78,6 +85,199 @@
             </summary>
             <value>The error message.</value>
         </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(Castle.Components.Validator.CreditCardValidator.CardType)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(Castle.Components.Validator.CreditCardValidator.CardType,System.String)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(System.String[])">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(System.String[],System.String)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(Castle.Components.Validator.CreditCardValidator.CardType,System.String[])">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.#ctor(Castle.Components.Validator.CreditCardValidator.CardType,System.String[],System.String)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCreditCardAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateDateAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDateAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDateAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute">
+            <summary>
+            Validates that the collection is not empty
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateCollectionNotEmptyAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateDateTimeAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateTimeAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDateTimeAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateTimeAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDateAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDateTimeAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateDecimalAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDecimalAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDecimalAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDecimalAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDecimalAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDecimalAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateDoubleAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDoubleAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDoubleAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDoubleAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateDoubleAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateDoubleAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateEmailAttribute">
+            <summary>
+            Validate that this email address is a valid one.
+            </summary>
+            <remarks>
+            This only check the format of the email, not if it really exists.
+            </remarks>
+        </member>
         <member name="M:Castle.Components.Validator.ValidateEmailAttribute.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateEmailAttribute"/> class.
@@ -90,6 +290,66 @@
             <param name="errorMessage">The error message.</param>
         </member>
         <member name="M:Castle.Components.Validator.ValidateEmailAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateGroupNotEmptyAttribute">
+            <summary>
+            Validate that at least one of the properties in the group is not null or empty (for strings)
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateGroupNotEmptyAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateGroupNotEmptyAttribute"/> class.
+            </summary>
+            <param name="group">The group.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateGroupNotEmptyAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateGroupNotEmptyAttribute"/> class.
+            </summary>
+            <param name="group">The group.</param>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateGroupNotEmptyAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateGroupNotEmptyAttribute.Build(Castle.Components.Validator.ValidatorRunner,System.Type)">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <param name="validatorRunner"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateIntegerAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateIntegerAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateIntegerAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateIntegerAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateIntegerAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateIntegerAttribute.Build">
             <summary>
             Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
             instance based on the properties set on the attribute instance.
@@ -130,6 +390,124 @@
             <param name="errorMessage">The error message to be displayed if the validation fails.</param>
         </member>
         <member name="M:Castle.Components.Validator.ValidateLengthAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateRangeAttribute">
+            <summary>
+            Validate that this property has the required length (either exact or in a range)
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes an integer-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>int.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>int.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.Int32,System.Int32,System.String)">
+            <summary>
+            Initializes an integer-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>int.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>int.MaxValue</c> if this should not be tested.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.Decimal,System.Decimal)">
+            <summary>
+            Initializes an decimal-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>decimal.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>decimal.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Initializes an decimal-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>decimal.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>decimal.MaxValue</c> if this should not be tested.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a string-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>String.Empty</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>String.Empty</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a string-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>String.Empty</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>String.Empty</c> if this should not be tested.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a DateTime-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>DateTime.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>DateTime.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(System.DateTime,System.DateTime,System.String)">
+            <summary>
+            Initializes a DateTime-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>DateTime.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>DateTime.MaxValue</c> if this should not be tested.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(Castle.Components.Validator.RangeValidationType,System.Object,System.Object)">
+            <summary>
+            Initializes a range validator of a specified type.
+            </summary>
+            <param name="type">The data type to be used by the range validator.</param>
+            <param name="min">The minimum value, or <c>DateTime.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>DateTime.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.#ctor(Castle.Components.Validator.RangeValidationType,System.Object,System.Object,System.String)">
+            <summary>
+            Initializes a range validator of a specified type.
+            </summary>
+            <param name="type">The data type to be used by the range validator.</param>
+            <param name="min">The minimum value, or <c>DateTime.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>DateTime.MaxValue</c> if this should not be tested.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateRangeAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateNotSameValueAttribute">
+            <summary>
+            Validates that the content has not been set to the specified value
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameValueAttribute.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSameAsAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameValueAttribute.#ctor(System.Type,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateNotSameValueAttribute"/> class.
+            </summary>
+            <param name="valueType">Type of the value.</param>
+            <param name="mustNotBeThisValue">The must not be this value.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameValueAttribute.#ctor(System.Type,System.Object,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSameAsAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameValueAttribute.Build">
             <summary>
             Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
             instance based on the properties set on the attribute instance.
@@ -181,6 +559,109 @@
             <param name="errorMessage">The error message.</param>
         </member>
         <member name="M:Castle.Components.Validator.ValidateSameAsAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateNotSameAsAttribute">
+            <summary>
+            Validates that the content has a different
+            value from the property informed.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameAsAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateNotSameAsAttribute"/> class.
+            </summary>
+            <param name="propertyToCompare">The property to compare.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameAsAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateNotSameAsAttribute"/> class.
+            </summary>
+            <param name="propertyToCompare">The property to compare.</param>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateNotSameAsAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateSetAttribute">
+            <summary>
+            Validate that the field has a value in a set of values.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+            <param name="set">The set of values to compare against.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+            <param name="set">The set of values to compare against.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> of an <c>enum</c> class.
+            The enum names will be added to the contents of the set.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSetAttribute"/> class.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> of an <c>enum</c> class.
+            The enum names will be added to the contents of the set.</param>
+            <param name="errorMessage">The error message to be displayed if the validation fails.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSetAttribute.Build">
+            <summary>
+            Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
+            instance based on the properties set on the attribute instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.Components.Validator.ValidateSingleAttribute">
+            <summary>
+            Validate that this date is a valid one.
+            </summary>
+            <remarks>
+            This checks the format of the date
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSingleAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSingleAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSingleAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidateSingleAttribute"/> class.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.ValidateSingleAttribute.Build">
             <summary>
             Constructs and configures an <see cref="T:Castle.Components.Validator.IValidator"/>
             instance based on the properties set on the attribute instance.
@@ -242,7 +723,7 @@
         </member>
         <member name="T:Castle.Components.Validator.InputElementType">
             <summary>
-            Defines an html element type
+            Defines a html element type
             </summary>
         </member>
         <member name="F:Castle.Components.Validator.InputElementType.Undefined">
@@ -275,91 +756,200 @@
             Abstracts a validation registry per <see cref="T:System.Type"/>.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.IValidatorRegistry.GetValidators(System.Type,Castle.Components.Validator.RunWhen)">
+        <member name="M:Castle.Components.Validator.IValidatorRegistry.GetValidators(Castle.Components.Validator.ValidatorRunner,System.Type,Castle.Components.Validator.RunWhen)">
             <summary>
-            Gets all validators associated with a <see cref="T:System.Type"/>. 
+            Gets all validators associated with a <see cref="T:System.Type"/>.
             <para>
             The validators returned are initialized.
             </para>
             </summary>
-            <param name="runWhen">Restrict the set returned to the phase specified</param>
+            <param name="validatorRunner">The validator runner.</param>
             <param name="targetType">Target type.</param>
+            <param name="runWhen">Restrict the set returned to the phase specified</param>
             <returns>A Validator array</returns>
         </member>
-        <member name="M:Castle.Components.Validator.IValidatorRegistry.GetValidators(System.Type,System.Reflection.PropertyInfo,Castle.Components.Validator.RunWhen)">
+        <member name="M:Castle.Components.Validator.IValidatorRegistry.GetValidators(Castle.Components.Validator.ValidatorRunner,System.Type,System.Reflection.PropertyInfo,Castle.Components.Validator.RunWhen)">
             <summary>
-            Gets all validators associated with a property. 
+            Gets all validators associated with a property.
             <para>
             The validators returned are initialized.
             </para>
             </summary>
+            <param name="validatorRunner">The validator runner.</param>
             <param name="targetType">Target type.</param>
             <param name="property">The property.</param>
             <param name="runWhen">Restrict the set returned to the phase specified</param>
             <returns>A Validator array</returns>
         </member>
-        <member name="T:Castle.Components.Validator.IWebValidationGenerator">
+        <member name="M:Castle.Components.Validator.IValidatorRegistry.GetStringFromResource(System.String)">
             <summary>
-            Abstracts an JS validation library implementation. 
+            Gets the string from resource by key
+            </summary>
+            <param name="key">The key.</param>
+        </member>
+        <member name="T:Castle.Components.Validator.IBrowserValidationGenerator">
+            <summary>
+            Abstracts a JS validation library implementation. 
             Each implementation should map the calls to their 
             own approach to enforce validation.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetDigitsOnly(System.String)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetDigitsOnly(System.String,System.String)">
             <summary>
-            Sets the digits only.
+            Set that a field should only accept digits.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetNumberOnly(System.String)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetNumberOnly(System.String,System.String)">
             <summary>
-            Sets the number only.
+            Set that a field should only accept numbers.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetAsRequired(System.String)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetAsRequired(System.String,System.String)">
             <summary>
-            Sets as required.
+            Sets that a field is required.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetRegExp(System.String,System.String)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetRegExp(System.String,System.String,System.String)">
             <summary>
-            Sets the reg exp.
+            Sets that a field value must match the specified regular expression.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="regExp">The reg exp.</param>
             <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetEmail(System.String)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetEmail(System.String,System.String)">
             <summary>
-            Sets the email.
+            Sets that a field value must be a valid email address.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetExactLength(System.Int32)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetExactLength(System.String,System.Int32)">
             <summary>
-            Sets the length of the exact.
+            Sets that field must have an exact lenght.
             </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
             <param name="length">The length.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetMinLength(System.Int32)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetExactLength(System.String,System.Int32,System.String)">
             <summary>
-            Sets the length of the min.
+            Sets that field must have an exact lenght.
             </summary>
-            <param name="minLength">Length of the min.</param>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="length">The length.</param>
+            <param name="violationMessage">The violation message.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetMaxLength(System.Int32)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetMinLength(System.String,System.Int32)">
             <summary>
-            Sets the length of the max.
+            Sets that field must have an minimum lenght.
             </summary>
-            <param name="maxLength">Length of the max.</param>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minLength">The minimum length.</param>
         </member>
-        <member name="M:Castle.Components.Validator.IWebValidationGenerator.SetLengthRange(System.Int32,System.Int32)">
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetMinLength(System.String,System.Int32,System.String)">
             <summary>
-            Sets the length range.
+            Sets that field must have an minimum lenght.
             </summary>
-            <param name="minLength">Length of the min.</param>
-            <param name="maxLength">Length of the max.</param>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minLength">The minimum length.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetMaxLength(System.String,System.Int32)">
+            <summary>
+            Sets that field must have an maximum lenght.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="maxLength">The maximum length.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetMaxLength(System.String,System.Int32,System.String)">
+            <summary>
+            Sets that field must have an maximum lenght.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="maxLength">The maximum length.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetLengthRange(System.String,System.Int32,System.Int32)">
+            <summary>
+            Sets that field must be between a length range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minLength">The minimum length.</param>
+            <param name="maxLength">The maximum length.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetLengthRange(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets that field must be between a length range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minLength">The minimum length.</param>
+            <param name="maxLength">The maximum length.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetValueRange(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets that field must be between a value range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minValue">Minimum value.</param>
+            <param name="maxValue">Maximum value.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetValueRange(System.String,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Sets that field must be between a value range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minValue">Minimum value.</param>
+            <param name="maxValue">Maximum value.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetValueRange(System.String,System.DateTime,System.DateTime,System.String)">
+            <summary>
+            Sets that field must be between a value range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minValue">Minimum value.</param>
+            <param name="maxValue">Maximum value.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetValueRange(System.String,System.String,System.String,System.String)">
+            <summary>
+            Sets that field must be between a value range.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="minValue">Minimum value.</param>
+            <param name="maxValue">Maximum value.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetAsSameAs(System.String,System.String,System.String)">
+            <summary>
+            Set that a field value must be the same as another field's value.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="comparisonFieldName">The name of the field to compare with.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetAsNotSameAs(System.String,System.String,System.String)">
+            <summary>
+            Set that a field value must _not_ be the same as another field's value.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="comparisonFieldName">The name of the field to compare with.</param>
+            <param name="violationMessage">The violation message.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.IBrowserValidationGenerator.SetDate(System.String,System.String)">
+            <summary>
+            Set that a field value must be a valid date.
+            </summary>
+            <param name="target">The target name (ie, a hint about the controller being validated)</param>
+            <param name="violationMessage">The violation message.</param>
         </member>
         <member name="T:Castle.Components.Validator.Messages">
             <summary>
@@ -375,6 +965,11 @@
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.collection_not_empty">
+            <summary>
+              Looks up a localized string similar to Collection must not be empty.
             </summary>
         </member>
         <member name="P:Castle.Components.Validator.Messages.date_invalid">
@@ -407,6 +1002,16 @@
               Looks up a localized string similar to Field has an invalid content.
             </summary>
         </member>
+        <member name="P:Castle.Components.Validator.Messages.group_not_empty_invalid">
+            <summary>
+              Looks up a localized string similar to At least one of the values in ({0}) should not be empty.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.group_not_empty_seperator">
+            <summary>
+              Looks up a localized string similar to , .
+            </summary>
+        </member>
         <member name="P:Castle.Components.Validator.Messages.integer_invalid">
             <summary>
               Looks up a localized string similar to Please enter a valid integer in this field.
@@ -432,6 +1037,31 @@
               Looks up a localized string similar to Field must be more than {0} characters long.
             </summary>
         </member>
+        <member name="P:Castle.Components.Validator.Messages.not_same_as_invalid">
+            <summary>
+              Looks up a localized string similar to Field must not equals &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.range_invalid">
+            <summary>
+              Looks up a localized string similar to Field must be between {0} and {1}.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.range_toohigh">
+            <summary>
+              Looks up a localized string similar to Field must be less than or equal to {0}.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.range_toohighorlow">
+            <summary>
+              Looks up a localized string similar to Field must be between {0} and {1}.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.range_toolow">
+            <summary>
+              Looks up a localized string similar to Field must be greater than or equal to {0}.
+            </summary>
+        </member>
         <member name="P:Castle.Components.Validator.Messages.same_as_invalid">
             <summary>
               Looks up a localized string similar to Fields do not match.
@@ -447,34 +1077,69 @@
               Looks up a localized string similar to Field value is invalid (not a valid time).
             </summary>
         </member>
+        <member name="P:Castle.Components.Validator.Messages.set_invalid">
+            <summary>
+              Looks up a localized string similar to Field must be within a given set of values..
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.Messages.credit_card_invalid">
+            <summary>
+              Looks up a localized string similar to Field value does not appear to be a valid credit card number, or is of an unsupported type..
+            </summary>
+        </member>
         <member name="T:Castle.Components.Validator.CachedValidationRegistry">
             <summary>
             <see cref="T:Castle.Components.Validator.IValidatorRegistry"/> implementation that
             caches the reflection and custom attributes calls for better performance.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.CachedValidationRegistry.GetValidators(System.Type,Castle.Components.Validator.RunWhen)">
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.#cctor">
+            <summary>
+            Initializes the <see cref="T:Castle.Components.Validator.CachedValidationRegistry"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.CachedValidationRegistry"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.#ctor(System.Resources.ResourceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.CachedValidationRegistry"/> class.
+            </summary>
+            <param name="resourceManager">The resource manager.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.GetValidators(Castle.Components.Validator.ValidatorRunner,System.Type,Castle.Components.Validator.RunWhen)">
             <summary>
             Gets all validators associated with a <see cref="T:System.Type"/>.
             <para>
             The validators returned are initialized.
             </para>
             </summary>
+            <param name="validatorRunner">The validator runner.</param>
             <param name="targetType">Target type.</param>
             <param name="runWhen">Restrict the set returned to the phase specified</param>
             <returns>A Validator array</returns>
         </member>
-        <member name="M:Castle.Components.Validator.CachedValidationRegistry.GetValidators(System.Type,System.Reflection.PropertyInfo,Castle.Components.Validator.RunWhen)">
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.GetValidators(Castle.Components.Validator.ValidatorRunner,System.Type,System.Reflection.PropertyInfo,Castle.Components.Validator.RunWhen)">
             <summary>
             Gets all validators associated with a property.
             <para>
             The validators returned are initialized.
             </para>
             </summary>
+            <param name="validatorRunner">The validator runner.</param>
             <param name="targetType">Target type.</param>
             <param name="property">The property.</param>
             <param name="runWhen">Restrict the set returned to the phase specified</param>
             <returns>A Validator array</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.CachedValidationRegistry.GetStringFromResource(System.String)">
+            <summary>
+            Gets the string from resource by key
+            </summary>
+            <param name="key">The key.</param>
+            <returns></returns>
         </member>
         <member name="T:Castle.Components.Validator.ValidationException">
             <summary>
@@ -563,6 +1228,10 @@
             Coordinates the gathering and execution of validators.
             <seealso cref="T:Castle.Components.Validator.IValidatorRegistry"/>
             </summary>
+            <remarks>
+            This class is not thread safe and should not be shared. It should only be 
+            used in small scopes and discarded.
+            </remarks>
             <example>
             ValidatorRunner runner = new ValidatorRunner(new CachedValidationRegistry());
             
@@ -576,14 +1245,13 @@
             <summary>
             Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidatorRunner"/> class.
             </summary>
-            <param name="registry">The instance registry.</param>
+            <param name="registry">The registry.</param>
         </member>
         <member name="M:Castle.Components.Validator.ValidatorRunner.#ctor(System.Boolean,Castle.Components.Validator.IValidatorRegistry)">
             <summary>
             Initializes a new instance of the <see cref="T:Castle.Components.Validator.ValidatorRunner"/> class.
             </summary>
-            <param name="inferValidators">if <c>true</c>, the runner will try 
-            to infer un-declared validators based on property types</param>
+            <param name="inferValidators">If true, the runner will try to infer the validators based on data types</param>
             <param name="registry">The registry.</param>
         </member>
         <member name="M:Castle.Components.Validator.ValidatorRunner.IsValid(System.Object)">
@@ -642,6 +1310,13 @@
             <param name="instance">The instance.</param>
             <returns></returns>
         </member>
+        <member name="P:Castle.Components.Validator.ValidatorRunner.ExtendedProperties">
+            <summary>
+            Gets the extended properties, which allows <see cref="T:Castle.Components.Validator.IValidator"/> 
+            implementation to store additional information to track state.
+            </summary>
+            <value>The extended properties.</value>
+        </member>
         <member name="T:Castle.Components.Validator.AbstractValidator">
             <summary>
             Abstract <see cref="T:Castle.Components.Validator.IValidator"/> implementation
@@ -656,16 +1331,17 @@
             </para>
             <para>
             The validation should happen at <c>IsValid</c>, and if the validator can configure
-            a client-side validation script, it should use the <see cref="P:Castle.Components.Validator.IValidator.SupportsWebValidation"/>
+            a client-side validation script, it should use the <see cref="P:Castle.Components.Validator.IValidator.SupportsBrowserValidation"/>
             to indicate that it does support client-side validation and also implement the 
-            <see cref="M:Castle.Components.Validator.IValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)"/> to configure it.
+            <see cref="M:Castle.Components.Validator.IValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)"/> to configure it.
             </para>
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.IValidator.Initialize(System.Reflection.PropertyInfo)">
+        <member name="M:Castle.Components.Validator.IValidator.Initialize(Castle.Components.Validator.IValidatorRegistry,System.Reflection.PropertyInfo)">
             <summary>
             Implementors should perform any initialization logic
             </summary>
+            <param name="validationRegistry">The validation registry.</param>
             <param name="property">The target property</param>
         </member>
         <member name="M:Castle.Components.Validator.IValidator.IsValid(System.Object)">
@@ -685,15 +1361,16 @@
             <param name="fieldValue"></param>
             <returns><c>true</c> if the field is OK</returns>
         </member>
-        <member name="M:Castle.Components.Validator.IValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.IValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or 
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or 
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
         <member name="P:Castle.Components.Validator.IValidator.Property">
             <summary>
@@ -724,12 +1401,12 @@
             </summary>
             <value>The name.</value>
         </member>
-        <member name="P:Castle.Components.Validator.IValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.IValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            <see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            <see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.IValidator.Name">
@@ -738,15 +1415,11 @@
             is returned if non-null, otherwise it will return the property name.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.AbstractValidator.#cctor">
-            <summary>
-            Initializes the <see cref="T:Castle.Components.Validator.AbstractValidator"/> class.
-            </summary>
-        </member>
-        <member name="M:Castle.Components.Validator.AbstractValidator.Initialize(System.Reflection.PropertyInfo)">
+        <member name="M:Castle.Components.Validator.AbstractValidator.Initialize(Castle.Components.Validator.IValidatorRegistry,System.Reflection.PropertyInfo)">
             <summary>
             Implementors should perform any initialization logic
             </summary>
+            <param name="validationRegistry"></param>
             <param name="property">The target property</param>
         </member>
         <member name="M:Castle.Components.Validator.AbstractValidator.GetFieldOrPropertyValue(System.Object,System.String)">
@@ -757,15 +1430,16 @@
             <param name="fieldOrPropertyName">The name of the field or property to inspect.</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.Components.Validator.AbstractValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.AbstractValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
         <member name="M:Castle.Components.Validator.AbstractValidator.IsValid(System.Object)">
             <summary>
@@ -789,12 +1463,12 @@
             Builds the error message.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.AbstractValidator.GetResourceForCurrentCulture">
+        <member name="M:Castle.Components.Validator.AbstractValidator.GetString(System.String)">
             <summary>
-            Returns the resource set instance with the validation error messages.
-            <seealso cref="T:Castle.Components.Validator.MessageConstants"/>
+            Gets the string from resource
             </summary>
-            <returns>A resource set instance</returns>
+            <param name="key">The key.</param>
+            <returns></returns>
         </member>
         <member name="P:Castle.Components.Validator.AbstractValidator.ExecutionOrder">
             <summary>
@@ -824,12 +1498,12 @@
             </summary>
             <value>The name.</value>
         </member>
-        <member name="P:Castle.Components.Validator.AbstractValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.AbstractValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            <see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            <see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.AbstractValidator.MessageKey">
@@ -843,6 +1517,316 @@
             is returned if non-null, otherwise it will return the property name.
             </summary>
         </member>
+        <member name="T:Castle.Components.Validator.CollectionNotEmptyValidator">
+            <summary>
+            Validates that the content is a collection that is not empty
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.CollectionNotEmptyValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Implementors should perform the actual validation upon
+            the property value
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="P:Castle.Components.Validator.CollectionNotEmptyValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.CollectionNotEmptyValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NotSameAsValidator">
+            <summary>
+            Validates that the content has a different
+            value from the value of the property informed.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameAsValidator.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.NotSameAsValidator"/> class.
+            </summary>
+            <param name="propertyToCompare">The property to compare.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameAsValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Validates that the <c>fieldValue</c> has a different
+            value from the value of the property set through the constructor.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameAsValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.NotSameAsValidator.PropertyToCompare">
+            <summary>
+            Gets the property to compare.
+            </summary>
+            <value>The property to compare.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.NotSameAsValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NotSameAsValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.CreditCardValidator">
+            <summary>
+            This validator validate that the is a valid credit card number in:
+            <list type="unordered">
+            <item> Amex </item>		
+            <item> DinersClub </item>		
+            <item> Discover </item>		
+            <item> Discover </item>		
+            <item> enRoute </item>		
+            <item> JCB </item>		
+            <item> MasterCard </item>		
+            <item> VISA</item>
+            </list>
+            It is possible to specify more than a single card type.
+            You can also specify exceptions for test cards.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.#ctor">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.#ctor(Castle.Components.Validator.CreditCardValidator.CardType)">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.#ctor(System.String[])">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.#ctor(Castle.Components.Validator.CreditCardValidator.CardType,System.String[])">
+            <summary>
+            Initializes a new credit card validator.
+            </summary>
+            <param name="allowedTypes">The card types to accept.</param>
+            <param name="exceptions">An array of card numbers to skip checking for (eg. gateway test numbers). Only digits should be provided for the exceptions.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.CreditCardValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Validate that the propety value matches a valid (formatted) credit card
+            Note: null values are consider OK always.
+            </summary>
+            <param name="instance"></param>
+            <param name="fieldValue"></param>
+            <returns><c>true</c> if the field is OK</returns>
+        </member>
+        <member name="P:Castle.Components.Validator.CreditCardValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.CreditCardValidator.AllowedTypes">
+            <summary>
+            Gets the allowed credit card types.
+            </summary>
+            <value>The <see cref="T:Castle.Components.Validator.CreditCardValidator.CardType"/> representing the allowed types.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.CreditCardValidator.Exceptions">
+            <summary>
+            An array of card numbers to skip checking for (eg. gateway test numbers).
+            </summary>
+            <value>A <see cref="T:System.Array"/>representing the card numbers to skip checking.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.CreditCardValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.CreditCardValidator.CardType">
+            <summary>
+            Define the known card types
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.MasterCard">
+            <summary>
+            MasterCard Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.VISA">
+            <summary>
+            VISA Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.Amex">
+            <summary>
+            American Express Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.DinersClub">
+            <summary>
+            Diners Club Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.enRoute">
+            <summary>
+            enRoute Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.Discover">
+            <summary>
+            Discover Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.JCB">
+            <summary>
+            JCB Card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.Unknown">
+            <summary>
+            Unkown card
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.CreditCardValidator.CardType.All">
+            <summary>
+            All (known) cards
+            </summary>
+        </member>
+        <member name="T:Castle.Components.Validator.GroupNotEmptyValidator">
+            <summary>
+            Ensures that at least one property in the group was filled with some value
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.GroupNotEmptyValidator.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.GroupNotEmptyValidator"/> class.
+            </summary>
+            <param name="groupName">Name of the group.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.GroupNotEmptyValidator.Initialize(Castle.Components.Validator.IValidatorRegistry,System.Reflection.PropertyInfo)">
+            <summary>
+            Implementors should perform any initialization logic
+            </summary>
+            <param name="validationRegistry"></param>
+            <param name="property">The target property</param>
+        </member>
+        <member name="M:Castle.Components.Validator.GroupNotEmptyValidator.IsValid(System.Object)">
+            <summary>
+            Implementors should perform the actual validation upon
+            the property value
+            </summary>
+            <param name="instance"></param>
+            <returns><c>true</c> if the field is OK</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.GroupNotEmptyValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Implementors should perform the actual validation upon
+            the property value
+            </summary>
+            <param name="instance"></param>
+            <param name="fieldValue"></param>
+            <returns><c>true</c> if the field is OK</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.GroupNotEmptyValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.Property">
+            <summary>
+            The target property
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.RunWhen">
+            <summary>
+            Defines when to run the validation. 
+            Defaults to <c>RunWhen.Everytime</c>
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.ExecutionOrder">
+            <summary>
+            Gets or sets the validation execution order.
+            </summary>
+            <value>The execution order.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.ErrorMessage">
+            <summary>
+            The error message to be displayed if the validation fails
+            </summary>
+            <value>The error message.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.FriendlyName">
+            <summary>
+            Gets or sets the a friendly name for the target property
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            <see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.GroupNotEmptyValidator.Name">
+            <summary>
+            Gets the property name. The <see cref="P:Castle.Components.Validator.GroupNotEmptyValidator.FriendlyName"/>
+            is returned if non-null, otherwise it will return the property name.
+            </summary>
+        </member>
         <member name="T:Castle.Components.Validator.DateTimeValidator">
             <summary>
             This is a meta validator. 
@@ -852,9 +1836,8 @@
         </member>
         <member name="M:Castle.Components.Validator.DateTimeValidator.IsValid(System.Object,System.Object)">
             <summary>
-            If the <c>fieldValue</c> is not null, an attempt to convert the
-            content to a Date is performed, and the field is considered value
-            if the conversion is successful.
+            Checks if the <c>fieldValue</c> can be converted to a valid DateTime.
+            Null or empty value are allowed.
             </summary>
             <param name="instance">The target type instance</param>
             <param name="fieldValue">The property/field value. It can be null.</param>
@@ -862,25 +1845,65 @@
             <c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.DateTimeValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="P:Castle.Components.Validator.DateTimeValidator.SupportsBrowserValidation">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.DateTimeValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.DateValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.DateValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Date (so no time part).
+            Null and Empty value are allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            <c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.DateValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.DateTimeValidator.SupportsWebValidation">
+        <member name="M:Castle.Components.Validator.DateValidator.IsDateOnly(System.DateTime)">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Check if only date given (so no time part)
+            </summary>
+            <param name="date">The date to check</param>
+            <returns><see langword="true"/>If Date only; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="P:Castle.Components.Validator.DateValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
-        <member name="P:Castle.Components.Validator.DateTimeValidator.MessageKey">
+        <member name="P:Castle.Components.Validator.DateValidator.MessageKey">
             <summary>
             Returns the key used to internationalize error messages
             </summary>
@@ -895,9 +1918,8 @@
         </member>
         <member name="M:Castle.Components.Validator.DecimalValidator.IsValid(System.Object,System.Object)">
             <summary>
-            If the <c>fieldValue</c> is not null, an attempt to convert the
-            content to a Decimal is performed, and the field is considered value
-            if the conversion is successful.
+            Checks if the <c>fieldValue</c> can be converted to a valid Decimal.
+            Null or empty value are allowed.
             </summary>
             <param name="instance">The target type instance</param>
             <param name="fieldValue">The property/field value. It can be null.</param>
@@ -905,22 +1927,23 @@
             	<c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.DecimalValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.DecimalValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.DecimalValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.DecimalValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.DecimalValidator.MessageKey">
@@ -938,9 +1961,8 @@
         </member>
         <member name="M:Castle.Components.Validator.DoubleValidator.IsValid(System.Object,System.Object)">
             <summary>
-            If the <c>fieldValue</c> is not null, an attempt to convert the
-            content to a Double is performed, and the field is considered value
-            if the conversion is successful.
+            Checks if the <c>fieldValue</c> can be converted to a valid Double.
+            Null or empty value are allowed.
             </summary>
             <param name="instance">The target type instance</param>
             <param name="fieldValue">The property/field value. It can be null.</param>
@@ -948,22 +1970,23 @@
             	<c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.DoubleValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.DoubleValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.DoubleValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.DoubleValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.DoubleValidator.MessageKey">
@@ -997,21 +2020,22 @@
         </member>
         <member name="M:Castle.Components.Validator.RegularExpressionValidator.IsValid(System.Object,System.Object)">
             <summary>
-            Validate that the property value match the given regex
+            Validate that the property value match the given regex.  Null or empty values are allowed.
             </summary>
             <param name="instance"></param>
             <param name="fieldValue"></param>
             <returns><c>true</c> if the field is OK</returns>
         </member>
-        <member name="M:Castle.Components.Validator.RegularExpressionValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.RegularExpressionValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
         <member name="P:Castle.Components.Validator.RegularExpressionValidator.RegexRule">
             <summary>
@@ -1025,12 +2049,12 @@
             </summary>
             <value>The expression.</value>
         </member>
-        <member name="P:Castle.Components.Validator.RegularExpressionValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.RegularExpressionValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="F:Castle.Components.Validator.EmailValidator.emailRule">
@@ -1043,21 +2067,22 @@
             Initializes a new instance of the <see cref="T:Castle.Components.Validator.EmailValidator"/> class.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.EmailValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.EmailValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation.
+            Applies the browser validation.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.EmailValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.EmailValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether [supports web validation].
+            Gets a value indicating whether [supports browser validation].
             </summary>
             <value>
-            	<c>true</c> if [supports web validation]; otherwise, <c>false</c>.
+            	<c>true</c> if [supports browser validation]; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.EmailValidator.MessageKey">
@@ -1075,9 +2100,8 @@
         </member>
         <member name="M:Castle.Components.Validator.IntegerValidator.IsValid(System.Object,System.Object)">
             <summary>
-            If the <c>fieldValue</c> is not null, an attempt to convert the
-            content to a Integer is performed, and the field is considered value
-            if the conversion is successful.
+            Checks if the <c>fieldValue</c> can be converted to a valid Integer.
+            Null or empty value are allowed.
             </summary>
             <param name="instance">The target type instance</param>
             <param name="fieldValue">The property/field value. It can be null.</param>
@@ -1085,22 +2109,23 @@
             	<c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.IntegerValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.IntegerValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.IntegerValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.IntegerValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.IntegerValidator.MessageKey">
@@ -1136,15 +2161,16 @@
             <param name="fieldValue"></param>
             <returns><c>true</c> if the field is OK</returns>
         </member>
-        <member name="M:Castle.Components.Validator.LengthValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.LengthValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
         <member name="M:Castle.Components.Validator.LengthValidator.BuildErrorMessage">
             <summary>
@@ -1170,12 +2196,12 @@
             </summary>
             <value>The maximum length to validate.</value>
         </member>
-        <member name="P:Castle.Components.Validator.LengthValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.LengthValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="T:Castle.Components.Validator.NonEmptyValidator">
@@ -1192,22 +2218,23 @@
             <param name="fieldValue"></param>
             <returns><c>true</c> if the field is OK</returns>
         </member>
-        <member name="M:Castle.Components.Validator.NonEmptyValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.NonEmptyValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.NonEmptyValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.NonEmptyValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.NonEmptyValidator.MessageKey">
@@ -1265,6 +2292,455 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Castle.Components.Validator.NotSameValueValidator">
+            <summary>
+            Validates that the content is not set to the specified value
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameValueValidator.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.Validator.SameAsValidator"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameValueValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Validates that the <c>fieldValue</c>
+            is not set to the specified value 
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NotSameValueValidator.BuildErrorMessage">
+            <summary>
+            Builds the error message.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Castle.Components.Validator.NotSameValueValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NotSameValueValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableDateTimeValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDateTimeValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid DateTime.
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDateTimeValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDateTimeValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableDateValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDateValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Date (so no time part).
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            <c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDateValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDateValidator.IsDateOnly(System.DateTime)">
+            <summary>
+            Check if only date given (so no time part)
+            </summary>
+            <param name="date">The date to check</param>
+            <returns><see langword="true"/>If Date only; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDateValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDateValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableDecimalValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDecimalValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Decimal.
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDecimalValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDecimalValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDecimalValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableDoubleValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDoubleValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Double.
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableDoubleValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDoubleValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableDoubleValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableIntegerValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableIntegerValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Integer.
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableIntegerValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableIntegerValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableIntegerValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.NullableSingleValidator">
+            <summary>
+            This is a meta validator. 
+            It is only useful to test a source content before setting it on the 
+            target instance.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableSingleValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Checks if the <c>fieldValue</c> can be converted to a valid Single.
+            Null or empty value allowed.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns>
+            	<c>true</c> if the value is accepted (has passed the validation test)
+            </returns>
+        </member>
+        <member name="M:Castle.Components.Validator.NullableSingleValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableSingleValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.NullableSingleValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.RangeValidationType">
+            <summary>
+            Specifies the data type the <see cref="T:Castle.Components.Validator.RangeValidator"/>
+            is dealing with.
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.RangeValidationType.Integer">
+            <summary>
+            <see cref="T:Castle.Components.Validator.RangeValidator"/> is dealing with a range of integers
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.RangeValidationType.Decimal">
+            <summary>
+            <see cref="T:Castle.Components.Validator.RangeValidator"/> is dealing with a range of decimals
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.RangeValidationType.DateTime">
+            <summary>
+            <see cref="T:Castle.Components.Validator.RangeValidator"/> is dealing with a range of dates
+            </summary>
+        </member>
+        <member name="F:Castle.Components.Validator.RangeValidationType.String">
+            <summary>
+            <see cref="T:Castle.Components.Validator.RangeValidator"/> is dealing with a range of strings
+            </summary>
+        </member>
+        <member name="T:Castle.Components.Validator.RangeValidator">
+            <summary>
+            Ensures that a property's string representation 
+            is within the desired value limitations.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes an integer-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>int.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>int.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.#ctor(System.Decimal,System.Decimal)">
+            <summary>
+            Initializes an decimal-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>decimal.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>decimal.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a DateTime-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>DateTime.MinValue</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>DateTime.MaxValue</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a string-based range validator.
+            </summary>
+            <param name="min">The minimum value, or <c>String.Empty</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>String.Empty</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.#ctor(Castle.Components.Validator.RangeValidationType,System.Object,System.Object)">
+            <summary>
+            Initializes a range validator of the given type with the given minimum and maximum values.
+            </summary>
+            <param name="type">The type of range validator.</param>
+            <param name="min">The minimum value, or <c>null</c> if this should not be tested.</param>
+            <param name="max">The maximum value, or <c>null</c> if this should not be tested.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.GetMaxValue(System.Object)">
+            <summary>
+            Internal method that checks a given maximum value's data type and converts
+            null values to the proper maximum value for the data type.
+            </summary>
+            <param name="max">The maximum value to be processed.</param>
+            <returns>The maximum value with appropriate null-converted minimum values.</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Validate that the property value matches the value requirements.
+            </summary>
+            <param name="instance"></param>
+            <param name="fieldValue"></param>
+            <returns><c>true</c> if the field is OK</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.BuildErrorMessage">
+            <summary>
+            Builds the error message.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.BuildIntegerErrorMessage(System.Int32,System.Int32)">
+            <summary>
+            Gets the error message string for Integer validation
+            </summary>
+            <returns>an error message</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.BuildDecimalErrorMessage(System.Decimal,System.Decimal)">
+            <summary>
+            Gets the error message string for Decimal validation
+            </summary>
+            <returns>an error message</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.BuildDateTimeErrorMessage(System.DateTime,System.DateTime)">
+            <summary>
+            Gets the error message string for DateTime validation
+            </summary>
+            <returns>an error message</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.BuildStringErrorMessage(System.String,System.String)">
+            <summary>
+            Gets the error message string for string validation
+            </summary>
+            <returns>an error message</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.RangeValidator.GetMinValue(System.Object)">
+            <summary>
+            Internal method that checks a given minimum value's data type and converts
+            null values to the proper minimum value for the data type.
+            </summary>
+            <param name="min">The minimum value to be processed.</param>
+            <returns>The minimum value with appropriate null-converted minimum values.</returns>
+        </member>
+        <member name="P:Castle.Components.Validator.RangeValidator.Type">
+            <summary>
+            Gets or sets the range validation type for this validator. If the type is changed,
+            the minimum and maximum values are reset to null-equivalent values (i.e. appropriate
+            minimum and maximum values for the data type).
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.RangeValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.RangeValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <value></value>
+        </member>
         <member name="T:Castle.Components.Validator.SameAsValidator">
             <summary>
             Validates that the content has the same 
@@ -1288,15 +2764,16 @@
             	<c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.SameAsValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.SameAsValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
         <member name="P:Castle.Components.Validator.SameAsValidator.PropertyToCompare">
             <summary>
@@ -1304,12 +2781,12 @@
             </summary>
             <value>The property to compare.</value>
         </member>
-        <member name="P:Castle.Components.Validator.SameAsValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.SameAsValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.SameAsValidator.MessageKey">
@@ -1317,6 +2794,74 @@
             Returns the key used to internationalize error messages
             </summary>
             <value></value>
+        </member>
+        <member name="T:Castle.Components.Validator.SetValidator">
+            <summary>
+            Ensures that a property's string representation 
+            is within a given set of values.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.#ctor">
+            <summary>
+            Initializes a set-based validator with an empty set.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.#ctor(System.String[])">
+            <summary>
+            Initializes a set-based validator.
+            </summary>
+            <param name="set">The set of values to validate against.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.#ctor(System.Type)">
+            <summary>
+            Initializes a set-based validator.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> of an <c>enum</c> class.
+            The enum names will be added to the contents of the set.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.IsValid(System.Object,System.Object)">
+            <summary>
+            Validate that the property value matches the set requirements.
+            </summary>
+            <param name="instance">The target type instance</param>
+            <param name="fieldValue">The property/field value. It can be null.</param>
+            <returns><c>true</c> if the value is accepted (has passed the validation test)</returns>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
+            <summary>
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
+            </summary>
+            <param name="config">The config.</param>
+            <param name="inputType">Type of the input.</param>
+            <param name="generator">The generator.</param>
+            <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="M:Castle.Components.Validator.SetValidator.BuildErrorMessage">
+            <summary>
+            Builds the error message.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Castle.Components.Validator.SetValidator.Set">
+            <summary>
+            Gets or sets the set of values to validate against.
+            </summary>
+        </member>
+        <member name="P:Castle.Components.Validator.SetValidator.SupportsBrowserValidation">
+            <summary>
+            Gets a value indicating whether this validator supports browser validation.
+            </summary>
+            <value>
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Castle.Components.Validator.SetValidator.MessageKey">
+            <summary>
+            Returns the key used to internationalize error messages
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Castle.Components.Validator.SingleValidator">
             <summary>
@@ -1329,7 +2874,7 @@
             <summary>
             If the <c>fieldValue</c> is not null, an attempt to convert the
             content to a Single is performed, and the field is considered value
-            if the conversion is successful.
+            if the conversion is successful.  Null and empty are allowed.
             </summary>
             <param name="instance">The target type instance</param>
             <param name="fieldValue">The property/field value. It can be null.</param>
@@ -1337,22 +2882,23 @@
             	<c>true</c> if the value is accepted (has passed the validation test)
             </returns>
         </member>
-        <member name="M:Castle.Components.Validator.SingleValidator.ApplyWebValidation(Castle.Components.Validator.WebValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IWebValidationGenerator,System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.SingleValidator.ApplyBrowserValidation(Castle.Components.Validator.BrowserValidationConfiguration,Castle.Components.Validator.InputElementType,Castle.Components.Validator.IBrowserValidationGenerator,System.Collections.IDictionary,System.String)">
             <summary>
-            Applies the web validation by setting up one or
-            more input rules on <see cref="T:Castle.Components.Validator.IWebValidationGenerator"/>.
+            Applies the browser validation by setting up one or
+            more input rules on <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/>.
             </summary>
             <param name="config">The config.</param>
             <param name="inputType">Type of the input.</param>
             <param name="generator">The generator.</param>
             <param name="attributes">The attributes.</param>
+            <param name="target">The target.</param>
         </member>
-        <member name="P:Castle.Components.Validator.SingleValidator.SupportsWebValidation">
+        <member name="P:Castle.Components.Validator.SingleValidator.SupportsBrowserValidation">
             <summary>
-            Gets a value indicating whether this validator supports web validation.
+            Gets a value indicating whether this validator supports browser validation.
             </summary>
             <value>
-            	<see langword="true"/> if web validation is supported; otherwise, <see langword="false"/>.
+            	<see langword="true"/> if browser validation is supported; otherwise, <see langword="false"/>.
             </value>
         </member>
         <member name="P:Castle.Components.Validator.SingleValidator.MessageKey">
@@ -1361,18 +2907,18 @@
             </summary>
             <value></value>
         </member>
-        <member name="T:Castle.Components.Validator.WebValidationConfiguration">
+        <member name="T:Castle.Components.Validator.BrowserValidationConfiguration">
             <summary>
-            Represents the base of a web configuration.
+            Represents the base of a browser configuration.
             </summary>
         </member>
-        <member name="M:Castle.Components.Validator.WebValidationConfiguration.Configure(System.Collections.IDictionary)">
+        <member name="M:Castle.Components.Validator.BrowserValidationConfiguration.Configure(System.Collections.IDictionary)">
             <summary>
             Configures the JS library based on the supplied parameters.
             </summary>
             <param name="parameters">The parameters.</param>
         </member>
-        <member name="M:Castle.Components.Validator.WebValidationConfiguration.CreateAfterFormOpened(System.String)">
+        <member name="M:Castle.Components.Validator.BrowserValidationConfiguration.CreateAfterFormOpened(System.String)">
             <summary>
             Implementors should return any tag/js content
             to be rendered after the form tag is rendered.
@@ -1380,7 +2926,7 @@
             <param name="formId">The form id.</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.Components.Validator.WebValidationConfiguration.CreateBeforeFormClosed(System.String)">
+        <member name="M:Castle.Components.Validator.BrowserValidationConfiguration.CreateBeforeFormClosed(System.String)">
             <summary>
             Implementors should return any tag/js content
             to be rendered after the form tag is closed.

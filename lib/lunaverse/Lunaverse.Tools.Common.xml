@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lunaverse.Tools.Common</name>
+    </assembly>
+    <members>
+        <member name="F:Lunaverse.Tools.Common.Log.Enabled">
+             <summary>
+            Set to false to disableing the log for UnitTests.  Default is true.
+            </summary>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.StartMethod">
+             <summary>
+             Writes a log entry indicating that the current method is starting
+            </summary>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.StartMethod(System.String,System.Object[])">
+            <summary>
+            Writes a log entry indicating that the current method is starting
+            </summary>
+            <param name="format">A formatted message to be included in the log entry</param>
+            <param name="args">A list of parameters for the formatted message</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.StartMethod(System.Object)">
+            <summary>
+            Writes a log entry indicating that the current method is starting
+            </summary>
+            <param name="id">Adds a messgage like "[Id=123]" to the message.  Useful for methods that take one parameter that represents an Id</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.EndMethod">
+            <summary>
+            Writes a log entry indicating that the current method is ending
+            </summary>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.EndMethod(System.String,System.Object[])">
+            <summary>
+            Writes a log entry indicating that the current method is ending
+            </summary>
+            <param name="format">A formatted message to be included in the log entry</param>
+            <param name="args">A list of parameters for the formatted message</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.EndMethod(System.Collections.ICollection)">
+            <summary>
+            Writes a log entry indicating that the current method is ending
+            </summary>
+            <param name="returnCollection">Adds a message to the log entry like 
+            "[Returning 17]", where 17 is the number of items in returnCollection.
+            Useful for reporting the number of items returned from methods that
+            return anything that implements ICollection.</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.EndMethod``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Writes a log entry indicating that the current method is ending
+            </summary>
+            <typeparam name="T">The type of the generic ICollection.  Normally this 
+            can be inferred</typeparam>
+            <param name="returnCollection">Adds a message to the log entry like 
+            "[Returning 17]", where 17 is the number of items in returnCollection.
+            Useful for reporting the number of items returned from methods that
+            return anything that implements generic ICollection/>.</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Log.EndMethod(System.ValueType)">
+            <summary>
+            Writes a log entry indicating that the current method is ending
+            </summary>
+            <param name="returnValue">Adds a message to the log entry like 
+            "[Returning foo], where "foo" is returnValue.  Useful when the method
+            return some primitive value
+            </param>
+        </member>
+        <member name="T:Lunaverse.Tools.Common.GroupedCollection`1">
+            <summary>GroupedCollection provides a means to group IEnumerable collections. It should be 
+            used to group small to medium sized collections or where performance is not 
+            critical.  NOTE: All objects to be grouped on must be serializable.</summary>
+            <typeparam name="T">The type of items in the collection</typeparam>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.GroupedCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Constructor</summary>
+            <param name="source">The source collection to be grouped</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.GroupedCollection`1.AddGroupDescription(System.String)">
+            <summary><para>Adds a group descritption used for grouping.  Group descriptions are 
+            names of properties and/or fields of the items in the source collection.  Group 
+            desciptions can be nested properties/fields, but cannot be methods.</para>
+            <para>When the collections is grouped, one ItemGroup will be generated for each 
+            group description.  Each ItemGroup will contain the grouped items as well as a collection 
+            of Discriminators which together uniquely discriminate the group fom all other groups.  
+            Discrimiators are accessed using the corresponding group description as the key.</para>
+            <para>EXAMPLE: Let's say the source list contains objects of type Person.
+            Valid group descriptions might be:
+            <code>
+            "Company.Address.Zip"
+            "LastName"
+            </code></para>
+            </summary>
+            <param name="groupDescription">The name of the group description to add</param>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.GroupedCollection`1.RemoveGroupDescription(System.String)">
+            <summary>Removes a group description</summary>
+            <param name="groupDescription">The group description to remove</param>
+        </member>
+        <member name="P:Lunaverse.Tools.Common.GroupedCollection`1.Groups">
+            <summary>A read only collection of groups, each consisting of items from the 
+            source collection</summary>
+        </member>
+        <member name="P:Lunaverse.Tools.Common.GroupedCollection`1.GroupDescriptions">
+            <summary>A collection of strings representing the names of properties of the objects
+            within the source collection.  The values of these properties are together
+            used to discriminate items for grouping.</summary>
+        </member>
+        <member name="P:Lunaverse.Tools.Common.GroupedCollection`1.Source">
+            <summary>The soruce collection. Read only.</summary>
+        </member>
+        <member name="T:Lunaverse.Tools.Common.ItemGroup`1">
+            <summary>A group of items withing a grouped collection</summary>
+            <typeparam name="T">The type of items in the collection</typeparam>
+        </member>
+        <member name="P:Lunaverse.Tools.Common.ItemGroup`1.Items">
+            <summary>The items in the item group</summary>
+        </member>
+        <member name="P:Lunaverse.Tools.Common.ItemGroup`1.Discriminator">
+            <summary>A collection of values that uniquely discriminates the ItemGroup. When
+            the ItemGroup is a member of a GroupedCollection, the Discriminator's key will be
+            the corresponding GroupDescription value.</summary>
+        </member>
+        <member name="M:Lunaverse.Tools.Common.Emailer.SendEmail(System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Net.Mail.Attachment[])">
+            <summary>
+            Sends an email message to SmtpServerName
+            </summary>
+            <param name="from">The FROM email address</param>
+            <param name="to">A list of the TO email addresses (comma or semi-colon seperated)</param>
+            <param name="subject">The SUBJECT of the email</param>
+            <param name="body">The BODY of the email</param>
+            <param name="cc">A list of CC the email addresses (comma or semi-colon seperated)</param>
+            <param name="bcc">A list of BCC the email addresses (comma or semi-colon seperated)</param>
+            <param name="isBodyHtml">If true, the email body will be HTML otherwise it will be plain text</param>
+            <param name="attachments">Attachements to the email</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,54 @@
+<script>
+  function selectAction(optButton)
+  {
+      optButton.checked = true;
+  } 
+</script>
+<img src="../Images/beta.gif" style="vertical-align:top; padding-left:3px;"/>
+<tr>
+    <td colspan="4">
+        <table style="width:100%;">
+        #if($entityIsNew || $userIsAdmin)
+            <td class="label" id="title">Title:</td>
+            <td>
+                $FormHelper.TextField("entity.Title", "%{style='width:99%', onchange='markDirty()'}")
+            </td>
+        #else
+            <td style="font-weight:bold; font-size:1.5em; color:#3a4fa6;">
+                $!entity.Title
+            </td>
+        #end
+       </table>
+   </td>
+</tr>
+<tr>
+    <td colspan="4">
+        #blockcomponent(StoryVerseCollapsiblePanel with "id=details" "caption=Details") 
+            #body
+                #parse("issues/_details.vm")
+            #end
+        #end
+    </td>
+</tr>
+#if(!$entityIsNew)
+    <tr>
+        <td colspan="4">
+            #parse("issues/_notes.vm")
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"> 
+          #parse("issues/_attachments.vm")
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"> 
+          #parse("issues/_changes.vm")
+        </td>
+    </tr>
+#end
+<tr>
+    <td colspan="4"> 
+      #parse("issues/_actions.vm")
+    </td>
+</tr>

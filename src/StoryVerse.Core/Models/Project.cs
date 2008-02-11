@@ -7,16 +7,13 @@
 using System;
 using System.Collections.Generic;
 using Castle.ActiveRecord;
-using System.Collections;
-using NHibernate.Mapping;
-using StoryVerse.Core.Lookups;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Project : ActiveRecordValidationBase<Project>, IEntity, IComparable<Project>
+    [ActiveRecord]
+    public class Project : BaseEntity<Project>
     {
-        private Guid _id;
         private string _name;
         private Company _company;
         private IList<Story> _storiesList = new List<Story>();
@@ -24,55 +21,64 @@ namespace StoryVerse.Core.Models
         private IList<Task> _tasksList = new List<Task>();
         private IList<ProductionRelease> _productionReleasesList = new List<ProductionRelease>();
         private IList<Component> _componentsList = new List<Component>();
+        private IList<Issue> _issuesList = new List<Issue>();
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-        [Property, ValidateNotEmpty("Project Name is required.")]
+        [Property, ValidateNonEmpty("Project Name is required.")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        [BelongsTo(), ValidateNotEmpty("Company is required.")]
+        [BelongsTo, ValidateNonEmpty("Company is required.")]
         public Company Company
         {
             get { return _company; }
             set { _company = value; }
         }
 
-        [HasMany(typeof(Story), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
+        [HasMany(typeof(Story), RelationType = RelationType.Bag, Lazy = true, 
+            Cascade = ManyRelationCascadeEnum.All)]
         private IList<Story> StoriesList
         {
             get { return _storiesList; }
             set { _storiesList = value; }
         }
 
-        [HasMany(typeof(Iteration), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
+        [HasMany(typeof(Iteration), RelationType = RelationType.Bag, Lazy = true, 
+            Cascade = ManyRelationCascadeEnum.All)]
         private IList<Iteration> IterationsList
         {
             get { return _iterationsList; }
             set { _iterationsList = value; }
         }
 
-        [HasMany(typeof(Task), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All)]
+        [HasMany(typeof(Task), RelationType = RelationType.Bag, Lazy = true, 
+            Cascade = ManyRelationCascadeEnum.All)]
         private IList<Task> TasksList
         {
             get { return _tasksList; }
             set { _tasksList = value; }
         }
 
-        [HasMany(typeof(ProductionRelease), RelationType = RelationType.Bag, Lazy = true, Cascade = ManyRelationCascadeEnum.All, Table="ProductionRelease", ColumnKey="Project")]
+        [HasMany(typeof(Issue), RelationType = RelationType.Bag, Lazy = false, 
+            Cascade = ManyRelationCascadeEnum.AllDeleteOrphan)]
+        private IList<Issue> IssuesList
+        {
+            get { return _issuesList; }
+            set { _issuesList = value; }
+        }
+
+        [HasMany(typeof(ProductionRelease), RelationType = RelationType.Bag, Lazy = true, 
+            Cascade = ManyRelationCascadeEnum.All, Table="ProductionRelease", ColumnKey="Project")]
         private IList<ProductionRelease> ProductionReleasesList
         {
             get { return _productionReleasesList; }
             set { _productionReleasesList = value; }
         }
 
-        [HasMany(typeof(Component), RelationType = RelationType.Bag, Lazy = false, Cascade = ManyRelationCascadeEnum.All, Table="Component", ColumnKey="Project")]
+        [HasMany(typeof(Component), RelationType = RelationType.Bag, Lazy = false, 
+            Cascade = ManyRelationCascadeEnum.All, Table="Component", ColumnKey="Project")]
         private IList<Component> ComponentsList
         {
             get { return _componentsList; }
@@ -92,6 +98,11 @@ namespace StoryVerse.Core.Models
         public IList<Task> Tasks
         {
             get { return new List<Task>(_tasksList).AsReadOnly(); }
+        }
+
+        public IList<Issue> Issues
+        {
+            get { return new List<Issue>(_issuesList).AsReadOnly(); }
         }
 
         public IList<ProductionRelease> ProductionReleases
@@ -151,6 +162,7 @@ namespace StoryVerse.Core.Models
             if (!_tasksList.Contains(item))
             {
                 _tasksList.Add(item);
+                item.Project = this;
             }
         }
 
@@ -159,6 +171,24 @@ namespace StoryVerse.Core.Models
             if (_tasksList.Contains(item))
             {
                 _tasksList.Remove(item);
+            }
+        }
+
+        public void AddIssue(Issue item)
+        {
+            if (!_issuesList.Contains(item))
+            {
+                _issuesList.Add(item);
+                item.Project = this;
+            }
+        }
+
+        public void RemoveIssue(Issue item)
+        {
+            if (_issuesList.Contains(item))
+            {
+                _issuesList.Remove(item);
+                item.Project = null;
             }
         }
 
@@ -232,6 +262,19 @@ namespace StoryVerse.Core.Models
                 if (task.Number > highestNumber)
                 {
                     highestNumber = task.Number;
+                }
+            }
+            return highestNumber + 1;
+        }
+
+        public int GetNextIssueNumber()
+        {
+            int highestNumber = 0;
+            foreach (Issue issue in _issuesList)
+            {
+                if (issue.Number > highestNumber)
+                {
+                    highestNumber = issue.Number;
                 }
             }
             return highestNumber + 1;
@@ -343,7 +386,7 @@ namespace StoryVerse.Core.Models
         //    }
         //}
 
-        public void Validate()
+        public override void Validate()
         {
             List<string> messages = new List<string>();
 
@@ -359,50 +402,15 @@ namespace StoryVerse.Core.Models
             }
         }
 
-
-
-        #region Sorting Members
-
-        private static string _sortExpression = "Name";
-        public static string SortExpression
+        protected override int GetRelativeValue(Project other)
         {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
-        }
-
-        private static SortDirection _sortDirection = SortDirection.Ascending;
-        public static SortDirection SortDirection
-        {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Project other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int relativeValue;
             switch (SortExpression)
             {
-                case "Name":
-                    relativeValue = (Name != null) ? Name.CompareTo(other.Name) : -1;
-                    break;
                 case "Company":
-                    relativeValue = (Company != null) ? Company.CompareTo(other.Company) : -1;
-                    break;
+                    return (Company != null) ? Company.CompareTo(other.Company) : -1;
                 default:
-                    relativeValue = 0;
-                    break;
+                    return (Name != null) ? Name.CompareTo(other.Name) : -1;
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         }
-
-        #endregion
     }
 }

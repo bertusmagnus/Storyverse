@@ -1,7 +1,11 @@
+#parse("layouts/fragments/error.vm")
 <div class="section_title">
   $entityNamePlural 
   #if($newLinkVisible)&nbsp;&nbsp;<a href="new.rails">New</a>#end
 </div>
+#if($entityNamePlural == "Issues")
+  <img src="../Images/beta.gif" style="vertical-align:top; padding-left:3px;"/>
+#end
 
 <form name="list" action="list.rails" method="post">
   $FormHelper.HiddenField("sortExpression")

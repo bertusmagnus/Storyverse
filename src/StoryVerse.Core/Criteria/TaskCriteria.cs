@@ -11,9 +11,8 @@ using StoryVerse.Core.Lookups;
 
 namespace StoryVerse.Core.Criteria
 {
-    public class TaskCriteria : IFindCriteria
+    public class TaskCriteria : BaseCriteria<Task>
     {
-        private IEntity project;
         private Guid?[] iterationIds;
         private Guid?[] ownerIds;
         private TechnicalRisk[] techRisks;
@@ -22,14 +21,6 @@ namespace StoryVerse.Core.Criteria
         private int? number;
         //private int? hoursRemainingFrom;
         //private int? hoursRemainingTo;
-        private string orderBy;
-        private bool orderAscending = true;
-
-        public IEntity ContextEntity
-        {
-            get { return project; }
-            set { project = value; }
-        }
 
         public Guid?[] IterationIds
         {
@@ -79,18 +70,6 @@ namespace StoryVerse.Core.Criteria
         //    set { hoursRemainingTo = StringToNullableInt(value); }
         //}
 
-        public string OrderBy
-        {
-            get { return orderBy; }
-            set { orderBy = value; }
-        }
-
-        public bool OrderAscending
-        {
-            get { return orderAscending; }
-            set { orderAscending = value; }
-        }
-
         public void ClearAllCriteria()
         {
             iterationIds = null;
@@ -103,15 +82,20 @@ namespace StoryVerse.Core.Criteria
             //hoursRemainingTo = null;
         }
 
-        public DetachedCriteria ToDetachedCriteria()
+        protected override void BuildCriteria()
         {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(Task));
-            if (project != null)
-                criteria.Add(Expression.Eq("Project", project));
+            if (contextEntity != null)
+            {
+                criteria.Add(Expression.Eq("Project", contextEntity));
+            }
             if (techRisks != null && techRisks.Length > 0)
+            {
                 criteria.Add(Expression.In("TechnicalRisk", techRisks));
+            }
             if (statuses != null && statuses.Length > 0)
+            {
                 criteria.Add(Expression.In("Status", statuses));
+            }
             if (iterationIds != null)
             {
                 Disjunction orIterations = new Disjunction();
@@ -177,12 +161,9 @@ namespace StoryVerse.Core.Criteria
                 orTerm.Add(Expression.Like("Notes", term, MatchMode.Anywhere));
                 criteria.Add(orTerm);
             }
-            if (!string.IsNullOrEmpty(orderBy))
-                CriteriaUtility.AddOrder(this, criteria);
-            return criteria;
         }
 
-        public void ApplyPresetAll()
+        public override void ApplyPresetAll()
         {
             ClearAllCriteria();
         }

@@ -5,16 +5,13 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.ActiveRecord.Framework.Validators;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Validators
 {
     public class NumberRangeValidator : AbstractValidator
     {
-        public NumberRangeValidator()
-            : base() { }
+        public NumberRangeValidator() { }
 
         public NumberRangeValidator(double maxValue, double minValue, string errorMessage)
         {
@@ -30,17 +27,23 @@ namespace StoryVerse.Core.Validators
             }
         }
 
-        private double minValue;
-        private double maxValue;
+        private readonly double minValue;
+        private readonly double maxValue;
 
-        public override bool Perform(object instance, object parms)
+
+        public override bool SupportsBrowserValidation
         {
-            if (parms == null) return true;
+            get { return false; }
+        }
+
+        public override bool IsValid(object instance, object fieldValue)
+        {
+            if (fieldValue == null) return true;
 
             double? d = null;
             try
             {
-                d = Convert.ToDouble(parms);
+                d = Convert.ToDouble(fieldValue);
                 return d >= minValue && d <= maxValue;
             }
             catch (Exception ex)

@@ -1,3 +1,4 @@
+#parse("layouts/fragments/error.vm")
 <form name="new" action="new.rails" method="post">
 
   <div class="section_title">

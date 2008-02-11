@@ -1,0 +1,26 @@
+#parse("layouts/fragments/head.vm")
+#parse("layouts/fragments/main_menu.vm")
+
+<div class="section_title">
+    Application Settings
+</div>
+
+<form ID="appSettingsEdit" action="" method="post">
+    <table class="detail">
+        <tr>    
+            <td class="label">
+                Max Issue Attachment Size:
+            </td>
+            <td style="white-space:nowrap;">
+                $FormHelper.TextField("maxIssueAttachmentSize") Kb
+                $AjaxHelper.ButtonToRemote("Save", "SaveMaxIssueAttachmentSize.rails", $DictHelper.CreateDict("update=maxIssueAttachmentSizeSaveResult", "with=Form.serialize(document.forms[0])", "class=actionButton"))
+            </td>
+            <td ID="maxIssueAttachmentSizeSaveResult" style="color:blue; font-weight:bold; width:99%"/>
+        </tr>
+
+    </table>
+</form>
+
+#parse("layouts/fragments/foot.vm")
+
+

@@ -1862,5 +1862,21 @@
             </remarks>
             <param name="config"></param>
         </member>
+        <member name="M:Castle.Facilities.NHibernateIntegration.NHibernateFacility.GenerateMappingFromAttributesIfNeeded(NHibernate.Cfg.Configuration,System.String)">
+            <summary>
+            If <paramref name="targetAssembly"/> has a reference on
+            <c>NHibernate.Mapping.Attributes</c> : use the NHibernate mapping
+            attributes contained in that assembly to update NHibernate
+            configuration (<paramref name="cfg"/>). Else do nothing
+            </summary>
+            <remarks>
+            To avoid an unnecessary dependency on the library
+            <c>NHibernate.Mapping.Attributes.dll</c> when using this
+            facility without NHibernate mapping attributes, all calls to that
+            library are made using reflexion.
+            </remarks>
+            <param name="cfg">NHibernate configuration</param>
+            <param name="targetAssembly">Target assembly name</param>
+        </member>
     </members>
 </doc>

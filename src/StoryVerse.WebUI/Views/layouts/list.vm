@@ -1,5 +1,4 @@
 #parse("layouts/fragments/head.vm")
 #parse("layouts/fragments/main_menu.vm")
-#parse("layouts/fragments/error.vm")
 #parse("layouts/fragments/list_container.vm")
 #parse("layouts/fragments/foot.vm")

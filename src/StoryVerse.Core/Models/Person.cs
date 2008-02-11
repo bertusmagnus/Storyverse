@@ -7,35 +7,31 @@
 using System;
 using System.Security.Principal;
 using Castle.ActiveRecord;
+using Castle.Components.Validator;
 using StoryVerse.Core.Lookups;
 
 namespace StoryVerse.Core.Models
 {
     [ActiveRecord()]
-    public class Person : ActiveRecordValidationBase<Person>, IEntity, IPrincipal, IComparable<Person>
+    public class Person : BaseEntity<Person>, IPrincipal, IComparable<Person>
     {
-        private Guid _id;
         private string _firstName;
         private string _lastName;
         private string _username;
         private string _password;
+        private string _email;
         private Company _company;
-        private UserPreferences _userPreferences;
+        private UserPreferences _userPreferences = new UserPreferences();
         private bool _isAdmin = false;
         private bool _canViewOnly = false;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-        [Property, ValidateNotEmpty("First Name is required.")]
+        [Property, ValidateNonEmpty("First Name is required.")]
         public string FirstName
         {
             get { return _firstName; }
             set { _firstName = value; }
         }
-        [Property, ValidateNotEmpty("Last Name is required.")]
+        [Property, ValidateNonEmpty("Last Name is required.")]
         public string LastName
         {
             get { return _lastName; }
@@ -52,6 +48,12 @@ namespace StoryVerse.Core.Models
         {
             get { return _password; }
             set { _password = value; }
+        }
+        [Property]
+        public string Email
+        {
+            get { return _email; }
+            set { _email = value; }
         }
         [Property]
         public bool IsAdmin
@@ -73,7 +75,7 @@ namespace StoryVerse.Core.Models
             internal set { _userPreferences = value; }
         }
 
-        [BelongsTo(), ValidateNotEmpty("Company is required.")]
+        [BelongsTo, ValidateNonEmpty("Company is required.")]
         public Company Company
         {
             get { return _company; }
@@ -127,10 +129,6 @@ namespace StoryVerse.Core.Models
             get { return _firstName.Substring(0, 1) + _lastName.Substring(0, 1); }
         }
 
-        public void Validate()
-        {
-        }
-
         #region IPrincipal Members
 
         public IIdentity Identity
@@ -153,48 +151,15 @@ namespace StoryVerse.Core.Models
 
         #endregion
 
-        #region Sorting Members
-
-        private static string _sortExpression = "AlphaName";
-        public static string SortExpression
+         protected override int GetRelativeValue(Person other)
         {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
-        }
-
-        private static SortDirection _sortDirection = SortDirection.Ascending;
-        public static SortDirection SortDirection
-        {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Person other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int relativeValue;
             switch (SortExpression)
             {
-                case "AlphaName":
-                    relativeValue = (AlphaName != null) ? AlphaName.CompareTo(other.AlphaName) : -1;
-                    break;
                 case "Company":
-                    relativeValue = (Company != null) ? Company.CompareTo(other.Company) : -1;
-                    break;
+                    return (Company != null) ? Company.CompareTo(other.Company) : -1;
                 default:
-                    relativeValue = 0;
-                    break;
+                    return (AlphaName != null) ? AlphaName.CompareTo(other.AlphaName) : -1;
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         }
-
-        #endregion
     }
 }

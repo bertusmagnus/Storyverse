@@ -4,35 +4,27 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using System.Collections.Generic;
 using Castle.ActiveRecord;
+using Castle.Components.Validator;
 using StoryVerse.Core.Lookups;
-using System.Collections;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Company : ActiveRecordValidationBase<Company>, IEntity, IComparable<Company>
+    [ActiveRecord]
+    public class Company : BaseEntity<Company>
     {
-        private Guid _id;
         private string _name;
         private CompanyType _type;
         private IList<Person> _employeesList = new List<Person>();
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-
-        [Property, ValidateNotEmpty("Name is required.")]
+        [Property, ValidateNonEmpty("Name is required.")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
-        [Property, ValidateNotEmpty("Type is required.")]
+        [Property, ValidateNonEmpty("Type is required.")]
         public CompanyType Type
         {
             get { return _type; }
@@ -91,7 +83,7 @@ namespace StoryVerse.Core.Models
             return result;
         }
 
-        public void Validate()
+        public override void Validate()
         {
             List<string> messages = EntityUtility.ValidateCollection(Employees);
             if (messages.Count > 0)
@@ -100,49 +92,15 @@ namespace StoryVerse.Core.Models
             }
         }
 
-        #region Sorting Members
-
-        private static string _sortExpression = "Name";
-        public static string SortExpression
+        protected override int GetRelativeValue(Company other)
         {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
-        }
-
-        private static SortDirection _sortDirection = SortDirection.Ascending;
-        public static SortDirection SortDirection
-        {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Company other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int relativeValue;
             switch (SortExpression)
             {
-                case "Name":
-                    relativeValue = Name.CompareTo(other.Name);
-                    break;
                 case "Type":
-                    relativeValue = Type.CompareTo(other.Type);
-                    break;
-                default:
-                    relativeValue = 0;
-                    break;
+                    return Type.CompareTo(other.Type);
+                default: //default sort by Name
+                    return Name.CompareTo(other.Name);
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         }
-
-        #endregion
-
     }
 }

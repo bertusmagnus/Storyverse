@@ -11,18 +11,10 @@ using StoryVerse.Core.Lookups;
 
 namespace StoryVerse.Core.Criteria
 {
-    public class ProjectCriteria : IFindCriteria
+    public class ProjectCriteria : BaseCriteria<Project>
     {
         private Guid? companyId;
         private string name;
-        private string orderBy;
-        private bool orderAscending = true;
-
-        public IEntity ContextEntity
-        {
-            get { return null; }
-            set { }
-        }
 
         public Guid? CompanyId
         {
@@ -36,31 +28,19 @@ namespace StoryVerse.Core.Criteria
             set { name = value; }
         }
 
-        public string OrderBy
+        protected override void BuildCriteria()
         {
-            get { return orderBy; }
-            set { orderBy = value; }
-        }
-
-        public bool OrderAscending
-        {
-            get { return orderAscending; }
-            set { orderAscending = value; }
-        }
-
-        public DetachedCriteria ToDetachedCriteria()
-        {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(Project));
             if (companyId != null && companyId != Guid.Empty)
+            {
                 criteria.Add(Expression.Eq("Company.Id", companyId));
+            }
             if (!string.IsNullOrEmpty(name))
+            {
                 criteria.Add(Expression.Like("Name", name, MatchMode.Anywhere));
-            if (!string.IsNullOrEmpty(orderBy))
-                CriteriaUtility.AddOrder(this, criteria);
-            return criteria;
+            }
         }
 
-        public void ApplyPresetAll()
+        public override void ApplyPresetAll()
         {
             companyId = null;
             name = null;

@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>StoryVerse</title>
     <link rel="stylesheet" type="text/css" href="../Style/style.css" media="all" />
+    ${Ajax.InstallScripts()}  
   </head>
   <body onLoad="handleFormLoad();" onBeforeUnload="return confirmUnloadIfDirty();">
   <div class="app_title">StoryVerse</div> 

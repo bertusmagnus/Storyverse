@@ -1,4 +1,5 @@
 <%@ Page Language="C#" Debug="true" %>
+<%@ Import namespace="Lunaverse.Tools.Common"%>
 <%@ Import namespace="Castle.ActiveRecord"%>
 <%@ Import namespace="StoryVerse.Core.Models"%>
 <script runat="server">
@@ -35,12 +36,14 @@
             }
             catch (Exception ex)
             {
+                Log.Error(ex);
                 lblCreateCompanyResult.Text = "<br>- Test user NOT created...<br><br>" + ex.ToString();
                 lblCreateCompanyResult.ForeColor = System.Drawing.Color.Red;
             }
         }
         catch (Exception ex)
         {
+            Log.Error(ex);
             lblCreateDbResult.Text = "<br>- Database was NOT initialized...<br><br>" + ex.ToString();
             lblCreateDbResult.ForeColor = System.Drawing.Color.Red;
         }

@@ -2,14 +2,17 @@
   <tr>
     <td>
       #if($userIsAdmin)
+      <a href="../appsettings/index.rails">App Settings</a>&nbsp;
       <a href="../companies/list.rails">Companies</a>&nbsp;
       #end
-      <a href="../projects/list.rails?$projectId=$project.Company.Id"/>Projects</a>&nbsp;
+      <a href="../projects/list.rails"/>Projects</a>&nbsp;
       <a href="../persons/editUserPrefs.rails"/>Preferences</a>&nbsp;
       #if ($contextEntityName == "project")
-      <a href="../stories/list.rails?projectId=$project.Id">Stories</a>&nbsp;
-      <a href="../tasks/list.rails?projectId=$project.Id">Tasks</a>&nbsp;
-      <a href="../iterations/list.rails?projectId=$project.Id">Iterations</a>&nbsp;
+      <a href="../stories/list.rails?projectId=$!project.Id">Stories</a>&nbsp;
+      <a href="../tasks/list.rails?projectId=$!project.Id">Tasks</a>&nbsp;
+      <a href="../iterations/list.rails?projectId=$!project.Id">Iterations</a>&nbsp;
+      <a href="../issues/list.rails?projectId=$!project.Id&preset=myopen">Issues</a>
+        <img src="../Images/beta.gif" style="vertical-align:middle;"/>
       #end
     </td>
     <td align="right">

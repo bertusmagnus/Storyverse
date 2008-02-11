@@ -1,5 +1,4 @@
 using System;
-using Castle.ActiveRecord;
 
 namespace StoryVerse.Core.Models
 {
@@ -8,6 +7,7 @@ namespace StoryVerse.Core.Models
         Guid Id { get; }
         void Validate();
         void Refresh();
+        void Update();
         void CreateAndFlush();
         void UpdateAndFlush();
         void DeleteAndFlush();

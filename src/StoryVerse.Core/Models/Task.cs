@@ -6,18 +6,15 @@
 
 using System;
 using System.Collections.Generic;
-using Castle.ActiveRecord.Queries;
-using StoryVerse.Attributes;
+using Castle.Components.Validator;
 using StoryVerse.Core.Lookups;
 using Castle.ActiveRecord;
-using System.Collections;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Task : ActiveRecordValidationBase<Task>, IEntity, IComparable<Task>
+    [ActiveRecord]
+    public class Task : BaseEntity<Task>, IEntity
     {
-        private Guid _id;
         private int _number;
         private string _title;
         private string _description;
@@ -30,18 +27,13 @@ namespace StoryVerse.Core.Models
         private IList<Story> _storiesList;
         private IList<TaskEstimate> _estimatesList;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
         [Property]
         public int Number
         {
             get { return _number; }
-            set { _number = value; }
+            internal set { _number = value; }
         }
-        [Property, ValidateNotEmpty("Task title is required.")]
+        [Property, ValidateNonEmpty("Task title is required.")]
         public string Title
         {
             get { return _title; }
@@ -302,7 +294,7 @@ namespace StoryVerse.Core.Models
             }
         }
 
-        public void Validate()
+        public override void Validate()
         {
             List<string> messages = new List<string>();
 
@@ -323,82 +315,43 @@ namespace StoryVerse.Core.Models
             }
         }
 
-        //public void AssignNextNumber()
-        //{
-        //    ScalarQuery q = new ScalarQuery(typeof(Task),
-        //        @"select max(t.Number) from Task t where t.Project = ?", Project);
-        //    Number = (int)(ExecuteQuery(q) ?? 0) + 1;
-        //}
-
-        #region Sorting Members
-
-        private static string _sortExpression = "Number";
-        public static string SortExpression
+        protected override object IsUnsaved()
         {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
+            object saved = base.IsUnsaved();
+            if (saved == null)
+            {
+                _number = Project.GetNextTaskNumber();
+            }
+            return saved;
         }
 
-        private static SortDirection _sortDirection = SortDirection.Descending;
-        public static SortDirection SortDirection
+        protected override int GetRelativeValue(Task other)
         {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Task other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int? relativeValue;
             switch (SortExpression)
             {
-                case "Number":
-                    relativeValue = Number.CompareTo(other.Number);
-                    break;
                 case "Title":
-                    relativeValue = Title != null ? Title.CompareTo(other.Title) : -1;
-                    break;
+                    return Title != null ? Title.CompareTo(other.Title) : -1;
                 case "TechnicalRisk":
-                    relativeValue = TechnicalRisk != null ? TechnicalRisk.Value.CompareTo(other.TechnicalRisk) : -1;
-                    break;
+                    return TechnicalRisk != null ? TechnicalRisk.Value.CompareTo(other.TechnicalRisk) : -1;
                 case "Status":
-                    relativeValue = Status.CompareTo(other.Status);
-                    break;
+                    return Status.CompareTo(other.Status);
                 case "Owner":
-                    relativeValue = Owner != null ? Owner.CompareTo(other.Owner) : -1;
-                    break;
+                    return Owner != null ? Owner.CompareTo(other.Owner) : -1;
                 case "Project":
-                    relativeValue = Project != null ? Project.CompareTo(other.Project) : -1;
-                    break;
+                    return Project != null ? Project.CompareTo(other.Project) : -1;
                 case "Iteration":
-                    relativeValue = Iteration != null ? Iteration.CompareTo(other.Iteration) : -1;
-                    break;
+                    return Iteration != null ? Iteration.CompareTo(other.Iteration) : -1;
                 case "InitialEstimateHours":
-                    relativeValue = (InitialEstimateHours != null) ? InitialEstimateHours.Value.CompareTo(other.InitialEstimateHours) : -1;
-                    break;
+                    return (InitialEstimateHours != null) ? InitialEstimateHours.Value.CompareTo(other.InitialEstimateHours) : -1;
                 case "LatestEstimateHours":
-                    relativeValue = (LatestEstimateHours != null) ? LatestEstimateHours.Value.CompareTo(other.LatestEstimateHours) : -1;
-                    break;
+                    return (LatestEstimateHours != null) ? LatestEstimateHours.Value.CompareTo(other.LatestEstimateHours) : -1;
                 case "StoriesCount":
-                    relativeValue = StoriesCount.CompareTo(other.StoriesCount);
-                    break;
+                    return StoriesCount.CompareTo(other.StoriesCount);
                 case "LatestEstimateDate":
-                    relativeValue = (LatestEstimateDate != null) ? LatestEstimateDate.Value.CompareTo(other.LatestEstimateDate) : -1;
-                    break;
+                    return (LatestEstimateDate != null) ? LatestEstimateDate.Value.CompareTo(other.LatestEstimateDate) : -1;
                 default:
-                    relativeValue = 0;
-                    break;
+                    return Number.CompareTo(other.Number);
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue.Value;
         }
-
-        #endregion
     }
 }

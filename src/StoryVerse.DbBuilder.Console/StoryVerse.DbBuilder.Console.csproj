@@ -37,6 +37,7 @@
       <HintPath>..\..\lib\lunaverse\Lunaverse.DbBuilder.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -47,18 +48,13 @@
     <Compile Include="Console.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\connections.config">
+      <Link>connections.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StoryVerse.DbBuilder.Core\StoryVerse.DbBuilder.Core.csproj">
@@ -75,6 +71,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>IF NOT EXIST $(ProjectDir)app.config copy $(ProjectDir)example.app.config $(ProjectDir)app.config</PreBuildEvent>
+    <PreBuildEvent>IF NOT EXIST $(SolutionDir)connections.config copy $(SolutionDir)example.connections.config $(SolutionDir)connections.config</PreBuildEvent>
   </PropertyGroup>
 </Project>

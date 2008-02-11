@@ -15,8 +15,8 @@
         </td>
       </tr>
       <tr class="filter">
-        <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
-        <td>$FormHelper.TextField("criteria.Term", "%{style='width:98%'}")</td>
+        <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px' onkeypress='return enterKeySubmitAction(\'search\', event);'}")</td>
+        <td>$FormHelper.TextField("criteria.Term", "%{style='width:98%' onkeypress='return enterKeySubmitAction(\'search\', event);'}")</td>
         <td>
           $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $owners, "%{id='ownersFilter', value='Id', text='AlphaNameShort', multiple='true', size='5'}")<br/>
           $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('ownersFilter')")

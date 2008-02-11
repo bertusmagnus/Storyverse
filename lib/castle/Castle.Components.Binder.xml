@@ -116,6 +116,16 @@
             </summary>
             <param name="instance">The instance.</param>
         </member>
+        <member name="M:Castle.Components.Binder.DataBinder.SetPropertyValue(System.Object,System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Sets the property value of the object we are binding.
+            Databinders that require different ways to access properties
+            can override this method.
+            </summary>
+            <param name="instance"></param>
+            <param name="prop"></param>
+            <param name="value"></param>
+        </member>
         <member name="M:Castle.Components.Binder.DataBinder.BindSpecialObjectInstance(System.Type,System.String,Castle.Components.Binder.Node,System.Boolean@)">
             <summary>
             Implementations will bound the instance itself.

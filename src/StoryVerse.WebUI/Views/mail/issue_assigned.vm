@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<style type="text/css" media="screen">
+body
+{
+	background-color: white;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size:9pt;
+}	
+table td.label 
+{ 
+    font-weight:bold; 
+    width:1%; 
+    vertical-align:top;
+}	
+table td.value 
+{ 
+    text-align:left; 
+    padding-left:5px; 
+    padding-right:20px; 
+    vertical-align:top; 
+    white-space:nowrap;
+}	
+		</style>
+	</head>
+
+	<body>
+
+<p>Dear $salutation:</p>
+
+<p>You have been assigned the following issue for project $entity.Project.Name:</p>
+
+<table style="width:100%; border: solid 1px; black;">
+    <tr>
+        <td colspan="4" style="font-size:11pt; font-weight:bold; color:white; background-color:black">
+            $entity.Number.ToString("0000"): $entity.Title
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Status:</td>
+        <td class="value">$entity.Status</td>
+        <td class="label">Reporter:</td>
+        <td class="value">$!entity.ReportedBy.AlphaName</td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+      <td class="label" style="vertical-align:top;">
+        Description:
+      </td>
+      <td colspan="3" class="value" style="white-space:normal;">          
+        $TextFormatHelper.AddLineBreaks($entity.Description)
+      </td>
+    </tr>
+    <tr style="padding-top:10px;">
+        <td class="label">Type:</td>
+        <td class="value">$!entity.Type</td>
+        <td class="label">Severity:</td>
+        <td class="value">$!entity.Severity.Name</td>
+    </tr>
+    <tr>
+        <td class="label">Priority:</td>
+        <td class="value">$!entity.Priority.Name</td>
+        <td class="label">Component:</td>
+        <td class="value">$!entity.Component.Name</td>  
+    </tr>
+        <td class="label">Owner:</td>
+        <td class="value">$!entity.Owner.AlphaName</td> 
+        <td class="label">Disposition:</td>
+        <td class="value">$!entity.Disposition.Name</td> 
+    </tr>
+</table>
+
+<p>Regards,<br/>
+StoryVerse</p>
+    
+	</body>	
+</html>
+
+
+

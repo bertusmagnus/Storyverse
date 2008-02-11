@@ -1,0 +1,104 @@
+#blockcomponent(GridComponent with "source=$issues") 
+    #tablestart
+      <table class="list">
+    #end
+    #header
+      <tr>
+        <td colspan="7" class="presets">
+          <a href="list.rails?preset=myopen">My Open Issues</a>&nbsp;
+          <a href="list.rails?preset=my">All My Issues</a>&nbsp;
+          <a href="list.rails?preset=all">All $entityNamePlural</a>&nbsp;
+        </td>
+        <td colspan="2" class="presets" style="text-align:right">
+          $FormHelper.HiddenField("criteria.OrderBy")
+          <input class="actionButton" type="button" value="Update" onClick="return search();" />
+        </td>
+      </tr>
+      <tr class="filter">
+        <td>
+            $FormHelper.TextField("criteria.Number", "%{style='width:30px' onkeypress='return enterKeySubmitAction(\'search\', event);'}")
+        </td>
+        <td>#component(CheckboxList with "target=criteria.Types" "source=$types")</td>
+        <td>
+            $FormHelper.TextField("criteria.Term", "%{style='width:width:98%' onkeypress='return enterKeySubmitAction(\'search\', event);'}")
+            $FormHelper.CheckboxField("criteria.TermInTitleOnly")
+            $FormHelper.LabelFor("criteria_TermInTitleOnly", "Title only") 
+        </td>
+        <td>#component(CheckboxList with "target=criteria.Statuses" "source=$statuses")</td>
+        <td>
+            $FormHelper.Select("criteria.PriorityIds", $criteria.PriorityIds, $priorities, "%{id='priorityFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+            $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('priorityFilter')")
+        </td>
+        <td>
+            $FormHelper.Select("criteria.SeverityIds", $criteria.SeverityIds, $severities, "%{id='severityFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+            $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('severityFilter')")
+        </td>
+        <td>
+            $FormHelper.Select("criteria.DispositionIds", $criteria.DispositionIds, $dispositions, "%{id='dispositionFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+            $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('dispositionFilter')")
+        </td>
+        <td>
+            $FormHelper.Select("criteria.ComponentIds", $criteria.ComponentIds, $components, "%{id='componentFilter' value='Id', text='Name', multiple='true', size='5'}")<br />
+            $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('componentFilter')")
+        </td>
+        <td>
+            $FormHelper.Select("criteria.OwnerIds", $criteria.OwnerIds, $persons, "%{id='ownerFilter' value='Id', text='AlphaName', multiple='true', size='5'}")<br />
+            $AjaxHelper.LinkToFunction("Clear", "return clearMultiSelect('ownerFilter')")
+        </td>
+      </tr>
+      <tr class="header">
+        <td><a href="javascript:SortLink('Number');">#</a></td>
+        <td><a href="javascript:SortLink('Type');">Type</a></td>
+        <td><a href="javascript:SortLink('Title');">Title</a></td>
+        <td><a href="javascript:SortLink('Status');">Status</a></td>
+        <td><a href="javascript:SortLink('Priority');">Priority</a></td>
+        <td><a href="javascript:SortLink('Severity');">Severity</a></td>
+        <td><a href="javascript:SortLink('Disposition');">Disposition</a></td>
+        <td><a href="javascript:SortLink('Component');">Component</a></td>
+        <td><a href="javascript:SortLink('Owner');">Owner</a></td>
+      </tr>
+    #end
+    #rowstart
+      <tr class="oddrow">
+    #end
+    #alternateRowstart
+      <tr class="evenrow">
+    #end   
+    #cells
+      <td align="left"><a href="edit.rails?id=$item.Id">$!item.Number.ToString("0000")</a></td>
+      <td align="left">$!item.Type</td>
+      <td align="left">
+        <table class="listCellTable">
+            <tr>
+                <td>$!item.Title</td>
+                <td style="text-align:right; padding-left:13px;">
+                    #foreach($att in $item.Attachments)
+                            <img src="../Images/paperclip.gif" title="$att.Title ($att.Filename)" 
+                                onclick="openAttachment('$item.Id', '$att.Id'); return false"
+                                class="imageLink">
+                    #end
+                </td>
+            </tr>
+        </table>
+      </td>
+      <td align="left">$!item.Status</td>
+      <td align="left">$!item.Priority.Name</td>
+      <td align="left">$!item.Severity.Name</td>
+      <td align="left">$!item.Disposition.Name</td>
+      <td align="left">$!item.Component.Name</td>
+      <td align="left">$!item.Owner.AlphaName</td>
+    #end
+    #empty
+      <tr><td class="nodata_message" colspan="9">- no $entityNamePlural -</td></tr>
+    #end
+#end
+$FormHelper.HiddenField("selectedIssueId")
+$FormHelper.HiddenField("selectedAttachmentId")
+<script>
+  function openAttachment(issueId, attachmentId)
+  {
+      document.getElementById('selectedIssueId').value = issueId;
+      document.getElementById('selectedAttachmentId').value = attachmentId;
+      submitToAction('OpenAttachment');
+  } 
+</script>

@@ -9,14 +9,15 @@ using Castle.ActiveRecord;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class UserPreferences : ActiveRecordValidationBase<UserPreferences>, IEntity
+    [ActiveRecord]
+    public class UserPreferences : ActiveRecordValidationBase<UserPreferences>, IEntity 
     {
         private Guid _id;
         private Person _person;
         private int _rowsPerPage;
+        private bool _notifyOfIssueChange;
 
-        [PrimaryKey(PrimaryKeyType.Foreign, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
+        [PrimaryKey(PrimaryKeyType.Foreign, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id
         {
             get { return _id; }
@@ -34,6 +35,13 @@ namespace StoryVerse.Core.Models
         {
             get { return _rowsPerPage; }
             set { _rowsPerPage = value; }
+        }
+
+        [Property]
+        public bool NotifyOfIssueAssignment
+        {
+            get { return _notifyOfIssueChange; }
+            set { _notifyOfIssueChange = value; }
         }
 
         public void Validate()

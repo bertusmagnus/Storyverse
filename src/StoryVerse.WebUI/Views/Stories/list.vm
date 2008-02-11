@@ -14,8 +14,8 @@
       </td>
       </tr>
       <tr class="filter">
-        <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px'}")</td>
-        <td>$FormHelper.TextField("criteria.Term", "%{style='width:width:98%'}")</td>
+        <td>$FormHelper.TextField("criteria.Number", "%{style='width:30px' onkeypress='return enterKeySubmitAction(\'search\', event);'}")</td>
+        <td>$FormHelper.TextField("criteria.Term", "%{style='width:width:98%' onkeypress='return enterKeySubmitAction(\'search\', event);'}")</td>
         <td>
           #component(CheckboxList with "target=criteria.Priorities" "source=$priorities")
         </td>

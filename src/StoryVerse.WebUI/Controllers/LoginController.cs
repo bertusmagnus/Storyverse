@@ -4,6 +4,7 @@ using System;
 using System.Web.Security;
 using Castle.ActiveRecord.Framework;
 using Castle.MonoRail.Framework;
+using Lunaverse.Tools.Common;
 using NHibernate.Expression;
 using StoryVerse.Core.Models;
 using System.Web;
@@ -22,6 +23,7 @@ namespace StoryVerse.WebUI.Controllers
             Person user = GetAuthenticUser(username, password);
             if (user != null)
             {
+                Log.Info("User logged in: {0}", username);
                 CancelView();
                 Session["user"] = user;
                 if (rememberMe)
@@ -41,6 +43,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             else
             {
+                Log.Info("Login failed for username: {0}", username);
                 Flash["error"] = "Login failed";
                 RedirectToAction("index", returnUrl != null ? "returnUrl=" + returnUrl : string.Empty);
             }
@@ -71,6 +74,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 catch (ActiveRecordException ex)
                 {
+                    Log.Error(ex);
                     return null;
                 }
             }

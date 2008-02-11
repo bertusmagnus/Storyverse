@@ -20,6 +20,28 @@
             <param name="output"></param>
             <returns></returns>
         </member>
+        <member name="M:Castle.Components.Common.TemplateEngine.ITemplateEngine.Process(System.Collections.IDictionary,System.String,System.IO.TextWriter,System.String)">
+            <summary>
+            Implementors should process the input template with
+            data from the context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="templateName">Name of the template.  Used only for information during logging</param>
+            <param name="output">The output.</param>
+            <param name="inputTemplate">The input template.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Components.Common.TemplateEngine.ITemplateEngine.Process(System.Collections.IDictionary,System.String,System.IO.TextWriter,System.IO.TextReader)">
+            <summary>
+            Implementors should process the input template with
+            data from the context.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="templateName">Name of the template.  Used only for information during logging</param>
+            <param name="output">The output.</param>
+            <param name="inputTemplate">The input template.</param>
+            <returns></returns>
+        </member>
         <member name="M:Castle.Components.Common.TemplateEngine.ITemplateEngine.HasTemplate(System.String)">
             <summary>
             Implementors should return <c>true</c> only if the 

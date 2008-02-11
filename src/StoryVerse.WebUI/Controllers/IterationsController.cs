@@ -18,18 +18,6 @@ namespace StoryVerse.WebUI.Controllers
     {
         public IterationsController() : base(false) { }
 
-        public override string SortExpression
-        {
-            get { return Iteration.SortExpression; }
-            set { Iteration.SortExpression = value; }
-        }
-
-        public override SortDirection SortDirection
-        {
-            get { return Iteration.SortDirection; }
-            set { Iteration.SortDirection = value; }
-        }
-
         [Layout("chart")]
         public void Burndown()
         {
@@ -48,8 +36,9 @@ namespace StoryVerse.WebUI.Controllers
             ContextEntity.AddIteration(iteration);
         }
 
-        protected override void SetupEntity(Iteration iteration)
+        protected override void RemoveFromContextEntity(Iteration iteration)
         {
+            ContextEntity.RemoveIteration(iteration);
         }
     }
 }

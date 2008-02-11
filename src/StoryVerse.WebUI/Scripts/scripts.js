@@ -63,6 +63,33 @@ function confirmUnloadIfDirty()
     }
 }
 
+function enterKeySubmitAction(actionName, e)
+{
+    var keycode;
+    if (window.event) 
+    {
+        keycode = window.event.keyCode;
+    }
+    else if (e) 
+    {
+        keycode = e.which;
+    }
+    else 
+    {
+        return true;
+    }
+
+    if (keycode == 13)
+    {
+       submitToAction(actionName);
+       return false;
+    }
+    else
+    {
+       return true;
+    }
+}
+
 function markDirty()
 {
     document.getElementById('isDirty').value = 'true';

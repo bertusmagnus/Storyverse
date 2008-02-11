@@ -4,32 +4,26 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
-using System.Collections.Generic;
 using Castle.ActiveRecord;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class ProductionRelease : ActiveRecordValidationBase<ProductionRelease>, IEntity
+    [ActiveRecord]
+    public class ProductionRelease : BaseEntity<ProductionRelease>
     {
-        private Guid _id;
         private string _name;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access=PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-        [Property, ValidateNotEmpty("Project Name is required.")]
+        [Property, ValidateNonEmpty("Project Name is required.")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        public void Validate()
+        protected override int GetRelativeValue(ProductionRelease other)
         {
+            return Name.CompareTo(other.Name); 
         }
     }
 }

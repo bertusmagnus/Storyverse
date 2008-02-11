@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Castle.ActiveRecord;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Models
 {

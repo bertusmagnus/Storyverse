@@ -29,6 +29,12 @@ a:hover
 	 text-decoration: none;
 }
 
+.imageLink:hover
+{
+	cursor:pointer; 
+	color: #FF00FF
+}
+
 .app_title
 {
 	background-color: #6f96df;
@@ -156,7 +162,7 @@ table.main_menu
 	font-size: small;
 	font-weight: normal;
 	padding: 0px 0px 8px 0px; 
-	width:100%;
+	width: 100%;
 	white-space:nowrap;
 }
 
@@ -178,6 +184,7 @@ table.detail td.label
 	height: 25px;
 	vertical-align: middle;
 	white-space: nowrap;
+	width: 1px;
 }
 
 table.detail td.labelabove
@@ -226,7 +233,7 @@ table.list td
 	border-style:solid;
 	border-width:1px;
 	padding:2px 8px 2px 8px;
-	vertical-align: top;
+	vertical-align:middle;
 }
 
 table.list td a
@@ -244,11 +251,21 @@ table.list tr.filter
 	background-color: #f5f5f5;
 }
 
-table.list tr.filter select,
+table.list tr.filter select[multiple="true"],
 table.list tr.filter a,
 table.list tr.filter .verticalCheckboxList label
 {
 	font-size: 0.8em;
+}
+
+table.list tr.filter .verticalCheckboxList label
+{
+	vertical-align:middle;
+}
+
+table.list tr.filter td
+{
+	vertical-align:top;
 }
 
 table.list td.presets a
@@ -326,6 +343,18 @@ table.list td.nodata_message
 	padding: 10px 10px 10px 10px;
 	text-transform:lowercase;
 	white-space:nowrap;
+}
+
+table.listCellTable
+{
+	width:100%;
+}
+
+table.listCellTable td
+{
+	padding:0; 
+	margin:0; 
+	border-style:none;
 }
 
 table.login td
@@ -422,6 +451,76 @@ table.report td.label
 {
 	border-top-style: dotted;
 	border-color: #f9d3a9;
+}
+
+.collapsiblePanel .header
+{
+	background-color: #f9d3a9;
+}
+
+.collapsiblePanel .header td
+{
+	vertical-align: bottom;
+	padding: 0;
+}
+
+.collapsiblePanel .caption
+{
+	font-weight: bold;
+}
+
+.collapsiblePanel .toggleImage
+{
+	vertical-align: bottom;
+	padding-right: 6px;
+}
+
+.collapsiblePanel .body
+{
+	padding: 10px 0;
+}
+
+table.attachmentsList
+{
+	border-collapse:collapse;
+	margin-left: 5px;
+}
+
+table.attachmentsList td, th
+{
+	border: solid 1px #6f96df;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+table.attachmentsList td
+{
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+table.attachmentsList th
+{
+	background-color:#d9e4f8;
+}
+
+.groupedList ul
+{
+	margin-top:5px;
+	padding-left:1em;
+}
+
+.issueNotes ul
+{
+	list-style-type:none;
+	margin:0;
+	padding-left:10px;
+}
+
+.issueNotes li
+{
+	padding: 10px 0;
+	border-bottom: dashed 1px gray;
 }
 
 

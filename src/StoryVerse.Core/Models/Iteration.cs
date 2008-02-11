@@ -5,35 +5,28 @@
 */
 
 using System;
-using System.Collections.Generic;
+using Castle.Components.Validator;
 using StoryVerse.Core.Lookups;
 using Castle.ActiveRecord;
-using System.Collections;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Iteration : ActiveRecordValidationBase<Iteration>, IEntity, IComparable<Iteration>
+    [ActiveRecord]
+    public class Iteration : BaseEntity<Iteration>, IComparable<Iteration>
     {
-        private Guid _id;
         private string _name;
         private Project _project;
         //private IList _storiesList;
         //private IList _tasksList;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-        [Property, ValidateNotEmpty("Iteration Name is required.")]
+        [Property, ValidateNonEmpty("Iteration Name is required.")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Project Project
         {
             get { return _project; }
@@ -168,54 +161,15 @@ namespace StoryVerse.Core.Models
         //    return result;
         //}
 
-
-        public void Validate()
+        protected override int GetRelativeValue(Iteration other)
         {
-        }
-
-        #region Sorting Members
-
-        private static string _sortExpression = "Name";
-        public static string SortExpression
-        {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
-        }
-
-        private static SortDirection _sortDirection = SortDirection.Ascending;
-        public static SortDirection SortDirection
-        {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Iteration other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int relativeValue;
             switch (SortExpression)
             {
-                case "Name":
-                    relativeValue = (Name != null) ? Name.CompareTo(other.Name) : -1;
-                    break;
                 case "Project":
-                    relativeValue = (Project != null) ? Project.CompareTo(other.Project) : -1;
-                    break;
-                default:
-                    relativeValue = 0;
-                    break;
+                    return (Project != null) ? Project.CompareTo(other.Project) : -1;
+                default: //default sort by Name
+                    return (Name != null) ? Name.CompareTo(other.Name) : -1;
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         }
-
-        #endregion
-
     }
 }

@@ -11,9 +11,8 @@ using StoryVerse.Core.Lookups;
 
 namespace StoryVerse.Core.Criteria
 {
-    public class StoryCriteria : IFindCriteria
+    public class StoryCriteria : BaseCriteria<Story>
     {
-        private IEntity project;
         private Guid?[] iterationIds;
         private StoryPriority[] priorities;
         private StoryStatus[] statuses;
@@ -21,14 +20,6 @@ namespace StoryVerse.Core.Criteria
         private Guid?[] componentIds;
         private string term;
         private int? number;
-        private string orderBy;
-        private bool orderAscending = true;
-
-        public IEntity ContextEntity
-        {
-            get { return project; }
-            set { project = value; }
-        }
 
         public Guid?[] IterationIds
         {
@@ -66,18 +57,6 @@ namespace StoryVerse.Core.Criteria
             set { term = value; }
         }
 
-        public string OrderBy
-        {
-            get { return orderBy; }
-            set { orderBy = value; }
-        }
-
-        public bool OrderAscending
-        {
-            get { return orderAscending; }
-            set { orderAscending = value; }
-        }
-
         public string Number
         {
             get { return number.ToString(); }
@@ -95,12 +74,11 @@ namespace StoryVerse.Core.Criteria
             }
         }
 
-        public DetachedCriteria ToDetachedCriteria()
+        protected override void BuildCriteria()
         {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(Story));
-            if (project != null)
+            if (contextEntity != null)
             {
-                criteria.Add(Expression.Eq("Project", project));
+                criteria.Add(Expression.Eq("Project", contextEntity));
             }
             if (techRisks != null && techRisks.Length > 0)
             {
@@ -114,58 +92,20 @@ namespace StoryVerse.Core.Criteria
             {
                 criteria.Add(Expression.In("Status", statuses));
             }
-            if (iterationIds != null)
-            {
-                Disjunction orIterations = new Disjunction();
-                foreach (Guid? id in iterationIds)
-                {
-                    if (id == null)
-                    {
-                        orIterations.Add(Expression.IsNull("Iteration"));
-                    }
-                    else
-                    {
-                        orIterations.Add(Expression.Eq("Iteration.Id", id));
-                    }
-                }
-                criteria.Add(orIterations);
-            }
-            if (componentIds != null)
-            {
-                Disjunction orComponents = new Disjunction();
-                foreach (Guid? id in componentIds)
-                {
-                    if (id == null)
-                    {
-                        orComponents.Add(Expression.IsNull("Component"));
-                    }
-                    else
-                    {
-                        orComponents.Add(Expression.Eq("Component.Id", id));
-                    }
-                }
-                criteria.Add(orComponents);
-            }
+            
+            AddIdsCriteria("Iteration", iterationIds);
+            
+            AddIdsCriteria("Component", componentIds);
+
             if (number.HasValue)
             {
                 criteria.Add(Expression.Eq("Number", number));
             }
-            if (!string.IsNullOrEmpty(term))
-            {
-                Disjunction orTerm = new Disjunction();
-                orTerm.Add(Expression.Like("Title", term, MatchMode.Anywhere));
-                orTerm.Add(Expression.Like("Body", term, MatchMode.Anywhere));
-                orTerm.Add(Expression.Like("Notes", term, MatchMode.Anywhere));
-                criteria.Add(orTerm);
-            }
-            if (!string.IsNullOrEmpty(orderBy))
-            {
-                CriteriaUtility.AddOrder(this, criteria);
-            }
-            return criteria;
+
+            AddTermCriteria<Story>(term, "Title", "Body", "Notes");
         }
 
-        public void ApplyPresetAll()
+        public override void ApplyPresetAll()
         {
             iterationIds = null;
             componentIds = null;

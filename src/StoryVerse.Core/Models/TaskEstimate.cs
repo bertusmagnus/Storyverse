@@ -5,26 +5,19 @@
 */
 
 using System;
-using StoryVerse.Attributes;
 using Castle.ActiveRecord;
 using StoryVerse.Core.Lookups;
+using StoryVerse.Core.Validators;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class TaskEstimate : ActiveRecordValidationBase<TaskEstimate>, IEntity, IComparable<TaskEstimate>
+    [ActiveRecord]
+    public class TaskEstimate : BaseEntity<TaskEstimate>
     {
-        private Guid _id;
         private int _hoursRemaining;
         private DateTime _date;
         private Person _createdBy;
-        private Task _task;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
         [Property, ValidateNumberIsPositive("Hours Remaining cannot be negative")]
         public int HoursRemaining
         {
@@ -37,52 +30,26 @@ namespace StoryVerse.Core.Models
             get { return _date; }
             set { _date = value; }
         }
-        [BelongsTo()]
+        [BelongsTo]
         public Person CreatedBy
         {
             get { return _createdBy; }
             set { _createdBy = value; }
         }
 
-        //public string GetBar(int ceiling, int maxHours)
-        //{
-        //    if (maxHours == 0) return string.Empty;
-        //    decimal factor = (decimal)maxHours/(decimal)ceiling;
-        //    return new string('|', (int)Math.Round(HoursRemaining/factor, 0));
-        //}
-
-        public void Validate()
+        protected override int GetRelativeValue(TaskEstimate other)
         {
-        }
-
-        #region Sorting Members
-        public int CompareTo(TaskEstimate other)
-        {
-            int relativeValue;
             switch (Task.EstimatesSortExpression)
             {
-                case "Id":
-                    relativeValue = Id.CompareTo(other.Id);
-                    break;
                 case "HoursRemaining":
-                    relativeValue = (HoursRemaining != null) ? HoursRemaining.CompareTo(other.HoursRemaining) : -1;
-                    break;
+                    return HoursRemaining.CompareTo(other.HoursRemaining);
                 case "Date":
-                    relativeValue = (Date != null) ? Date.CompareTo(other.Date) : -1;
-                    break;
+                    return Date.CompareTo(other.Date);
                 case "CreatedBy":
-                    relativeValue = (CreatedBy != null) ? CreatedBy.LastName.CompareTo(other.CreatedBy.LastName) : -1;
-                    break;
+                    return (CreatedBy != null) ? CreatedBy.LastName.CompareTo(other.CreatedBy.LastName) : -1;
                 default:
-                    relativeValue = 0;
-                    break;
+                    return Id.CompareTo(other.Id);
             }
-            if (Task.EstimatesSortDirection  == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         } 
-        #endregion
     }
 }

@@ -10,36 +10,29 @@ using StoryVerse.Core.Models;
 
 namespace StoryVerse.Core.Criteria
 {
-    public class PersonCriteria : IFindCriteria
+    public class PersonCriteria : BaseCriteria<Person>
     {
-        private IEntity company;
         private Project project;
-        private string orderBy;
-        private bool orderAscending = true;
+        private Person excludePerson;
 
-        public IEntity ContextEntity
+        public Project Project
         {
-            get { return company; }
-            set { company = value; }
+            get { return project; }
+            set { project = value; }
         }
 
-        public string OrderBy
+        public Person ExcludePerson
         {
-            get { return orderBy; }
-            set { orderBy = value; }
+            get { return excludePerson; }
+            set { excludePerson = value; }
         }
 
-        public bool OrderAscending
+        protected override void BuildCriteria()
         {
-            get { return orderAscending; }
-            set { orderAscending = value; }
-        }
-
-        public DetachedCriteria ToDetachedCriteria()
-        {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(Person));
-            if (company != null)
-                criteria.Add(Expression.Eq("Company", company));
+            if (contextEntity != null && typeof(Company).IsAssignableFrom(contextEntity.GetType()))
+            {
+                criteria.Add(Expression.Eq("Company", contextEntity));
+            }
             if (project != null)
             {
                 criteria.CreateAlias("Company", "c");
@@ -48,13 +41,10 @@ namespace StoryVerse.Core.Criteria
                 orProject.Add(Expression.Eq("Company", project.Company));
                 criteria.Add(orProject);
             }
-            if (!string.IsNullOrEmpty(orderBy))
-                CriteriaUtility.AddOrder(this, criteria);
-            return criteria;
-        }
-
-        public void ApplyPresetAll()
-        {
+            if (excludePerson != null)
+            {
+                criteria.Add(new NotExpression(new IdentifierEqExpression(excludePerson.Id)));
+            }
         }
 
         public void ApplyPresetForProject(Project project)

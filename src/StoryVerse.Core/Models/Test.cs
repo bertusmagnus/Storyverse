@@ -4,39 +4,33 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using Castle.ActiveRecord;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Test : ActiveRecordValidationBase<Test>, IEntity
+    [ActiveRecord]
+    public class Test : BaseEntity<Test>
     {
-        private Guid _id;
         private int _number;
         private string _body;
-        private Story _story;
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
         [Property]
         public int Number
         {
             get { return _number; }
             set { _number = value; }
         }
-        [Property(SqlType = "nvarchar(1000)"), ValidateNotEmpty("Acceptance test body is required.")]
+        [Property(SqlType = "nvarchar(1000)"), ValidateNonEmpty("Acceptance test body is required.")]
         public string Body
         {
             get { return _body; }
             set { _body = value; }
         }
 
-        public void Validate()
+        protected override int GetRelativeValue(Test other)
         {
+            return Number.CompareTo(other.Number);
         }
     }
 }

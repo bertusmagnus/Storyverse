@@ -5,8 +5,6 @@
 */
 
 using System;
-using NHibernate.Expression;
-using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
@@ -18,18 +16,6 @@ namespace StoryVerse.WebUI.Controllers
     public class PersonsController : EntityControllerBase<Person, PersonCriteria, Company>
     {
         public PersonsController() : base(false) { }
-
-        public override string SortExpression
-        {
-            get { return Person.SortExpression; }
-            set { Person.SortExpression = value; }
-        }
-
-        public override SortDirection SortDirection
-        {
-            get { return Person.SortDirection; }
-            set { Person.SortDirection = value; }
-        }
 
         public override  void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Person person)
         {
@@ -61,7 +47,7 @@ namespace StoryVerse.WebUI.Controllers
         public void EditUserPrefs()
         {
             ContextEntity = ((Person) Context.CurrentUser).Company;
-            RedirectToAction("edit", "id=" + ((Person)Context.CurrentUser).Id);
+            RedirectToAction("edit", "id=" + CurrentUser.Id);
         }
 
         protected override bool GetUserCanEdit(Person person)
@@ -72,12 +58,17 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override bool DeleteEditButtonVisible
         {
-            get { return ((Person)Context.CurrentUser).IsAdmin; }
+            get { return CurrentUser.IsAdmin; }
         }
 
         protected override bool ListEditButtonVisible
         {
-            get { return ((Person)Context.CurrentUser).IsAdmin; }
+            get { return CurrentUser.IsAdmin; }
+        }
+
+        protected override void RemoveFromContextEntity(Person person)
+        {
+            ContextEntity.RemoveEmployee(person);
         }
     }
 }

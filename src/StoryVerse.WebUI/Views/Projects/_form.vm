@@ -3,7 +3,9 @@
     <a href="../stories/list.rails?projectId=$entity.Id">Stories</a> |
     <a href="../tasks/list.rails?projectId=$entity.Id">Tasks</a> |
     <a href="../iterations/list.rails?projectId=$entity.Id">Iterations</a> |
-    <a href="../projects/burndown.rails?id=$entity.Id">Burndown</a>
+    <a href="../projects/burndown.rails?id=$entity.Id">Burndown</a> |
+    <a href="../issues/list.rails?projectId=$entity.Id&preset=myopen">Issues</a>
+        <img src="../Images/beta.gif" style="vertical-align:middle;"/>
   </td>
 </tr>
 <tr>

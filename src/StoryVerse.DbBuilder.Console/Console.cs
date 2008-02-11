@@ -9,9 +9,9 @@
  * with StoryVerse is prohibited.
 */
 
+using System.Configuration;
 using Lunaverse.DbBuilder.Console;
 using Lunaverse.DbBuilder.Core;
-using StoryVerse.DbBuilder.Console.Properties;
 using StoryVerse.DbBuilder.Core;
 
 namespace StoryVerse.DbBuilder.Console
@@ -20,15 +20,13 @@ namespace StoryVerse.DbBuilder.Console
     {
         protected override void GetSettings()
         {
-            serverName = Settings.Default.Server;
-            databaseName = Settings.Default.Database;
-            username = Settings.Default.Username;
-            password = Settings.Default.Password;
+            ConnectionStringSettings cs = ConfigurationManager.ConnectionStrings["Admin"];
+            connectionString = cs.ConnectionString;
         }
 
         public override MethodsBase Methods
         {
-            get { return new Methods(serverName, databaseName, username, password, this); }
+            get { return methods = methods ?? new Methods(connectionString, this); }
         }
     }
 }

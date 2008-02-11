@@ -5,21 +5,28 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.ActiveRecord;
-using Castle.ActiveRecord.Framework.Validators;
+using Castle.Components.Validator;
 using StoryVerse.Core.Validators;
 
-namespace StoryVerse.Attributes
+namespace StoryVerse.Core.Validators
 {
     [Serializable]
     public class ValidateNumberIsPositiveAttribute : AbstractValidationAttribute        
     {
+        private readonly string errorMessage;
+        
         public ValidateNumberIsPositiveAttribute()
             : this(null) { }
 
         public ValidateNumberIsPositiveAttribute(string errorMessage)
-            : base(new NumberIsPositiveValidator(errorMessage)) { }
+            : base(errorMessage)
+        {
+            this.errorMessage = errorMessage;
+        }
+
+        public override IValidator Build()
+        {
+            return new NumberIsPositiveValidator(errorMessage);
+        }
     }
 }

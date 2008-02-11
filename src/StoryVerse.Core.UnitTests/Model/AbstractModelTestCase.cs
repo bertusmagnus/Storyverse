@@ -10,7 +10,7 @@ using Castle.ActiveRecord.Framework.Config;
 using NUnit.Framework;
 using System;
 
-namespace StoryVerse.Tests.ModelTests
+namespace StoryVerse.Core.UnitTests.Model
 {
     public abstract class AbstractModelTestCase
     {
@@ -26,7 +26,6 @@ namespace StoryVerse.Tests.ModelTests
         public virtual void Init()
         {
             PrepareSchema();
-
             CreateScope();
         }
 
@@ -34,7 +33,6 @@ namespace StoryVerse.Tests.ModelTests
         public virtual void Terminate()
         {
             DisposeScope();
-
             DropSchema();
         }
 
@@ -51,26 +49,12 @@ namespace StoryVerse.Tests.ModelTests
 
         protected void CreateScope()
         {
-            try
-            {
-                scope = new SessionScope();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            scope = new SessionScope();
         }
 
         protected void DisposeScope()
         {
-            try
-            {
-                scope.Dispose();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            } 
+            scope.Dispose();
         }
 
         protected virtual void PrepareSchema()
@@ -84,34 +68,17 @@ namespace StoryVerse.Tests.ModelTests
             // Another approach is to always recreate the schema 
             // (please use a separate test database if you want to do that)
 
-            try
-            {
-                ActiveRecordStarter.CreateSchema();
-            
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            ActiveRecordStarter.CreateSchema();
         }
 
         protected virtual void DropSchema()
         {
-            try
-            {
-                ActiveRecordStarter.DropSchema();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            } 
+            ActiveRecordStarter.DropSchema();
         }
 
         protected virtual void InitFramework()
         {
             IConfigurationSource source = ActiveRecordSectionHandler.Instance;
-
-            //ActiveRecordStarter.Initialize(source);
             ActiveRecordStarter.Initialize(source,
                    new Type[]
                                    {
@@ -123,10 +90,6 @@ namespace StoryVerse.Tests.ModelTests
                                        typeof(ProductionRelease),
                                        typeof(Component),
                                    });
-
-
-            // Remember to add the types, for example
-            // ActiveRecordStarter.Initialize( source, typeof(Blog), typeof(Post) );
         }
     }
 }

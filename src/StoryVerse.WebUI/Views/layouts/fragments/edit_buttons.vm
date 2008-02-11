@@ -1,6 +1,6 @@
 <td colspan="3">
   <input type="hidden" id="userCanEdit" value="$userCanEdit" />
-  $AjaxHelper.ButtonToRemote("Save", "Save.rails", $DictHelper.CreateDict("update=actionResult", "OnSuccess=markClean();", "with=Form.serialize(document.forms[0])"), $DictHelper.CreateDict("id=saveButton$position", "class=actionButton"))
+  $AjaxHelper.ButtonToRemote("Save", "Save.rails", $DictHelper.CreateDict("update=edit", "OnSuccess=markClean();", "with=Form.serialize(document.forms[0])"), $DictHelper.CreateDict("id=saveButton$position", "class=actionButton"))
   #if($listEditButtonVisible)
     <input id="listButton$position" type="button" class="actionButton" value="List" onClick="return submitToAction('list');"/>
   #end

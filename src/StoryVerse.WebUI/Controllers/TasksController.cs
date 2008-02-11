@@ -5,13 +5,12 @@
 */
 
 using System;
-using Castle.ActiveRecord;
 using Castle.MonoRail.ActiveRecordSupport;
+using Lunaverse.Tools.Common;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.Framework;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Criteria;
-using System.Collections.Generic;
 
 namespace StoryVerse.WebUI.Controllers
 {
@@ -19,18 +18,6 @@ namespace StoryVerse.WebUI.Controllers
     public class TasksController : EntityControllerBase<Task, TaskCriteria, Project>
     {
         public TasksController() : base(true) { }
-
-        public override string SortExpression
-        {
-            get { return Task.SortExpression; }
-            set { Task.SortExpression = value; }
-        }
-
-        public override SortDirection SortDirection
-        {
-            get { return Task.SortDirection; }
-            set { Task.SortDirection = value; }
-        }
 
         protected override void SetupEntity(Task task)
         {
@@ -42,13 +29,13 @@ namespace StoryVerse.WebUI.Controllers
             switch (presetName)
             {
                 case ("my"):
-                    Criteria.ApplyPresetMy((Person)Context.CurrentUser);
+                    Criteria.ApplyPresetMy(CurrentUser);
                     break;
                 case ("mystarted"):
-                    Criteria.ApplyPresetMyStarted((Person)Context.CurrentUser);
+                    Criteria.ApplyPresetMyStarted(CurrentUser);
                     break;
                 case ("mynotstarted"):
-                    Criteria.ApplyPresetMyNotStarted((Person)Context.CurrentUser);
+                    Criteria.ApplyPresetMyNotStarted(CurrentUser);
                     break;
             }
         }
@@ -59,7 +46,7 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["totalLatestEstimate"] = GetListSum("LatestEstimateHours");
         }
 
-        protected override void PopulateEditSelects()
+        protected override void PopulateEditSelects(Task task)
         {
             PopulateSelects();
         }
@@ -107,6 +94,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 catch (Exception ex)                
                 {
+                    Log.Error(ex);
                     task.RemoveEstimate(estimate);
                     HandleEditError(ex, task, "Estimate NOT updated");
                 }
@@ -124,7 +112,7 @@ namespace StoryVerse.WebUI.Controllers
                                            : storyIds.Length + " " + resultNoun + " added";
                 string failureMessage = string.Format("{0} NOT added", resultNoun);
 
-                if (((Person)Context.CurrentUser).CanViewOnly)
+                if (CurrentUser.CanViewOnly)
                 {
                     HandleEditError(new Exception("You do not have permission to add a story to a task"), task, failureMessage);
                     return;
@@ -139,6 +127,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex);
                     task.RemoveStories(storyIds);
                     HandleEditError(ex, task, failureMessage);
                 }
@@ -156,7 +145,7 @@ namespace StoryVerse.WebUI.Controllers
                                            : storyIds.Length + " " + resultNoun + " removed";
                 string failureMessage = string.Format("{0} NOT removed", resultNoun);
 
-                if (((Person)Context.CurrentUser).CanViewOnly)
+                if (CurrentUser.CanViewOnly)
                 {
                     HandleEditError(new Exception("You do not have permission to remove a story from a task"), task, failureMessage);
                     return;
@@ -171,6 +160,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex);
                     task.AddStories(storyIds);
                     HandleEditError(ex, task, failureMessage);
                 }
@@ -179,7 +169,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public void DeleteEstimate()
         {
-            if (!((Person)Context.CurrentUser).IsAdmin)
+            if (!CurrentUser.IsAdmin)
             {
                 SetError(new Exception("You do not have permission to delete an estimate"));
             }
@@ -193,11 +183,14 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetupNewEntity(Task task)
         {
-            task.Iteration = SetEntityValue<Iteration>(Form["entity.Iteration.Id"]);
-            task.Owner = SetEntityValue<Person>(Form["entity.Owner.Id"]);
-            ContextEntity.Refresh();
+            task.Iteration = SetValueFromKey<Iteration>(Form["entity.Iteration.Id"]);
+            task.Owner = SetValueFromKey<Person>(Form["entity.Owner.Id"]);
             ContextEntity.AddTask(task);
-            task.Number = ContextEntity.GetNextTaskNumber();
+        }
+
+        protected override void RemoveFromContextEntity(Task task)
+        {
+            ContextEntity.RemoveTask(task);
         }
     }
 }

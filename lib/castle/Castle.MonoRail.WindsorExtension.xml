@@ -4,12 +4,6 @@
         <name>Castle.MonoRail.WindsorExtension</name>
     </assembly>
     <members>
-        <member name="T:Castle.MonoRail.WindsorExtension.ContainerAccessorUtil">
-            <summary>
-            Uses the HttpContext and the <see cref="T:Castle.Windsor.IContainerAccessor"/> 
-            to access the container instance.
-            </summary>
-        </member>
         <member name="T:Castle.MonoRail.WindsorExtension.ControllerTreeAccessor">
             <summary>
             Bridge between the windsor controlled controller tree and

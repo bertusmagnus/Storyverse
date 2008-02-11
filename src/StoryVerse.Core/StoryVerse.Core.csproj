@@ -36,6 +36,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\Castle.Components.Common.EmailSender.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Components.Validator, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\castle\Castle.Components.Validator.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\Castle.Core.dll</HintPath>
@@ -60,6 +64,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\Castle.Services.Transaction.dll</HintPath>
     </Reference>
+    <Reference Include="Lunaverse.Tools.Common, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\lunaverse\Lunaverse.Tools.Common.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=1.2.0.3001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\castle\NHibernate.dll</HintPath>
@@ -73,7 +81,8 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Criteria\CompanyCriteria.cs" />
-    <Compile Include="Criteria\CriteriaUtility.cs" />
+    <Compile Include="Criteria\BaseCriteria.cs" />
+    <Compile Include="Criteria\IssueCriteria.cs" />
     <Compile Include="Criteria\IFindCriteria.cs" />
     <Compile Include="Criteria\IterationCriteria.cs" />
     <Compile Include="Criteria\PersonCriteria.cs" />
@@ -81,6 +90,11 @@
     <Compile Include="Criteria\StoryCriteria.cs" />
     <Compile Include="Criteria\TaskCriteria.cs" />
     <Compile Include="Lookups\CompanyType.cs" />
+    <Compile Include="Lookups\ILookup.cs" />
+    <Compile Include="Lookups\IssuePriority.cs" />
+    <Compile Include="Lookups\IssueDisposition.cs" />
+    <Compile Include="Lookups\IssueStatus.cs" />
+    <Compile Include="Lookups\IssueType.cs" />
     <Compile Include="Lookups\TaskStatus.cs" />
     <Compile Include="Lookups\SortDirection.cs" />
     <Compile Include="Lookups\UserProjectScope.cs" />
@@ -89,6 +103,14 @@
     <Compile Include="Lookups\TechnicalRisk.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Component.cs" />
+    <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\AppSetting.cs" />
+    <Compile Include="Lookups\BaseLookup.cs" />
+    <Compile Include="Lookups\IssueSeverity.cs" />
+    <Compile Include="Models\IssueAttachment.cs" />
+    <Compile Include="Models\IssueComment.cs" />
+    <Compile Include="Models\IssueNote.cs" />
+    <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\UserPreferences.cs" />
     <Compile Include="Models\IParentEntity.cs" />
     <Compile Include="Models\EntityUtility.cs" />

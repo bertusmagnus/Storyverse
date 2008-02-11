@@ -1,0 +1,56 @@
+#blockcomponent(StoryVerseCollapsiblePanel with "id=actions" "caption=Actions") 
+    #body
+        <table class="edit">
+
+            #if(!$entityIsNew)
+                <tr>
+                    <td colspan="4">
+                        $Form.RadioField("actionChoice", "none", "%{id='actionNone', onchange='markDirty()'}") 
+                        none 
+                    </td>
+                </tr>
+            #end
+
+            #if($entity.Status != "Closed")
+                <tr>
+                    <td colspan="4">
+                        $Form.RadioField("actionChoice", "assign", "%{id='actionAssign', onchange='markDirty()'}")
+                        assign to:
+                        $FormHelper.Select("newOwner", $persons, "%{firstoption='-Choose-', firstoptionvalue='', value='Id', text='AlphaName', style='width:150px', onchange='markDirty(); selectAction(actionAssign)'}")
+                        &nbsp;CC: $FormHelper.TextField("ccEmail", "%{style='width:250px', onchange='markDirty(); selectAction(actionAssign)'}")
+                    </td>
+                </tr>
+            #end
+
+            #if($entity.Status == "Assigned")
+                <tr>
+                    <td colspan="4">
+                        $Form.RadioField("actionChoice", "resolve", "%{id='actionResolve', onchange='markDirty()'}") 
+                        resolve as: 
+                        $FormHelper.Select("newDisposition", $dispositions, "%{firstoption='-Choose-', firstoptionvalue='', value='Id', text='Name', style='width:150px', onchange='markDirty(); selectAction(actionResolve)'}")
+                        $FormHelper.CheckboxField("assignToReporter")
+                        $FormHelper.LabelFor("assignToReporter", "re-assign to reporter")
+                    </td>
+                </tr>
+            #end
+
+            #if($entity.Status == "Pending")
+                <tr>
+                    <td colspan="4">
+                        $Form.RadioField("actionChoice", "close", "%{id='actionClose', onchange='markDirty()'}") 
+                        close
+                    </td>
+                </tr>
+            #end
+
+            #if($entity.Status == "Closed")
+                <tr>
+                    <td colspan="4">
+                        $Form.RadioField("actionChoice", "reopen", "%{id='actionReopen', onchange='markDirty()'}") 
+                        reopen 
+                    </td>
+                </tr>
+            #end
+        </table>
+    #end
+#end

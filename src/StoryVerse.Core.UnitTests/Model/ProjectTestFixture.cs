@@ -6,7 +6,7 @@
 using StoryVerse.Core.Models;
 using NUnit.Framework;
 
-namespace StoryVerse.Tests.ModelTests
+namespace StoryVerse.Core.UnitTests.Model
 {
     [TestFixture]
     public class ProjectTestFixture : AbstractModelTestCase

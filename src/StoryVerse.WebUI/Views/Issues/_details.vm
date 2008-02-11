@@ -1,0 +1,78 @@
+<table class="edit" style="width:100%">
+    #if(!$entityIsNew)
+      <tr>
+        <td colspan="4" style="padding:0px;">
+          <table class="detail">
+              <tr>
+                <td class="label">Number:</td>
+                <td>$entity.Number.ToString("0000")</td>
+                <td class="label">Status:</td>
+                <td>$entity.Status</td>
+                <td class="label">Reporter:</td>
+                <td>$!entity.ReportedBy.AlphaName</td>
+              </tr>
+          </table>
+       </td>
+     </tr>
+    #end
+    <tr>
+      <td class="labelabove" colspan="4">
+        Description:
+      </td>
+    </tr>
+    <tr>
+       <td colspan="4" class="controlbelow">
+         #if($entityIsNew || $userIsAdmin)
+            $FormHelper.TextArea("entity.Description", "%{rows='7', style='width:99%;', onchange='markDirty()'}")
+         #else            
+            <div style="background-color: #d9e4f8; padding:5px; margin-bottom:10px; border: dashed 1px #6f96df">
+                $TextFormatHelper.AddLineBreaks($entity.Description)
+            </div>
+         #end
+       </td>
+    </tr>
+    <tr>
+        <td class="label">Type:</td>
+        <td>
+            #if($entityIsNew || $userIsAdmin)
+                $FormHelper.Select("entity.Type", $entity.Type, $types, "%{style='width:150px', onchange='markDirty()'}")
+            #else
+                $!entity.Type
+            #end
+        </td>
+        <td class="label">Severity:</td>
+        <td>
+            #if($entityIsNew || $userIsAdmin)
+                $FormHelper.Select("entity.Severity.Id", $entity.Severity.Id, $severities, "%{style='width:150px', value='Id', text='Name', onchange='markDirty()'}")
+            #else
+                $!entity.Severity.Name
+            #end
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Priority:</td>
+        <td>
+            #if($entityIsNew || $userIsAdmin)
+                $FormHelper.Select("entity.Priority.Id", $entity.Priority.Id, $priorities, "%{style='width:150px', value='Id', text='Name', onchange='markDirty()'}")
+            #else
+                $!entity.Priority.Name
+            #end
+        </td>
+        <td class="label">Component:</td>
+        <td>
+            #if($entityIsNew || $userIsAdmin)
+                $FormHelper.Select("entity.Component.Id", $entity.Component.Id, $components, "%{firstoption='-Choose-', firstoptionvalue='', value='Id', text='Name' style='width:150px', onchange='markDirty()'}")
+            #else
+                $!entity.Component.Name
+            #end
+        </td>  
+    </tr>
+    #if(!$entityIsNew)
+        <tr>
+            <td class="label">Owner:</td>
+            <td>$!entity.Owner.AlphaName</td> 
+            <td class="label">Disposition:</td>
+            <td>$!entity.Disposition.Name</td> 
+        </tr>
+    #end
+</table>

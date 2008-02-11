@@ -27,7 +27,7 @@
     </tr>
     <tr>
       <td colspan="2">
-        <label for="remember">Remember Me</label> $FormHelper.CheckboxField("rememberMe")
+        <label for="rememberMe">Remember Me</label> $FormHelper.CheckboxField("rememberMe")
       </td>
     </tr>
     <tr>

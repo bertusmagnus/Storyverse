@@ -1,0 +1,62 @@
+#blockcomponent(StoryVerseCollapsiblePanel with "id=attachments" "caption=Attachments") 
+    #body
+        #blockcomponent(GridComponent with "source=$entity.Attachments") 
+            #tablestart
+              <table class="attachmentsList">
+            #end
+            #header
+                <tr style="text-align:left">
+                    <th>Title</td> 
+                    <th>Created</td>
+                    <th>Created By</td>
+                    <th>Size</td>
+                    #if($userCanEdit && $entity.Status != "Closed")
+                        <th>&nbsp;</td> 
+                    #end
+                </tr>
+            #end 
+            #cells
+                <td>
+                    <a href="javascript:void(0);" onclick="openAttachment('$item.Id'); return false">
+                        $!item.Title
+                    </a>
+                </td> 
+                <td>$!item.DateCreated.ToString("M/d/yy")</td>
+                <td>$!item.CreatedBy.FullName</td>
+                <td>$!item.SizeKb Kb</td>
+                #if($userCanEdit && $entity.Status != "Closed")
+                    <td>
+                        <a href="javascript:void(0);" onclick="deleteAttachment('$item.Id', '$item.Title'); return false">Delete</a>
+                    </td> 
+                #end
+            #end
+            #empty
+              <tr><td class="nodata_message" colspan="5">- no attachments -</td></tr>
+            #end
+        #end
+        #if(!$entityIsNew && $entity.Status != "Closed")
+            <div style="padding:8px 0 0 5px;">
+                <div style="font-weight:bold; padding-bottom:3px;">Add Attachment:</div>
+                File: $HtmlHelper.InputFile("attachment")
+                Title: $FormHelper.TextField("attachmentTitle")
+                <input id="addAttachmentButton" type="submit" class="actionButton" value="Attach" onclick="submitToAction('AttachFile')"/>
+            </div>
+        #end
+    #end
+#end
+$FormHelper.HiddenField("selectedAttachmentId")
+<script>
+  function openAttachment(attachmentId)
+  {
+      document.getElementById('selectedAttachmentId').value = attachmentId;
+      submitToAction('OpenAttachment');
+  } 
+  function deleteAttachment(attachmentId, attachmentName)
+  {
+      if (confirmAction('delete attchment "' + attachmentName + '"'))
+      {
+         document.getElementById('selectedAttachmentId').value = attachmentId;
+         submitToAction('DeleteAttachment');
+      }
+  } 
+</script>

@@ -5,16 +5,13 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.ActiveRecord.Framework.Validators;
+using Castle.Components.Validator;
 
 namespace StoryVerse.Core.Validators
 {
     public class NumberIsPositiveValidator : AbstractValidator
     {
-        public NumberIsPositiveValidator()
-            : base() { }
+        public NumberIsPositiveValidator() { }
 
         public NumberIsPositiveValidator(string errorMessage)
         {
@@ -28,14 +25,19 @@ namespace StoryVerse.Core.Validators
             }
         }
 
-        public override bool Perform(object instance, object parms)
+        public override bool SupportsBrowserValidation
         {
-            if (parms == null) return true;
+            get { return false; }
+        }
+
+        public override bool IsValid(object instance, object fieldValue)
+        {
+            if (fieldValue == null) return true;
 
             double? d = null;
             try
             {
-                d = Convert.ToDouble(parms);
+                d = Convert.ToDouble(fieldValue);
                 return d >= 0;
             }
             catch (Exception ex)

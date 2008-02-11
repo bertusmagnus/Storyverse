@@ -4,7 +4,7 @@
     #end
     #header
       <tr>
-        <td colspan="4" class="presets">
+        <td colspan="5" class="presets">
           <a href="list.rails?preset=my">All $entityNamePlural</a>&nbsp;
         </td>
         <td class="presets" style="text-align:right">
@@ -13,10 +13,11 @@
         </td>
       </tr>
       <tr class="filter">
-        <td>$FormHelper.TextField("criteria.Name", "%{style='width:200px'}")</td>
+        <td>$FormHelper.TextField("criteria.Name", "%{style='width:200px' onkeypress='return enterKeySubmitAction(\'search\', event);'}")</td>
         <td>
           $FormHelper.Select("criteria.CompanyId", $criteria.CompanyId, $companies, "%{value='Id', text='Name'}")
         </td>
+        <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -27,6 +28,7 @@
         <td><a href="javascript:SortLink('Company');">Company</a></td>
         <td>Stories</td>
         <td>Tasks</td>
+        <td>Issues</td>
         <td>&nbsp;</td>
       </tr>
     #end
@@ -41,10 +43,13 @@
       <td>$item.Company.Name</td>
       <td align="center">$item.Stories.Count</td>
       <td align="center">$item.Tasks.Count</td>
+      <td align="center">$item.Issues.Count</td>
       <td align="center" style="white-space:nowrap">
           &nbsp;<a href="../stories/list.rails?projectId=$item.Id">Stories</a> |
           <a href="../tasks/list.rails?projectId=$item.Id">Tasks</a> |
           <a href="../iterations/list.rails?projectId=$item.Id">Iterations</a> |
+          <a href="../issues/list.rails?projectId=$item.Id">Issues</a> 
+            <img src="../Images/beta.gif" style="vertical-align:middle;"/>&nbsp;|
           <a href="../projects/burndown.rails?id=$item.Id">Burndown</a>&nbsp;
       </td>
     #end

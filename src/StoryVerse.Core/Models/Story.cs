@@ -7,17 +7,17 @@
 using System;
 using System.Collections.Generic;
 using Castle.ActiveRecord.Queries;
+using Castle.Components.Validator;
 using StoryVerse.Core.Lookups;
 using Castle.ActiveRecord;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Story : ActiveRecordValidationBase<Story>, IEntity, IComparable<Story>
+    [ActiveRecord]
+    public class Story : BaseEntity<Story>
     {
-        private Guid _id;
-        private string _title;
         private int _number;
+        private string _title;
         private string _body;
         private string _notes;
         private StoryPriority? _priority;
@@ -31,22 +31,17 @@ namespace StoryVerse.Core.Models
         private IList<Task> _tasksList = new List<Task>();
         private IList<Test> _testsList = new List<Test>();
 
-        [PrimaryKey(PrimaryKeyType.GuidComb, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
-        public Guid Id
-        {
-            get { return _id; }
-        }
-        [Property, ValidateNotEmpty("Story Title is required.")]
-        public string Title
-        {
-            get { return _title; }
-            set { _title = value; }
-        }
         [Property]
         public int Number
         {
             get { return _number; }
-            set { _number = value;}
+            internal set { _number = value; }
+        }
+        [Property, ValidateNonEmpty("Story Title is required.")]
+        public string Title
+        {
+            get { return _title; }
+            set { _title = value; }
         }
         [Property(SqlType = "ntext")]
         public string Body
@@ -91,21 +86,21 @@ namespace StoryVerse.Core.Models
             set { _status = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Iteration Iteration
         {
             get { return _iteration; }
             set { _iteration = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Project Project
         {
             get { return _project; }
             internal set { _project = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Component Component
         {
             get { return _component; }
@@ -234,7 +229,7 @@ namespace StoryVerse.Core.Models
             }
         }
 
-        public void Validate()
+        public override void Validate()
         {
             List<string> messages = new List<string>();
 
@@ -246,73 +241,41 @@ namespace StoryVerse.Core.Models
             }
         }
 
-        #region Sorting Members
-
-        private static string _sortExpression = "Name";
-        public static string SortExpression
+        protected override object IsUnsaved()
         {
-            get { return _sortExpression; }
-            set { _sortExpression = value; }
+            object saved = base.IsUnsaved();
+            if (saved == null)
+            {
+                _number = Project.GetNextStoryNumber();
+            }
+            return saved;
         }
 
-        private static SortDirection _sortDirection = SortDirection.Ascending;
-        public static SortDirection SortDirection
+        protected override int GetRelativeValue(Story other)
         {
-            get { return _sortDirection; }
-            set { _sortDirection = value; }
-        }
-
-        public int CompareTo(Story other)
-        {
-            if (this == other) return 0;
-            if (other == null) return 1;
-            if (this == null) return -1;
-
-            int relativeValue;
             switch (SortExpression)
             {
-                case "Number":
-                    relativeValue = Number.CompareTo(other.Number);
-                    break;
                 case "Title":
-                    relativeValue = Title != null ? Title.CompareTo(other.Title) : -1;
-                    break;
+                    return Title != null ? Title.CompareTo(other.Title) : -1;
                 case "Project":
-                    relativeValue = Project != null ? Project.CompareTo(other.Project) : -1;
-                    break;
+                    return Project != null ? Project.CompareTo(other.Project) : -1;
                 case "Iteration":
-                    relativeValue = Iteration != null ? Iteration.CompareTo(other.Iteration) : -1;
-                    break;
+                    return Iteration != null ? Iteration.CompareTo(other.Iteration) : -1;
                 case "Component":
-                    relativeValue = Component != null ? Component.CompareTo(other.Component) : -1;
-                    break;
+                    return Component != null ? Component.CompareTo(other.Component) : -1;
                 case "TechnicalRisk":
-                    relativeValue = TechnicalRisk != null ? TechnicalRisk.Value.CompareTo(other.TechnicalRisk) : -1;
-                    break;
+                    return TechnicalRisk != null ? TechnicalRisk.Value.CompareTo(other.TechnicalRisk) : -1;
                 case "Priority":
-                    relativeValue = Priority != null ? Priority.Value.CompareTo(other.Priority) : -1;
-                    break;
+                    return Priority != null ? Priority.Value.CompareTo(other.Priority) : -1;
                 case "Status":
-                    relativeValue = Status != null ? Status.Value.CompareTo(other.Status) : -1;
-                    break;
+                    return Status != null ? Status.Value.CompareTo(other.Status) : -1;
                 case "EstimateFiftyPercent":
-                    relativeValue = EstimateFiftyPercent != null ? EstimateFiftyPercent.Value.CompareTo(other.EstimateFiftyPercent) : -1;
-                    break;
+                    return EstimateFiftyPercent != null ? EstimateFiftyPercent.Value.CompareTo(other.EstimateFiftyPercent) : -1;
                 case "EstimateNinetyPercent":
-                    relativeValue = EstimateNinetyPercent != null ? EstimateNinetyPercent.Value.CompareTo(other.EstimateNinetyPercent) : -1;
-                    break;
+                    return EstimateNinetyPercent != null ? EstimateNinetyPercent.Value.CompareTo(other.EstimateNinetyPercent) : -1;
                 default:
-                    relativeValue = 0;
-                    break;
+                    return Number.CompareTo(other.Number);
             }
-            if (SortDirection == SortDirection.Descending)
-            {
-                relativeValue *= -1;
-            }
-            return relativeValue;
         }
-
-        #endregion
-
     }
 }

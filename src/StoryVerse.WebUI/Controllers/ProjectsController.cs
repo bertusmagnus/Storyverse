@@ -7,13 +7,10 @@
 using System;
 using System.Collections.Generic;
 using Castle.MonoRail.ActiveRecordSupport;
-using Castle.MonoRail.Framework.Helpers;
 using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Criteria;
 using StoryVerse.Core.Models;
 using Castle.MonoRail.Framework;
-using StoryVerse.Helpers;
-using System.Collections;
 using StoryVerse.WebUI.ViewComponents;
 
 namespace StoryVerse.WebUI.Controllers
@@ -23,21 +20,9 @@ namespace StoryVerse.WebUI.Controllers
     {
         public ProjectsController() : base(false) { }
 
-        public override string SortExpression
-        {
-            get { return Project.SortExpression; }
-            set { Project.SortExpression = value; }
-        }
-
-        public override SortDirection SortDirection
-        {
-            get { return Project.SortDirection; }
-            set { Project.SortDirection = value; }
-        }
-
         public override void Save([ARDataBind("entity", AutoLoad = AutoLoadBehavior.NewInstanceIfInvalidKey)] Project project)
         {
-            project.Company = NullifyIfTransient(project.Company);
+            project.Company = NullifyEntityIfTransient(project.Company);
             Update(project);
         }
 
@@ -57,7 +42,7 @@ namespace StoryVerse.WebUI.Controllers
             switch (presetName)
             {
                 case ("my"):
-                    Criteria.ApplyPresetMy((Person)Context.CurrentUser);
+                    Criteria.ApplyPresetMy(CurrentUser);
                     break;
             }
         }
@@ -70,7 +55,7 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetupNewEntity(Project project)
         {
-            project.Company = SetEntityValue<Company>(Form["entity.Company.Id"]);
+            project.Company = SetValueFromKey<Company>(Form["entity.Company.Id"]);
         }
 
         protected override void SetupUpdateEntity(Project project)
@@ -91,7 +76,7 @@ namespace StoryVerse.WebUI.Controllers
             PopulateSelects(true);
         }
 
-        protected override void PopulateEditSelects()
+        protected override void PopulateEditSelects(Project project)
         {
             PopulateSelects(false);
         }
@@ -99,7 +84,7 @@ namespace StoryVerse.WebUI.Controllers
         private void PopulateSelects(bool addEmptyCompany)
         {
             IList<Company> companies = new List<Company>();
-            Person currentUser = (Person)Context.CurrentUser;
+            Person currentUser = CurrentUser;
             if (currentUser.ProjectScope == UserProjectScope.All)
             {
                 if (addEmptyCompany) companies.Add(new Company());
@@ -117,7 +102,7 @@ namespace StoryVerse.WebUI.Controllers
 
         public override void Delete([ARDataBind("entity", AutoLoad = AutoLoadBehavior.Always)] Project project)
         {
-            if (!((Person)Context.CurrentUser).IsAdmin)
+            if (!CurrentUser.IsAdmin)
             {
                 HandleEditError(new Exception("You do not permission to delete a project"), project, "NOT deleted");
                 return;
