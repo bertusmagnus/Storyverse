@@ -229,7 +229,6 @@
     <Content Include="Images\collapse.jpg" />
     <Content Include="Images\expand.jpg" />
     <Content Include="Images\paperclip.gif" />
-    <Content Include="InitDatabase.aspx" />
     <Content Include="facilities.config" />
     <Content Include="properties.config" />
     <Content Include="components.config" />
