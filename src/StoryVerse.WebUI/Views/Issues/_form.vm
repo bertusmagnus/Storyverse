@@ -8,16 +8,24 @@
 <tr>
     <td colspan="4">
         <table style="width:100%;">
-        #if($entityIsNew || $userIsAdmin)
+          <tr>
+            #if(!$entityIsNew && $entity.Number)
+              <tr>
+                <td class="label">Number:</td>
+                <td>$entity.Number.ToString("0000")</td>
+              </tr>
+            #end
+            #if($entityIsNew || $userIsAdmin)
             <td class="label" id="title">Title:</td>
-            <td>
+              <td>
                 $FormHelper.TextField("entity.Title", "%{style='width:99%', onchange='markDirty()'}")
-            </td>
-        #else
-            <td style="font-weight:bold; font-size:1.5em; color:#3a4fa6;">
+              </td>
+            #else
+              <td style="font-weight:bold; font-size:1.5em; color:#3a4fa6;">
                 $!entity.Title
-            </td>
-        #end
+              </td>
+            #end
+          </tr>
        </table>
    </td>
 </tr>

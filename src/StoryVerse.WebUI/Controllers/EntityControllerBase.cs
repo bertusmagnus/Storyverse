@@ -279,16 +279,17 @@ namespace StoryVerse.WebUI.Controllers
 
         #region new action
 
-		[Layout("new")]
+    	[Layout("new")]
         public virtual void New()
         {
+			TEntity entity = Entity ??
+				(TEntity)Activator.CreateInstance(typeof(TEntity));
 		    SetViewContext();
             if (_hasContext)
             {
                 ContextEntity.Refresh();
                 PropertyBag[_contextEntityName] = ContextEntity;
             }
-            TEntity entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
             SetupEditView(entity, true);
 		    SetActionResult(ActionResult);
 		    ActionResult = null;
@@ -327,14 +328,7 @@ namespace StoryVerse.WebUI.Controllers
                 }
                 SetupNewEntity(entity);
                 entity.Validate();
-                if (_hasContext)
-                {
-                    ContextEntity.UpdateAndFlush();
-                }
-                else
-                {
-                    entity.CreateAndFlush();
-                }
+                entity.SaveAndFlush();
                 RedirectToEdit(entity.Id, successMessage);
             }
             catch (Exception ex)
@@ -351,11 +345,12 @@ namespace StoryVerse.WebUI.Controllers
         protected void HandleNewError(Exception ex, TEntity entity, string actionResult)
         {
             SetError(ex);
-            RedirectToNew(actionResult);
+			RedirectToNew(entity, actionResult);
         }
 
-        protected void RedirectToNew(string actionResult)
+        protected void RedirectToNew(TEntity entity, string actionResult)
         {
+			Entity = entity;
             ActionResult = actionResult;
             RedirectToAction("new");
         }
@@ -606,6 +601,12 @@ namespace StoryVerse.WebUI.Controllers
             set { Flash["error"] = value; }
         }
 
+		protected TEntity Entity
+		{
+			get { return Flash["entity"] as TEntity; }
+			set { Flash["entity"] = value; }
+		}
+
         private string ActionResult
         {
             get 
@@ -700,10 +701,7 @@ namespace StoryVerse.WebUI.Controllers
             {
                 return default(T);
             }
-            else
-            {
-                return entity;
-            }
+            return entity;
         }
 
         protected void RefreshContextEntity()

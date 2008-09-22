@@ -4,7 +4,6 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using Castle.ActiveRecord;
 using Castle.Components.Validator;
 using NHibernate.Expression;

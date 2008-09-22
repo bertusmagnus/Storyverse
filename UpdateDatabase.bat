@@ -1,3 +1,3 @@
-cd src\StoryVerse.DbBuilder.Console\bin\Debug\
-StoryVerse.DbBuilder.Console.exe ApplyAllNewUpdates
+cd src\StoryVerse.Database\bin\Debug
+Lunaverse.DbVerse.Console.exe ApplyAllNewUpdates
 pause

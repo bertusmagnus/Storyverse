@@ -5,6 +5,7 @@
 */
 
 using System.Reflection;
+using System.Web.Configuration;
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Config;
 using Lunaverse.Tools.Common;
@@ -40,8 +41,23 @@ namespace StoryVerse.WebUI
 		{
 			container = new WindsorContainer(new XmlInterpreter());
 
-		    ActiveRecordStarter.Initialize(Assembly.Load("StoryVerse.Core"),
-                ActiveRecordSectionHandler.Instance);
+			try
+			{
+				Assembly assembly = Assembly.Load("StoryVerse.Core");
+				if (assembly == null)
+				{
+					Exception ex = new Exception("Failed to get core assembly");
+					Log.Error(ex);
+					throw ex;
+				}
+				ActiveRecordStarter.Initialize(assembly, 
+					ActiveRecordSectionHandler.Instance);
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex);
+				throw;
+			}
         }
 
 		public void Application_OnEnd() 

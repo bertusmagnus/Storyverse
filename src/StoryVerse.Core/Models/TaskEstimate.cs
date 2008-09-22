@@ -6,7 +6,6 @@
 
 using System;
 using Castle.ActiveRecord;
-using StoryVerse.Core.Lookups;
 using StoryVerse.Core.Validators;
 
 namespace StoryVerse.Core.Models
@@ -39,7 +38,7 @@ namespace StoryVerse.Core.Models
 
         protected override int GetRelativeValue(TaskEstimate other)
         {
-            switch (Task.EstimatesSortExpression)
+            switch (SortExpression)
             {
                 case "HoursRemaining":
                     return HoursRemaining.CompareTo(other.HoursRemaining);

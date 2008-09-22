@@ -14,10 +14,10 @@
 $AjaxHelper.GetJavascriptFunctions()
 
 
-#if($entity.Number)
+#if(!$entityIsNew && $entity.Number)
   <tr>
     <td class="label">Number:</td>
-    <td>$entity.Number</td>
+    <td>$entity.Number.ToString("0000")</td>
     <td colspan="2" style="text-align:right">
       <a href="printable.rails?id=$entity.Id" target="_blank">Printable</a>
     </td>

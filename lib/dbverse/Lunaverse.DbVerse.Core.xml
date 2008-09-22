@@ -1,0 +1,1317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lunaverse.DbVerse.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.User">
+            <summary>
+            An wrapper around an SMO User class
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.#ctor(Lunaverse.DbVerse.Core.DbObjects.Database,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="database">The database</param>
+            <param name="userName">Username of an existing user in the database</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.#ctor(Lunaverse.DbVerse.Core.DbObjects.Database,Microsoft.SqlServer.Management.Smo.User)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="database">The database</param>
+            <param name="user">An Smo user object existing in the database</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.GrantStandardPermissions">
+            <summary>
+            Grants the user Execute, Select, Delete, Update, and Insert permissions
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.GrantPowerPermissions">
+            <summary>
+            Grant the user standard permissions plus CreateTable and
+            Object Control permissions
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.GrantDatabasePermission(Microsoft.SqlServer.Management.Smo.DatabasePermission)">
+            <summary>
+            Grants a database permission to the user
+            </summary>
+            <param name="permission">The permission to grant to the user</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.GrantSchemaPermission(Microsoft.SqlServer.Management.Smo.ObjectPermission)">
+            <summary>
+            Grants a schema permission to the user
+            </summary>
+            <param name="permission">The permission to grant to the user</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.User.Drop">
+            <summary>
+            Drop the user
+            </summary>
+            <returns>The database the user was dropped from</returns>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.User.SmoUser">
+            <summary>
+            The SMO user
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.MethodsRunnerBase">
+            <summary>
+            The base class for method runners implemented as various application types
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.IOutputReceiver">
+            <summary>
+            A receiver of output
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IOutputReceiver.Output(System.String,System.Object[])">
+            <summary>
+            Outputs a message
+            </summary>
+            <param name="message">The message</param>
+            <param name="args">Format args for the message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IOutputReceiver.OutputError(System.String,System.Object[])">
+            <summary>
+            Outputs an message
+            </summary>
+            <param name="message">The message</param>
+            <param name="args">Format args for the message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.ExecuteMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Excecutes the method
+            </summary>
+            <param name="method"></param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.ExecuteMethod(System.String)">
+            <summary>
+            Executes a method in Methods having the provided name
+            </summary>
+            <param name="methodName">The name of the method to execute</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.OutputBlankLine">
+            <summary>
+            Outputs a blank line
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.OutputDivider">
+            <summary>
+            Outputs a divider
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.OutputError(System.String,System.Object[])">
+            <summary>
+            Outputs an error message set off by dividers and increments the error counter
+            </summary>
+            <param name="message">Message to output</param>
+            <param name="args">Message arguments</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.Output(System.String,System.Object[])">
+            <summary>
+            Outputs a message
+            </summary>
+            <param name="message">Message to output</param>
+            <param name="args">Message arguments</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsRunnerBase.ErrorCount">
+            <summary>
+            A running count of errors encountered
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.CreateDatabaseUpdatesTable">
+            <summary>
+            Creates a table that is used by DbVerse to track which updates have been applied
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.ApplyAllUpdates">
+            <summary>
+            Executes all update methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.ApplyNewUpdates">
+            <summary>
+            Executes all update methods that have not beed previously executed for the 
+            current database as determined by the contents of the DatabaseUpdates table
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.ExecuteMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Executes a method in the class
+            </summary>
+            <param name="method">The method to run</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.Initialize(System.String,System.String,System.String,System.String,System.String,Lunaverse.DbVerse.Core.PkType,System.String)">
+            <summary>
+            Intializes MethodBase
+            </summary>
+            <param name="connectionString">Connection string</param>
+            <param name="serverName">The name of the server where the database resides</param>
+            <param name="dbName">The name of the database to affect</param>
+            <param name="username">A username with admin permissions</param>
+            <param name="password">The password for the username</param>
+            <param name="defaultPkType">The default data type for automatically created primary keys</param>
+            <param name="pkNameFormat">The format use for auto generated primary keys where {0} is the singular of the table name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IMethods.ReConnect(System.String)">
+            <summary>
+            Resets the connection of the server using the specified connection string
+            </summary>
+            <param name="connectionString">Connection string for the new connection</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IMethods.ServerConnection">
+            <summary>
+            The SQL connection used for all ADO operations
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IMethods.Server">
+            <summary>
+            The current server
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IMethods.Db">
+            <summary>
+            The current database
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IMethods.IsDbSet">
+            <summary>
+            Is the current database set
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Server">
+            <summary>
+            An wrapper around an SMO Sever object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.#ctor(System.String,Lunaverse.DbVerse.Core.PkType,System.String)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="connectionString">A connection string for the server</param>
+            <param name="defaultPkType">The data type for automatically created primary keys</param>
+            <param name="pkNameFormat">A format string that will be used to name all automatically created primary keys.  Use {0} to stand for the singular of table name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.#ctor(System.String,System.String,System.String,System.String,Lunaverse.DbVerse.Core.PkType,System.String)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="serverName">The name of the server</param>
+            <param name="databaseName">The name of the current database to use</param>
+            <param name="username">The username for accessing the server</param>
+            <param name="password">The password for accessing the server</param>
+            <param name="defaultPkType">The data type for automatically created primary keys</param>
+            <param name="pkNameFormat">A format string that will be used to name all automatically created primary keys.  Use {0} to stand for the singular of table name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.SetDatabase(System.String)">
+            <summary>
+            Sets the current database
+            </summary>
+            <param name="databaseName">The name of the database</param>
+            <returns>The current database</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.Refresh">
+            <summary>
+            Reinitializes the server using the current underlying connection
+            </summary>
+            <returns>This server</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.ReConnect(System.String)">
+            <summary>
+            Reinitializes the server using the current underlying connection
+            </summary>
+            <returns>This server</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.Login(System.String)">
+            <summary>
+            Returns a login object
+            </summary>
+            <param name="loginName">The name of the login</param>
+            <returns>A login object</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.CreateLogin(System.String,System.String)">
+            <summary>
+            Creates a server login.
+            </summary>
+            <param name="name">The name of the login</param>
+            <param name="password">The password of the login</param>
+            <returns>The newly created login</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.HasDatabase(System.String)">
+            <summary>
+            Does the server contain the database
+            </summary>
+            <param name="name">Database name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.CreateDatabase(System.String)">
+            <summary>
+            Creates a database.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Server.CreateDatabase(System.String,System.Nullable{Microsoft.SqlServer.Management.Smo.RecoveryModel},System.Nullable{System.Boolean})">
+            <summary>
+            Creates a database on the Server
+            </summary>
+            <param name="databaseName">The name for the new database</param>
+            <param name="recoveryModel">The recovery model for the new database</param>
+            <param name="autoShrink">The auto shrink setting for the new database</param>
+            <returns></returns>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.SmoServer">
+            <summary>
+            The SMO server object
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.Database">
+            <summary>
+            The current Database object for this sever
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.DatabaseName">
+            <summary>
+            The name of the database
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.PkNameFormat">
+            <summary>
+            A string that will be appeneded to all automatically created primary keys
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.DefaultPkType">
+            <summary>
+            The default data type for automatically created primary keys
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Server.Connection">
+            <summary>
+            The underlying connection for this Server
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.MethodsBase">
+            <summary>
+            The base class for methods for creating an modifying a database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.Initialize(System.String,System.String,System.String,System.String,System.String,Lunaverse.DbVerse.Core.PkType,System.String)">
+            <summary>
+            Intializes MethodBase
+            </summary>
+            <param name="connectionString">Connection string</param>
+            <param name="serverName">The name of the server where the database resides</param>
+            <param name="dbName">The name of the database to affect</param>
+            <param name="username">A username with admin permissions</param>
+            <param name="password">The password for the username</param>
+            <param name="defaultPkType">The default data type for automatically created primary keys</param>
+            <param name="pkNameFormat">The format use for auto generated primary keys where {0} is the singular of the table name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.CreateDatabaseUpdatesTable">
+            <summary>
+            Creates a table that is used by DbVerse to track which updates have been applied
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.ApplyAllUpdates">
+            <summary>
+            Executes all update methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.ApplyNewUpdates">
+            <summary>
+            Executes all update methods that have not beed previously executed for the 
+            current database as determined by the contents of the DatabaseUpdates table
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.ExecuteMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Executes a method in the class
+            </summary>
+            <param name="method">The method to run</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsBase.DatabaseName">
+            <summary>
+            The name of the database.  You can override this property to use a different database 
+            name than provided in the configuration.
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsBase.ServerConnection">
+            <summary>
+            The SQL connection used for all ADO operations
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsBase.Server">
+            <summary>
+            The current server
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsBase.Db">
+            <summary>
+            The current database
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.MethodsBase.IsDbSet">
+            <summary>
+            Is the current database set
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.Updater">
+            <summary>
+            Handles appplying updates to the current database in Methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.#ctor(Lunaverse.DbVerse.Core.IMethods)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="methods">Methods class for which updates are applied</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.ExecuteAllUpdates">
+            <summary>
+            Executes all updates
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.GetSortedUpdatesList">
+            <summary>
+            Gets a sorted list of all updates
+            </summary>
+            <returns>A sorted list of all updates</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.GetSortedUpdatesList(System.Reflection.MethodInfo[])">
+            <summary>
+            Gets a sorted list of all updates
+            </summary>
+            <returns>A sorted list of all updates</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.GetUpdate(System.Reflection.MethodInfo)">
+            <summary>
+            Gets an Update object for the specified MethodInfo
+            </summary>
+            <param name="method">Method for which to get the Update</param>
+            <returns>An Update object for the specified MethodInfo</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.ExecuteUnappliedUpdates">
+            <summary>
+            Executes all unapplied updates
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.PkType">
+            <summary>
+            The type of primary key
+            </summary>
+        </member>
+        <member name="F:Lunaverse.DbVerse.Core.PkType.Guid">
+            <summary>
+            A guid.  Implemented in the database as UNIQUEIDENTIFIER
+            </summary>
+        </member>
+        <member name="F:Lunaverse.DbVerse.Core.PkType.Identity">
+            <summary>
+            An identity key.
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Database">
+            <summary>
+            An wrapper around an SMO Database object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.#ctor(Lunaverse.DbVerse.Core.DbObjects.Server,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="server">The server that this database belongs to</param>
+            <param name="databaseName">The name of the database</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.#ctor(Lunaverse.DbVerse.Core.DbObjects.Server,Microsoft.SqlServer.Management.Smo.Database)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="server">The server that this database belongs to</param>
+            <param name="database">The SMO database to wrap</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.Table(System.String)">
+            <summary>
+            Returns a table object
+            </summary>
+            <param name="tableName">The name of the table</param>
+            <returns>A table object</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.User(System.String)">
+            <summary>
+            Returns a user object
+            </summary>
+            <param name="userName">The name of the user</param>
+            <returns>A user object</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String)">
+            <summary>
+            Adds a table and adds a primary key of the default type.  The name of the primary 
+            key will be based on PkNameFormat
+            </summary>
+            <param name="tableName">The name of the new table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String,System.String)">
+            <summary>
+            Adds a table with a primary key the default type with the specified name
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkColumnName">The name of the primary key column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String,Lunaverse.DbVerse.Core.IdentitySpec)">
+            <summary>
+            Adds a table with an integer identity key. The name of the primary 
+            key will be based on PkNameFormat
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkIdentitySpec">Sets the primary key as an identity column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String,System.String,Lunaverse.DbVerse.Core.IdentitySpec)">
+            <summary>
+            Adds a table with an integer identity primary key with the specified name
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkColumnName">The name of the primary key column</param>
+            <param name="pkIdentitySpec">Sets the primary key as an identity column.</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Adds a table with an integer identity primary key with the specified name
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkDataType">The type of the primary key column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddTable(System.String,System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Adds a table with an integer identity primary key with the specified name
+            </summary>
+            <param name="tableName">The name of the new table</param>
+            <param name="pkColumnName">Sets the primary key as an identity column.</param>
+            <param name="pkDataType">The type of the primary key column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddView(System.String,System.String)">
+            <summary>
+            Creates a view in the database using [dbo] for the schema
+            </summary>
+            <param name="viewName">Name of the view</param>
+            <param name="body">Body of the view</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddView(System.String,System.String,System.String)">
+            <summary>
+            Creates a view in the database
+            </summary>
+            <param name="viewName">Name of the view</param>
+            <param name="body">Body of the view</param>
+            <param name="schema">Schema for the view</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreateStandardUser(System.String,System.String)">
+            <summary>
+            Creates a server login and a database user with 'standard' permissions.  These are: 
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert
+            </summary>
+            <param name="name">The name of the login and user</param>
+            <param name="password">The password of the login and user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreateStandardUser(Lunaverse.DbVerse.Core.DbObjects.Login)">
+            <summary>
+            Creates a server login and a database user with 'standard' permissions.  These are: 
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert
+            </summary>
+            <param name="login">The login for which to create the user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreatePowerUser(System.String,System.String)">
+            <summary>
+            Creates a server login and a database user with 'power' permissions.  These are:
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert, 
+            Server_AdministerBulkOperations, Object_Control, Database_CreateTable
+            </summary>
+            <param name="name">Username for the user</param>
+            <param name="password">Password for the user</param>
+            <returns>The new user</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreatePowerUser(Lunaverse.DbVerse.Core.DbObjects.Login)">
+            <summary>
+            Creates a server login and a database user with 'power' permissions.  These are:
+            Database_Execute, Database_Select, Database_Delete, Database_Execute, Database_Insert, 
+            Server_AdministerBulkOperations, Object_Control, Database_CreateTable
+            </summary>
+            <param name="login">The login for which to create the user</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreateUser(System.String,Lunaverse.DbVerse.Core.DbObjects.Login)">
+            <summary>
+            Creates a new database user with the specified login
+            </summary>
+            <param name="name">The name of the new user</param>
+            <param name="login">The login for the the user</param>
+            <returns>A User object</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.DefineRelation(System.String,System.String,System.String,System.String)">
+            <summary>
+            Defines a relation between two tables
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="fkColumnName">The name of the foreign key column in the table  in the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="pkColumnName">The name of the primary key column in the table  in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.DefineRelation(System.String,System.String,System.String,System.String,Microsoft.SqlServer.Management.Smo.ForeignKeyAction)">
+            <summary>
+            Defines a relation between two tables
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="fkColumnName">The name of the foreign key column in the table  in the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="pkColumnName">The name of the primary key column in the table  in the primary key table</param>
+            <param name="updateRule">Specified the action to be taken when the primary key of the primary key table is updated</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.DefineRelation(System.String,System.String,System.String[][])">
+            <summary>
+            Defines a relation between two tables.  The override allows defining compound key relations
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="columnNames">Each 'row' in this array contains a two cell where the first cell is the foreign key column name and the second is the primary key column name</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.DefineRelation(System.String,System.String,System.String[][],Microsoft.SqlServer.Management.Smo.ForeignKeyAction)">
+            <summary>
+            Defines a relation between two tables.  The override allows defining compound key relations
+            </summary>
+            <param name="fkTableName">The name of the foreign key table</param>
+            <param name="pkTableName">The name of the primary key table</param>
+            <param name="columnNames">Each 'row' in this array contains a two cell where the first cell is the foreign key column name and the second is the primary key column name</param>
+            <param name="updateRule">Specified the action to be taken when the primary key of the primary key table is updated</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.Clear">
+            <summary>
+            Drops all the tables, defaults, views and stored procedures from the database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.Clear(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Drops all the tables, defaults, views and stored procedures from the database
+            </summary>
+            <param name="doNotDropTableNamePrefixes">A list of prefixes of tables not to drop (case insensitive)</param>
+            <param name="doNotDropTableNames">A list of names of tables not to drop (case insensitive)</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.ClearExceptPrefixes(System.String[])">
+            <summary>
+            Drops all the tables, defaults, views and stored procedures from the database, except table with the specified prefixes
+            </summary>
+            <param name="doNotDropTableNamePrefixes">A list of prefixes of tables not to drop (case insensitive)</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.ClearExceptNames(System.String[])">
+            <summary>
+            Drops all the tables, defaults, views and stored procedures from the database, except table with the specified names
+            </summary>
+            <param name="doNotDropTableNames">A list of names of tables not to drop (case insensitive)</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.Drop">
+            <summary>
+            Drops the Database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.AddStoredProcedure(System.String,System.String,Lunaverse.DbVerse.Core.DetachedParameter[])">
+            <summary>
+            Adds a stored procedure
+            </summary>
+            <param name="storedProcName">The name of the stored procedure</param>
+            <param name="body">The body of the stored procedure</param>
+            <param name="parameters">The parameters of the stored procedure</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.ExecuteScript(System.String)">
+            <summary>
+            Runs a T-SQL script
+            </summary>
+            <param name="scriptName">The full path of the file that contains the scrip</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.GenerateRelations">
+            <summary>
+            Generates all the relations created using AddColumn or DefineRelation methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreateDefault(System.String,System.String)">
+            <summary>
+            Creates a default object
+            </summary>
+            <param name="defaultName">The name of the default object</param>
+            <param name="rule">The body of the default which specifies the rule</param>
+            <returns>The newly created default</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.RecordUpdateApplied(System.String,Lunaverse.DbVerse.Core.Update)">
+            <summary>
+            Records that an update has been applied
+            </summary>
+            <param name="methodName">The name of the method that has been applied</param>
+            <param name="update">The update</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.RecordUpdateApplied(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Records that an update has been applied
+            </summary>
+            <param name="methodName">The name of the method that has been applied</param>
+            <param name="order">The order in which the update was applied with respect to other updates</param>
+            <param name="author">The name of the person who authored the update</param>
+            <param name="dateAuthored">The date the update was authored</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.RecordUpdateApplied(System.String,System.Int32,System.String,System.DateTime)">
+            <summary>
+            Records that an update has been applied
+            </summary>
+            <param name="methodName">The name of the method that has been applied</param>
+            <param name="order">The order in which the update was applied with respect to other updates</param>
+            <param name="author">The name of the person who authored the update</param>
+            <param name="dateAuthored">The date the update was authored</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.GetDatabaseUpdatesApplied">
+            <summary>
+            Gets a list of the names of database updates that have been applied
+            </summary>
+            <returns>A list of the names of database updates that have been applied</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.Rename(System.String)">
+            <summary>
+            Renames the database
+            </summary>
+            <param name="newName">The new name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.HasTable(System.String)">
+            <summary>
+            True if the table exists
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Database.CreateDatabaseUpdatesTable">
+            <summary>
+            Creates a table that is used by DbVerse to track which updates have been applied
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.SmoDatabase">
+            <summary>
+            The SMO Database object
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.DefaultPkType">
+            <summary>
+            The data type used for auto generated PKs
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.PkNameFormat">
+            <summary>
+            The server that contains the database
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.DatabaseUpdatesTableName">
+            <summary>
+            The name of the database updates table.  This table records which DbVerse updates 
+            have been applied to the current database.
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.DatabaseUpdatesTable">
+            <summary>
+            Gets the database updates table
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.GuidDefault">
+            <summary>
+            Returns a the default that is bound to guid primary key columns
+            that are created auotmatically by DbVerse. Returns NULL is the
+            default does not exist.
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Database.HasDatabaseUpdatesTable">
+            <summary>
+            True if the database updates table exists
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.Utilities.Helper">
+            <summary>
+            Utility and helper methods
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Utilities.Helper.MakeSingular(System.String)">
+            <summary>
+            Makes an English word singular
+            </summary>
+            <param name="name">Word to make singular</param>
+            <returns>Singular of 'name'</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Utilities.Helper.SafeFormat(System.String,System.Object[])">
+            <summary>
+            Formats a string using string.Format, except treats pairs of opposing single curly 
+            brackets that do not contain numbers as literal text.
+            </summary>
+            <param name="format">A composite format string.</param>
+            <param name="args">An Object array containing zero or more objects to format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Utilities.Helper.RelativePathToAbsolute(System.String,System.String)">
+            <summary>
+            Converts a relative file path to and absolute filepath
+            </summary>
+            <param name="basePath">The path from which the relative bath is based</param>
+            <param name="relativePath">A relative path (using '..\' to denote 'up')</param>
+            <returns></returns>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Utilities.Helper.SqlCombAlgorithm">
+            <summary>
+            A string that represents the body of a SQL Server function that returns a COMB guid
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.Report">
+            <summary>
+            Reports feedback to the specified output receiver
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.Info(System.String,System.Object[])">
+            <summary>
+            Logs and sends a message to the ouput receiver
+            </summary>
+            <param name="message">Message to report</param>
+            /// <param name="args">Format arugments for message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.Error(System.String,System.Object[])">
+            <summary>
+            Logs and sends an error message to the output receiver
+            </summary>
+            <param name="message">Message detail</param>
+            <param name="args">Format arugments for message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.Error(System.String,System.Exception,System.Object[])">
+            <summary>
+            Logs and sends an error message to the output receiver
+            </summary>
+            <param name="message">Message detail</param>
+            <param name="ex">The message of this exception and all inner exceptions will be included in the final message</param>
+            /// <param name="messageArgs">Format arugments for message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.Debug(System.String,System.Object[])">
+            <summary>
+            Logs the message (does not send to output receiver)
+            </summary>
+            <param name="message">Message to report</param>
+            /// <param name="args">Format arugments for message</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.End">
+            <summary>
+            Cleans up resources and writes end message to the log
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Report.Warn(System.String,System.Object[])">
+            <summary>
+            Logs and sends a warning message to the ouput receiver
+            </summary>
+            <param name="message">Message to report</param>
+            /// <param name="args">Format arugments for message</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Report.OutputReceiver">
+            <summary>
+            The object that receives the output
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Report.LoggingEnabled">
+            <summary>
+            User to enable/disable logging
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.Update">
+            <summary>
+            An update that is applied to the database
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Update.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="order">The order in which the update is applied with respect to other updates</param>
+            <param name="author">The name of the person who authored the update</param>
+            <param name="dateAuthored">The date the update was authored</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Update.#ctor(System.Int32,System.String,System.DateTime)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="order">The order in which the update is applied with respect to other updates</param>
+            <param name="author">The name of the person who authored the update</param>
+            <param name="dateAuthored">The date the update was authored</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Update.Order">
+            <summary>
+            The order in which the update is applied with respect to other updates
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Update.Author">
+            <summary>
+            The name of the person who authored the update
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.Update.DateAuthored">
+            <summary>
+            The data the the update was authored
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Login">
+            <summary>
+            An wrapper around an SMO Login object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Login.#ctor(Lunaverse.DbVerse.Core.DbObjects.Server,System.String)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="server">The server that this Login belongs to</param>
+            <param name="loginName">The login name of the Login</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Login.#ctor(Lunaverse.DbVerse.Core.DbObjects.Server,Microsoft.SqlServer.Management.Smo.Login)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="server">The server that this Login belongs to</param>
+            <param name="login">The SMO login object</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Login.GrantPermission(Microsoft.SqlServer.Management.Smo.ServerPermission)">
+            <summary>
+            Grants a server permission to a user
+            </summary>
+            <param name="permission">The permission to grant to the login</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Login.Drop">
+            <summary>
+            Drops the server login
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Login.SmoLogin">
+            <summary>
+            The SMO Login object
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Column">
+            <summary>
+            An wrapper around an SMO Column object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.#ctor(Lunaverse.DbVerse.Core.DbObjects.Table,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="table">The table that this column belongs to</param>
+            <param name="columnName">The name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.#ctor(Lunaverse.DbVerse.Core.DbObjects.Table,Microsoft.SqlServer.Management.Smo.Column)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="table">The table that this column belongs to</param>
+            <param name="column">The SMO column object</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.Drop">
+            <summary>
+            Drops the column
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.Rename(System.String)">
+            <summary>
+            Renames the column
+            </summary>
+            <param name="newColumnName">The new name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.ChangeDataType(Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Changes the data type of the column and attempts to covert the data.  if the data cannot be converted (ToDo: specify what happens)
+            </summary>
+            <param name="newType">The new type of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.Nullable(System.Boolean)">
+            <summary>
+            Set the column's nullability and default value
+            </summary>
+            <param name="nullable">TRUE for nullable, FALSE for not nullable</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.Nullable(System.Boolean,System.String)">
+            <summary>
+            Set the column's nullability and default value
+            </summary>
+            <param name="nullable">TRUE for nullable, FALSE for not nullable</param>
+            <param name="defaultValue">The default value for the column</param>
+            <returns></returns>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Column.SmoColumn">
+            <summary>
+            The SMO Column object
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DetachedParameter">
+            <summary>
+            An object that represents a detached stored parameter detached from it's stored procedure
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DetachedParameter.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DetachedParameter.#ctor(System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="parameterName">The name of the parameter</param>
+            <param name="dataType">The data type of the parameter</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DetachedParameter.Name">
+            <summary>
+            The name of the parameter
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DetachedParameter.DataType">
+            <summary>
+            The data type of the parameter
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DetachedParameter.DefaultValue">
+            <summary>
+            The default value of the parameter
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DetachedParameter.IsOutput">
+            <summary>
+            Whether the parameter is output of the stored procedure
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.IdentitySpec">
+            <summary>
+            Spec for and identity column
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IdentitySpec.#ctor">
+            <summary>
+            Constructor.  Increment and seed are set to 1.
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IdentitySpec.#ctor(System.Int32)">
+            <summary>
+            Constructor.  Inrement is set to 1.
+            </summary>
+            <param name="seed">Seed</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.IdentitySpec.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="seed">Seed</param>
+            <param name="increment">Increment</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IdentitySpec.Seed">
+            <summary>
+            Seed.
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IdentitySpec.Increment">
+            <summary>
+            Increment.
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Index">
+            <summary>
+            An wrapper around an SMO Index object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Index.#ctor(Lunaverse.DbVerse.Core.DbObjects.Table,System.String)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="table">The table that this index belongs to</param>
+            <param name="indexName">The name of the Index</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Index.Drop">
+            <summary>
+            Drops the index
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Index.Rename(System.String)">
+            <summary>
+            Renames the index
+            </summary>
+            <param name="newIndexName">The new name of the index</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Index.SmoIndex">
+            <summary>
+            The SMO Index object
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.Table">
+            <summary>
+            An wrapper around an SMO Table object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.GetPkIndexName(System.String)">
+            <summary>
+            Gets the primary key index name based on the specified table name
+            </summary>
+            <param name="tableName">The table</param>
+            <returns>The primary key index name based on the specified table name</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.#ctor(Lunaverse.DbVerse.Core.DbObjects.Database,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="database">The Database that this table belongs to</param>
+            <param name="tableName">The name of the table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.#ctor(Lunaverse.DbVerse.Core.DbObjects.Database,Microsoft.SqlServer.Management.Smo.Table)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="database">The Database that this table belongs to</param>
+            <param name="table">The SMO table object</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Column(System.String)">
+            <summary>
+            Returns the column of the specified name
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <returns>The column</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String)">
+            <summary>
+            Adds a column to the current table.
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pkTableName">If not null, this will be a foregn key column.  The name of the primary key table.  The name of the primary key of this table must be the same as the foreign key</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.String)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pKTableName">If not null, this will be a foregn key column.  The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table.  If null,  the name of the primary key of this table must be the same as the foreign key</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="pKTableName">If not null, this will be a foregn key column.  The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table.  If null,  the name of the primary key of this table must be the same as the foreign key</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean)">
+            <summary>
+            Adds a column to the current table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean,System.String)">
+            <summary>
+            Adds a column to the current table that is bound to a default object
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="defaultName">The name of the default object to be bound to the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumnWithDefaultValue(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.Boolean,System.String)">
+            <summary>
+            Adds a column to the current table with a default value
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="defaultValue">The default value for the column.  The value must be valid for the data type.  This parameter can be a SQL Server function</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddDatestampColumn(System.String)">
+            <summary>
+            Adds a datestamp column to the current table.  The column will be type of date time, not nullable and have a default value of GETDATE()
+            </summary>
+            <param name="columnName">The name of the column</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumn(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.Boolean,Lunaverse.DbVerse.Core.IdentitySpec,System.String,System.String,System.String)">
+            <summary>
+            Adds a column to the specified table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="defaultName">The name of the default object to be bound to the column</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="identitySpec">Specifies column an an identity column.</param>
+            <param name="atColumnName">The name of the column to add this column after.  NOTE: THIS IS NOT WORKING!!!!</param>
+            <param name="pKTableName">The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddColumnWithDefaultValue(System.String,Microsoft.SqlServer.Management.Smo.DataType,System.String,System.Boolean,Lunaverse.DbVerse.Core.IdentitySpec,System.String,System.String,System.String)">
+            <summary>
+            Adds a column to the specified table
+            </summary>
+            <param name="columnName">The name of the column</param>
+            <param name="type">The data type of the column</param>
+            <param name="defaultValue">The default value for the column.  The value must be valid for the data type.  This parameter can be a SQL Server function</param>
+            <param name="isNullable">Indicates whether the column will be nullable</param>
+            <param name="identitySpec">Specifies column an an identity column.</param>
+            <param name="atColumnName">The name of the column to add this column after.  NOTE: THIS IS NOT WORKING!!!!</param>
+            <param name="pKTableName">The name of the primary key table</param>
+            <param name="pKColumnName">The name of the primary key in the primary key table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Index(System.String)">
+            <summary>
+            Returns the column of the specified name
+            </summary>
+            <param name="indexName">The name of the index</param>
+            <returns>The index</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddContstraint(System.String,System.String)">
+            <summary>
+            Add a constraint to this table
+            </summary>
+            <param name="name">The new name of the table</param>
+            <param name="sql">The TSQL statement that defines the contraint</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddUniqueIndex(System.String[])">
+            <summary>
+            Add a unique index to the table
+            </summary>
+            <param name="columnNames">The comlumns to comprise the index</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddIndex(System.String[])">
+            <summary>
+            Add a non-unique index to the table
+            </summary>
+            <param name="columnNames">The comlumns to comprise the index</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Rename(System.String)">
+            <summary>
+            Rename this table
+            </summary>
+            <param name="newTableName">The new name of the table</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.SetPK(System.String[])">
+            <summary>
+            Sets the primary key of the current table.  This override allows defining coumpound primary keys
+            </summary>
+            <param name="columnNames">The names of the columns to include in the primary key</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Drop">
+            <summary>
+            Drops the specified table
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.InsertRow(System.String,System.Object[])">
+            <summary>
+            Inserts a row using ADO
+            </summary>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the table.</param>
+            <param name="args">Arguments for formatting valuesString</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.InsertRow(System.String,System.Boolean)">
+            <summary>
+            Inserts a row using ADO
+            </summary>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the table.</param>
+            <param name="prependQAGuidToValues">
+                If set to TRUE a guid will be be prepended to the VALUES string.  The first time 
+                this method is called the guid will be an empty guid.  The second time the 
+                first segment of the guid will be '00000000', the second time it will be 
+                '00000001' and so on until ResetQaGuid is called, which will set it back to
+                '00000000'.  This method is useful for populating lookup tables with 
+                a uniqueidentifier key
+            </param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.InsertRow(System.String,System.String,System.Boolean)">
+            <summary>
+            Inserts a row using ADO
+            </summary>
+            <param name="tableName">The name of the table to add the row to</param>
+            <param name="valuesString">The VALUES fragments of a SQL INSERT statement.  Values must be in the order in which they appear in the fieldNameString parameter</param>
+            <param name="prependQAGuidToValues">
+                If set to TRUE a guid will be be prepended to the VALUES string.  The first time 
+                this method is called the guid will be an empty guid.  The second time the 
+                first segment of the guid will be '00000000', the second time it will be 
+                '00000001' and so on until ResetQaGuid is called, which will set it back to
+                '00000000'.  This method is useful for populating lookup tables with 
+                a uniqueidentifier key
+            </param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.DeleteRows(System.String)">
+            <summary>
+            Deletes rows using ADO
+            </summary>
+            <param name="whereCaluse">The WHERE clause of a SQL DELETE statement.</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.UpdateRows(System.String,System.String)">
+            <summary>
+            Updates rows using ADO
+            </summary>
+            <param name="setClause">The SET clause of a SQL UPDATE statement.</param>
+            <param name="whereClause">The WHERE clause of a SQL UPDATE statement.</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.ResetQAguid">
+            <summary>
+            Use in conjunction with Insert.  The method resets the ordinal value of QA guids used by in class
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.GetTestGuid(System.Int32)">
+            <summary>
+            Get a test Guid using the number provided
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Table.SmoTable">
+            <summary>
+            The SMO table object
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Table.PkColumnName">
+            <summary>
+            The name used to auto generate a primary column
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Table.PkIndexPrefix">
+            <summary>
+            The prefix used for primary key indexes
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.Table.PkIndexName">
+            <summary>
+            The primary key index name
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.Utilities.RelationshipFinder">
+            <summary>
+            Helps find likely database relations
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Utilities.RelationshipFinder.#ctor(System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="serverName">The name of the server</param>
+            <param name="databaseName">The name of the database</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Utilities.RelationshipFinder.Execute">
+            <summary>
+            Scans that database and reports suggested FK relationships
+            </summary>
+        </member>
+    </members>
+</doc>

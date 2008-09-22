@@ -9,7 +9,7 @@
 <tr>
   <td colspan="4" style="height:4px"></td>
 </tr>
-#if($entity.Number)
+#if(!$entityIsNew && $entity.Number)
 <tr>
   <td class="label">Number:</td>
   <td colspan="3">$entity.Number</td>

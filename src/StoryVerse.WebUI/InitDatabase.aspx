@@ -6,9 +6,10 @@
     
     protected override void OnLoad(EventArgs e)
     {
-        lblConString.Text = ActiveRecordMediator.GetSessionFactoryHolder()
-            .GetAllConfigurations()[0]
-            .Properties["hibernate.connection.connection_string"].ToString(); ;
+    	string conStringName = ActiveRecordMediator.GetSessionFactoryHolder()
+    		.GetAllConfigurations()[0]
+    		.Properties["hibernate.connection.connection_string_name"].ToString();
+        lblConString.Text = ConfigurationManager.ConnectionStrings[conStringName].ConnectionString;
     }
 
     protected void btnInitDatabase_Click(object sender, EventArgs e)

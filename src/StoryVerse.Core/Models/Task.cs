@@ -64,21 +64,21 @@ namespace StoryVerse.Core.Models
             set { _status = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Person Owner
         {
             get { return _owner; }
             set { _owner = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Project Project
         {
             get { return _project; }
             internal set { _project = value; }
         }
 
-        [BelongsTo()]
+        [BelongsTo]
         public Iteration Iteration
         {
             get { return _iteration; }
@@ -107,20 +107,6 @@ namespace StoryVerse.Core.Models
                 return _storiesList;
             }
             set { _storiesList = value; }
-        }
-
-        private static string _estimatesSortExpression = "Date";
-        public static string EstimatesSortExpression
-        {
-            get { return _estimatesSortExpression; }
-            set { _estimatesSortExpression = value; }
-        }
-
-        private static SortDirection _estimatesSortDirection = SortDirection.Descending;
-        public static SortDirection EstimatesSortDirection
-        {
-            get { return _estimatesSortDirection; }
-            set { _estimatesSortDirection = value; }
         }
 
         public IList<TaskEstimate> Estimates
@@ -166,8 +152,8 @@ namespace StoryVerse.Core.Models
         {
             if (EstimatesList.Count == 0) return null;
 
-            EstimatesSortExpression = "Date";
-            EstimatesSortDirection = SortDirection.Ascending;
+            TaskEstimate.SortExpression = "Date";
+            TaskEstimate.SortDirection = SortDirection.Ascending;
             return Estimates[0];
         }
 
@@ -175,8 +161,8 @@ namespace StoryVerse.Core.Models
         {
             if (EstimatesList.Count == 0) return null;
 
-            EstimatesSortExpression = "Date";
-            EstimatesSortDirection = SortDirection.Descending;
+            TaskEstimate.SortExpression = "Date";
+            TaskEstimate.SortDirection = SortDirection.Descending;
             return Estimates[0];
         }
 

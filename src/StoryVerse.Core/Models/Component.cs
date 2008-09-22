@@ -4,9 +4,7 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using Castle.Components.Validator;
-using StoryVerse.Core.Lookups;
 using Castle.ActiveRecord;
 
 namespace StoryVerse.Core.Models

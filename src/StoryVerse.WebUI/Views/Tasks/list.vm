@@ -56,7 +56,7 @@
       <tr class="evenrow">
     #end   
     #cells
-      <td>$item.Number</td>
+      <td>$item.Number.ToString("0000")</td>
       <td><a href="edit.rails?id=$item.Id">$item.Title</a></td>
       <td>$!item.Owner.FullName</td>
       <td>$!item.Status</td>

@@ -15,7 +15,7 @@ namespace StoryVerse.Core.Models
         private Guid _id;
         private Person _person;
         private int _rowsPerPage;
-        private bool _notifyOfIssueChange;
+        private bool _notifyOfIssueAssignment;
 
         [PrimaryKey(PrimaryKeyType.Foreign, Access = PropertyAccess.NosetterCamelcaseUnderscore)]
         public Guid Id
@@ -40,8 +40,8 @@ namespace StoryVerse.Core.Models
         [Property]
         public bool NotifyOfIssueAssignment
         {
-            get { return _notifyOfIssueChange; }
-            set { _notifyOfIssueChange = value; }
+            get { return _notifyOfIssueAssignment; }
+            set { _notifyOfIssueAssignment = value; }
         }
 
         public void Validate()

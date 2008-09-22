@@ -4,7 +4,6 @@
  * See the included file "Licence.txt" for terms of the license
 */
 
-using System;
 using System.Security.Principal;
 using Castle.ActiveRecord;
 using Castle.Components.Validator;
@@ -12,8 +11,8 @@ using StoryVerse.Core.Lookups;
 
 namespace StoryVerse.Core.Models
 {
-    [ActiveRecord()]
-    public class Person : BaseEntity<Person>, IPrincipal, IComparable<Person>
+    [ActiveRecord]
+    public class Person : BaseEntity<Person>, IPrincipal
     {
         private string _firstName;
         private string _lastName;
@@ -22,8 +21,8 @@ namespace StoryVerse.Core.Models
         private string _email;
         private Company _company;
         private UserPreferences _userPreferences = new UserPreferences();
-        private bool _isAdmin = false;
-        private bool _canViewOnly = false;
+        private bool _isAdmin;
+        private bool _canViewOnly;
 
         [Property, ValidateNonEmpty("First Name is required.")]
         public string FirstName

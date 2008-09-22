@@ -9,6 +9,7 @@ namespace StoryVerse.Core.Lookups
     public enum IssueType
     {
         Defect,
-        Enhancement
+        Enhancement,
+		Task
     }
 }
