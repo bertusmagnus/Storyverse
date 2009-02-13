@@ -13,7 +13,7 @@ namespace StoryVerse.WebUI.ViewComponents
             {
                 ViewComponentException ex = new ViewComponentException("IssueNoteGroupedListComponent requires a source of type GroupedCollection<IssueChange>");
                 Log.Error(ex);
-                throw ex;
+                //throw ex;
             }
             RenderComponent(source);
         }

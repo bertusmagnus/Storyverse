@@ -147,5 +147,19 @@ namespace StoryVerse.Core.Criteria
             ApplyPresetMy(user);
             statuses = Issue.OpenStatues;
         }
+
+		public void ApplyPresetMyOpenDefects(Person user)
+		{
+			ApplyPresetMy(user);
+			statuses = Issue.OpenStatues;
+			types = new IssueType[] { IssueType.Defect };
+		}
+
+		public void ApplyPresetAllOpenDefects()
+		{
+			ApplyPresetAll();
+			statuses = Issue.OpenStatues;
+			types = new IssueType[] { IssueType.Defect };
+		}
     }
 }

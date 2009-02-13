@@ -1,13 +1,47 @@
 <script>
   function selectAction(optButton)
   {
-      optButton.checked = true;
-  } 
+  optButton.checked = true;
+  }
+  function collapseAll()
+  {
+      collapsePanel("detailsBody", "detailsToggle")
+      collapsePanel("notesBody", "notesToggle")
+      collapsePanel("attachmentsBody", "attachmentsToggle")
+      collapsePanel("changesBody", "changesToggle")
+      //collapsePanel("actionsBody", "actionsToggle")
+  }
+  function expandAll()
+  {
+      expandPanel("detailsBody", "detailsToggle")
+      expandPanel("notesBody", "notesToggle")
+      expandPanel("attachmentsBody", "attachmentsToggle")
+      expandPanel("changesBody", "changesToggle")
+      //expandPanel("actionsBody", "actionsToggle")
+  }
+  function collapsePanel(controlName, togglerName)
+  {
+      Effect.BlindUp(controlName, {duration:0.3});
+      var toggler = document.getElementById(togglerName);
+      toggler.alt = 'Show'; toggler.src = '../Images/expand.jpg';
+  }
+  function expandPanel(controlName, togglerName)
+  {
+      Effect.BlindDown(controlName, {duration:0.3});
+      var toggler = document.getElementById(togglerName);
+      toggler.alt = 'Hide'; toggler.src = '../Images/collapse.jpg';
+  }
 </script>
-<img src="../Images/beta.gif" style="vertical-align:top; padding-left:3px;"/>
+
 <tr>
     <td colspan="4">
         <table style="width:100%;">
+          <tr>
+            <td colspan="4" style="text-align:right; padding:0;">
+              <a href="javascript:collapseAll()">Collapse All</a>
+              <a href="javascript:expandAll()">Expand All</a>
+            </td>
+          </tr>
           <tr>
             #if(!$entityIsNew && $entity.Number)
               <tr>

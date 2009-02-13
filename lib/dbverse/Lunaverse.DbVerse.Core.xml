@@ -81,7 +81,7 @@
             <param name="message">The message</param>
             <param name="args">Format args for the message</param>
         </member>
-        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.#ctor">
+        <member name="M:Lunaverse.DbVerse.Core.MethodsRunnerBase.#ctor(System.String)">
             <summary>
             Constructor
             </summary>
@@ -170,6 +170,11 @@
         <member name="P:Lunaverse.DbVerse.Core.IMethods.ServerConnection">
             <summary>
             The SQL connection used for all ADO operations
+            </summary>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.IMethods.ConnectionString">
+            <summary>
+            The connection string used for all ADO operations
             </summary>
         </member>
         <member name="P:Lunaverse.DbVerse.Core.IMethods.Server">
@@ -329,6 +334,11 @@
             current database as determined by the contents of the DatabaseUpdates table
             </summary>
         </member>
+        <member name="M:Lunaverse.DbVerse.Core.MethodsBase.ReportNewUpdates">
+            <summary>
+            Reports all unapplied updates
+            </summary>
+        </member>
         <member name="M:Lunaverse.DbVerse.Core.MethodsBase.ExecuteMethod(System.Reflection.MethodInfo)">
             <summary>
             Executes a method in the class
@@ -400,6 +410,12 @@
             <summary>
             Executes all unapplied updates
             </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.Updater.GetSortedUnappliedUpdatesList">
+            <summary>
+            Gets all unapplied updates
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Lunaverse.DbVerse.Core.PkType">
             <summary>
@@ -938,14 +954,6 @@
             <param name="nullable">TRUE for nullable, FALSE for not nullable</param>
             <returns></returns>
         </member>
-        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Column.Nullable(System.Boolean,System.String)">
-            <summary>
-            Set the column's nullability and default value
-            </summary>
-            <param name="nullable">TRUE for nullable, FALSE for not nullable</param>
-            <param name="defaultValue">The default value for the column</param>
-            <returns></returns>
-        </member>
         <member name="P:Lunaverse.DbVerse.Core.DbObjects.Column.SmoColumn">
             <summary>
             The SMO Column object
@@ -1176,10 +1184,17 @@
         </member>
         <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Index(System.String)">
             <summary>
-            Returns the column of the specified name
+            Returns the index of the specified name
             </summary>
             <param name="indexName">The name of the index</param>
             <returns>The index</returns>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.Constraint(System.String)">
+            <summary>
+            Returns the check constraint of the specified name
+            </summary>
+            <param name="constraintName">The name of the constraint</param>
+            <returns>The constraint</returns>
         </member>
         <member name="M:Lunaverse.DbVerse.Core.DbObjects.Table.AddContstraint(System.String,System.String)">
             <summary>
@@ -1311,6 +1326,34 @@
         <member name="M:Lunaverse.DbVerse.Core.Utilities.RelationshipFinder.Execute">
             <summary>
             Scans that database and reports suggested FK relationships
+            </summary>
+        </member>
+        <member name="T:Lunaverse.DbVerse.Core.DbObjects.CheckConstraint">
+            <summary>
+            An wrapper around an SMO Check object
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.CheckConstraint.#ctor(Lunaverse.DbVerse.Core.DbObjects.Table,System.String)">
+            <summary>
+            Contructor
+            </summary>
+            <param name="table">The table that this check constraint belongs to</param>
+            <param name="checkName">The name of the check constraint</param>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.CheckConstraint.Drop">
+            <summary>
+            Drops the check constraint
+            </summary>
+        </member>
+        <member name="M:Lunaverse.DbVerse.Core.DbObjects.CheckConstraint.Rename(System.String)">
+            <summary>
+            Renames the check constraint
+            </summary>
+            <param name="newCheckName">The new name of the check constraint</param>
+        </member>
+        <member name="P:Lunaverse.DbVerse.Core.DbObjects.CheckConstraint.SmoCheck">
+            <summary>
+            The SMO Check object
             </summary>
         </member>
     </members>

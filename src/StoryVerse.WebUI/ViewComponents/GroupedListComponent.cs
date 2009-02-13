@@ -28,8 +28,9 @@ namespace StoryVerse.WebUI.ViewComponents
         {
             if (source == null)
             {
-                throw new ViewComponentException(string.Format(
-                    "GroupedListComponent requires a source of type GroupedCollection<{0}>", typeof(T).Name));
+            	return;
+                //throw new ViewComponentException(string.Format(
+                //    "GroupedListComponent requires a source of type GroupedCollection<{0}>", typeof(T).Name));
             }
 
             string cssClass = ComponentParams["cssClass"] as string;

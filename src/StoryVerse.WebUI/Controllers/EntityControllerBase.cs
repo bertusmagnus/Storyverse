@@ -709,7 +709,7 @@ namespace StoryVerse.WebUI.Controllers
             ContextEntity = GetContextEntity(ContextEntity.Id);
         }
 
-        private TContextEntity GetContextEntity(Guid id)
+		protected TContextEntity GetContextEntity(Guid id)
         {
             TContextEntity result = ActiveRecordBase<TContextEntity>.Find(id);
             HttpCookie cookie = new HttpCookie(contextCookieName, id.ToString());

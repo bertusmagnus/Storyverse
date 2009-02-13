@@ -5,8 +5,10 @@
     #header
       <tr>
         <td colspan="7" class="presets">
-          <a href="list.rails?preset=myopen">My Open Issues</a>&nbsp;
-          <a href="list.rails?preset=my">All My Issues</a>&nbsp;
+		  <a href="list.rails?preset=myopendefects">My Open Defects</a>&nbsp;
+		  <a href="list.rails?preset=allopendefects">All Open Defects</a>&nbsp;
+          <a href="list.rails?preset=myopen">My Open $entityNamePlural</a>&nbsp;
+          <a href="list.rails?preset=my">All My $entityNamePlural</a>&nbsp;
           <a href="list.rails?preset=all">All $entityNamePlural</a>&nbsp;
         </td>
         <td colspan="2" class="presets" style="text-align:right">

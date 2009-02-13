@@ -40,7 +40,8 @@ namespace StoryVerse.WebUI.Controllers
 
         protected override void SetupNewEntity(Person person)
         {
-            ContextEntity.AddEmployee(person);
+			ContextEntity = GetContextEntity(ContextEntity.Id);
+			ContextEntity.AddEmployee(person);
         }
 
         [Layout("edit")]

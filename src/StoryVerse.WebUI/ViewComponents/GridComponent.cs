@@ -69,8 +69,9 @@ namespace StoryVerse.WebUI.ViewComponents
             IEnumerable source = ComponentParams["source"] as IEnumerable;
             if (source == null)
             {
-                throw new ViewComponentException(
-                    "The grid requires a view component parameter named 'source' which should contain 'IEnumerable' instance");
+            	return;
+                //throw new ViewComponentException(
+                //    "The grid requires a view component parameter named 'source' which should contain 'IEnumerable' instance");
             }
 
             ShowStartTable();

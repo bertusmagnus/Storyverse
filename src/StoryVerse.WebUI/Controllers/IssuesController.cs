@@ -5,6 +5,7 @@
 */
 
 using System;
+using System.Configuration;
 using System.IO;
 using System.Web;
 using Castle.MonoRail.ActiveRecordSupport;
@@ -20,7 +21,7 @@ namespace StoryVerse.WebUI.Controllers
     [Layout("default"), Rescue("generalerror")]
     public class IssuesController : EntityControllerBase<Issue, IssueCriteria, Project>
     {
-        public IssuesController() : base(false) { }
+        public IssuesController() : base(true) { }
 
         protected override bool DeleteEditButtonVisible
         {
@@ -101,7 +102,7 @@ namespace StoryVerse.WebUI.Controllers
                     }
                     issue.Owner = Person.TryFind(new Guid(Form["newOwner"]));
                     issue.Status = IssueStatus.Assigned;
-                    NotifyIssueAssignment(issue, cc);
+					NotifyIssueAssignment(issue, cc, HttpContext.Request.UrlReferrer.AbsoluteUri);
                     return true;
                 case "reopen":
                     issue.Status = IssueStatus.Pending;
@@ -119,7 +120,7 @@ namespace StoryVerse.WebUI.Controllers
                     if (Convert.ToBoolean(Form["assignToReporter"].Split(',')[0]))
                     {
                         issue.Owner = issue.ReportedBy;
-                        NotifyIssueAssignment(issue, cc);
+						NotifyIssueAssignment(issue, cc, HttpContext.Request.UrlReferrer.AbsoluteUri);
                     }
                     return true;
                 case "close":
@@ -133,10 +134,12 @@ namespace StoryVerse.WebUI.Controllers
         public override void Create([DataBind("entity")] Issue issue)
         {
             CreateEntity(issue);
-            NotifyIssueAssignment(issue, Form["ccEmail"]);
+        	string editUrl = string.Format("{0}?id={1}",
+				HttpContext.Request.Url.AbsoluteUri.Replace("create", "edit"), issue.Id);
+			NotifyIssueAssignment(issue, Form["ccEmail"], editUrl);
         }
 
-        private void NotifyIssueAssignment(Issue issue, string cc)
+        private void NotifyIssueAssignment(Issue issue, string cc, string editUrl)
         {
             bool ownerHasEmail = !string.IsNullOrEmpty(issue.Owner.Email);
 
@@ -161,8 +164,15 @@ namespace StoryVerse.WebUI.Controllers
             PropertyBag["salutation"] = string.Format("{0} {1}", issue.Owner.FirstName, issue.Owner.LastName);
             PropertyBag["entity"] = issue;
 
+			GroupedCollection<IssueNote> groupedNotes = new GroupedCollection<IssueNote>(issue.Notes);
+			groupedNotes.AddGroupDescription("CreatedBy.FullName");
+			groupedNotes.AddGroupDescription("DateCreated.Date");
+			PropertyBag["groupedNotes"] = groupedNotes;
+
+        	PropertyBag["issueUrl"] = editUrl;
+
             Message email = RenderMailMessage("issue_assigned");
-            email.From = "no_reply@storyverse.com";
+			email.From = ConfigurationManager.AppSettings["emailFromAddress"] ?? "no_reply@storyverse.com";
             email.To = issue.Owner.Email;
             email.Cc = cc;
             email.Subject = string.Format("Issue assigned - {0:0000}:{1}", issue.Number, issue.Title);
@@ -198,7 +208,7 @@ namespace StoryVerse.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error(notSentMessage, ex);
+                Log.Error(string.Format("{0}. From:{1} To:{2}", notSentMessage, email.From, email.To), ex);
             }
         }
 
@@ -287,7 +297,11 @@ namespace StoryVerse.WebUI.Controllers
             issue.ReportedBy = CurrentUser;
             issue.DateCreated = DateTime.Now;
             issue.Owner = SetValueFromKey<Person>(Form["newOwner"]);
-            ContextEntity.AddIssue(issue);
+			if (issue.Owner != null)
+			{
+				issue.Status = IssueStatus.Assigned;
+			}
+        	ContextEntity.AddIssue(issue);
         }
 
         protected override void RemoveFromContextEntity(Issue issue)
@@ -325,6 +339,12 @@ namespace StoryVerse.WebUI.Controllers
                 case ("myopen"):
                     Criteria.ApplyPresetMyOpen(CurrentUser);
                     break;
+				case ("myopendefects"):
+					Criteria.ApplyPresetMyOpenDefects(CurrentUser);
+					break;
+				case ("allopendefects"):
+					Criteria.ApplyPresetAllOpenDefects();
+					break;
             }
         }
     }
